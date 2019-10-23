@@ -9,7 +9,7 @@ Install flask and ensure the framework is up-to-date with Python3.
 
 ```
 ~$ pip install flask
-sudo apt install python3-flask
+~$ sudo apt install python3-flask
 ```
 
 In the project directory, activate the virtual environment.
