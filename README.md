@@ -8,26 +8,26 @@ Our web application runs on a Python Flask backend. To be able to build your own
 Install flask and ensure the framework is up-to-date with Python3.
 
 ```
-$ pip install flask
+~$ pip install flask
 sudo apt install python3-flask
 ```
 
 In the project directory, activate the virtual environment.
 
 ```
-source venv/bin/activate
+~$ source venv/bin/activate
 ```
 
 Export the app.
 
 ```
-export FLASK_APP=flask_master.py
+(venv) ~$ export FLASK_APP=flask_master.py
 ```
 
 Run it.
 
 ```
-export FLASK_APP=flask_master.py
+(venv) ~$ flask run
 ```
 
 If everything is ok, website should be appear on your http://localhost:5000/
