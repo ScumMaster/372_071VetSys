@@ -1,0 +1,31 @@
+body {
+  margin: 0;
+  background: #f3f4f5;
+  color: #1a1a1a;
+  border-top: 3px solid #00cc99;
+}
+
+/* main font of the page */
+body, p {
+  font-family: ttf_open_sans, Open Sans, sans-serif;
+  } @font-face {
+  font-family: ttf_open_sans;
+  src: url(fonts/Open-Sans/OpenSans-Regular.ttf);
+}
+
+.main_zone {
+  margin: 20px 15%;
+  display: block;
+}
+
+button {
+  border: none;
+  background: #00aa77;
+  color: ghostwhite;
+  padding: 10px;
+  margin: 5px;
+}
+
+button:hover {
+  background: #00bb88;
+}
