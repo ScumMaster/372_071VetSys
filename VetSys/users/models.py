@@ -16,9 +16,8 @@ class Staff(db.Model, UserMixin):
     name = db.Column(db.String(60), nullable=False)
     email = db.Column(db.String(100),nullable=False)
     address = db.Column(db.String(100))
-    free_days = db.Column(db.ARRAY(db.DateTime))
     start_at = db.Column(db.DateTime, nullable=False)
     finish_at = db.Column(db.DateTime, nullable=False)
-    check_ins = db.Column(db.ARRAY(db.DateTime))
-    check_outs = db.Column(db.ARRAY(db.DateTime))
     total_hours = db.Column(db.Interval, nullable=False, default=datetime.timedelta(hours=180))
+
+
