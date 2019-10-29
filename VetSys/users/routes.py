@@ -29,7 +29,6 @@ def login():
             else:
                 return redirect(url_for('dashboard.profile'))
 
-
     return render_template('login.html',form=form)
 
 

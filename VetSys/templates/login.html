@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../static/css/master.css">
+    <link rel="stylesheet" href="../static/css/login_style.css">
+    <!--
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/master.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login_style.css') }}">
+    -->
+    <title>VetSys</title>
+  </head>
+    <body>
+        <div class="login_window">
+            <h2>VetSys</h2>
+            <form>
+                {{ form.hidden_tag() }}
+
+                {{ form.staff_id.label }}<br>
+                {{ form.staff_id }}<br><br>
+                {{ form.password.label }}<br>
+                {{ form.password }}<br><br>
+                
+                {{ form.submit_button(class_="submit_button") }}
+            </form>
+        </div>
+    </body>
+</html>
