@@ -18,6 +18,11 @@ body, p {
   display: block;
 }
 
+.logo {
+    margin: auto 20px;
+    color: ghostwhite;
+}
+
 button,
 .submit_button {
   border: none;

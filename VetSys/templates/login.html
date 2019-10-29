@@ -2,18 +2,14 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="../static/css/master.css">
-    <link rel="stylesheet" href="../static/css/login_style.css">
-    <!--
     <link rel="stylesheet" href="{{ url_for('static', filename='css/master.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/login_style.css') }}">
-    -->
     <title>VetSys</title>
   </head>
     <body>
         <div class="login_window">
             <h2>VetSys</h2>
-            <form>
+            <form method="POST">
                 {{ form.hidden_tag() }}
 
                 {{ form.staff_id.label }}<br>

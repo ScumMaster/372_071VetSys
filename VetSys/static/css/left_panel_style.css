@@ -1,0 +1,29 @@
+
+.left_panel {
+  height: 100%;
+  width: 250px;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #1a1a1a;
+  overflow-x: hidden;
+  padding-top: 20px;
+}
+
+.content {
+    padding: 10px;
+    text-align: right;
+    margin: 25px 10px;
+}
+
+.left_panel a,
+.left_panel a:visited {
+  text-decoration: none;
+  font-size: 1.2em;
+  color: #999;
+}
+
+.left_panel a:hover {
+  color: #f1f1f1;
+}

@@ -5,4 +5,4 @@ dashboard=Blueprint('dashboard',__name__)
 
 @dashboard.route('/dashboard')
 def profile():
-    return "selam"
+    return render_template('dashboard.html')
