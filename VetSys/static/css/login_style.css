@@ -1,0 +1,25 @@
+.login_window {
+    width: 35%;
+    display: block;
+    background: #e6e6e6;
+    padding: 20px;
+    margin: 150px auto;
+    text-align: center;
+}
+
+input {
+    border: none;
+    padding: 8px;
+    width: 75%;
+}
+
+.submit_button {
+    width: 25%;
+}
+
+
+
+#login_button {
+    margin-top: 20px;
+    width: 25%;
+}

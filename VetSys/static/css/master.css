@@ -18,7 +18,8 @@ body, p {
   display: block;
 }
 
-button {
+button,
+.submit_button {
   border: none;
   background: #00aa77;
   color: ghostwhite;
