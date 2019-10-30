@@ -22,19 +22,19 @@ Clone and go to the project directory.
 Activate the virtual environment.
 
 ```
-~$ source venv/bin/activate
+~$ source 372/bin/activate
 ```
 
 Export the app.
 
 ```
-(venv) ~$ export FLASK_APP=flask_master.py
+(372) ~$ export FLASK_APP=run.py
 ```
 
 Run it.
 
 ```
-(venv) ~$ flask run
+(372) ~$ flask run
 ```
 
 If everything is ok, website should be appear on your http://localhost:5000/
