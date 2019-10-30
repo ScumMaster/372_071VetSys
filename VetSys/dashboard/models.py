@@ -98,3 +98,44 @@ class PetNotes(db.Model):
 class Disability(db.Model):
     pet = db.Column(db.Integer, db.ForeignKey('pet.pet_id'), primary_key=True)
     disab = db.Column(db.String, primary_key=True)
+
+## cd ->
+
+class Clinic(db.Model):
+    __tablename__ = 'clinic'
+    contact_info = db.Column(db.String, nullable=False)
+    location = db.Column(db.String, nullable=False)
+
+    # clinic has medicines
+    medicines = db.relationship('medicine', backref='clinic')
+
+class Medicine(db.Model):
+    __tablename__ = 'medicine'
+    name = db.Column(db.String(60), nullable=False)
+    expiration_date = db.Column(db.DateTime, nullable=False)
+    barcode_number = db.Column(db.String(60), nullable=False, unique=True)
+    serial_number = db.Column(db.String(60), nullable=False, unique=True)
+
+    # distributor = db.Column(db.String(60), )
+    # distributor has name, phone_number and email
+
+# class Service(db.Model):
+# class Accomodation(db.Model):
+# class Treatment(db.Model):
+
+class Staff(db.Model):
+    # __tablename__ ?
+    staff_id = db.Column(db.String(60), nullable=False, unique=True)
+    name = db.Column(db.String(60), nullable=False)
+    sex = db.Column(db.String(6))
+    start_date = db.Column(db.DateTime, nullable=False)
+    salary = db.Column(db.Integer)
+    phone_number = db.Column(db.String(15))
+    # holday_permits ?
+    # working_hours ?
+
+
+# class Custadion(db.Model):
+# class Secretary(db.Model):
+# class Assistant(db.Model):
+
