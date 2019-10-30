@@ -10,7 +10,7 @@ app.config['SQLALCHEMY_DATABASE_URI']='sqlite:///site.db'
 db = SQLAlchemy(app)
 bc=Bcrypt(app)
 login_manager=LoginManager(app)
-login_manager.login_view='users.home'
+login_manager.login_view='users.login'
 
 
 # register dashboard app
