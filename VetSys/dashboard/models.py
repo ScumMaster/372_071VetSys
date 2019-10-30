@@ -123,4 +123,19 @@ class Medicine(db.Model):
 # class Accomodation(db.Model):
 # class Treatment(db.Model):
 
+class Staff(db.Model):
+    # __tablename__ ?
+    staff_id = db.Column(db.String(60), nullable=False, unique=True)
+    name = db.Column(db.String(60), nullable=False)
+    sex = db.Column(db.String(6))
+    start_date = db.Column(db.DateTime, nullable=False)
+    salary = db.Column(db.Integer)
+    phone_number = db.Column(db.String(15))
+    # holday_permits ?
+    # working_hours ?
+
+
+# class Custadion(db.Model):
+# class Secretary(db.Model):
+# class Assistant(db.Model):
 
