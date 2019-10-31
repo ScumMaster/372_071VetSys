@@ -4,6 +4,8 @@
         <meta charset="utf-8">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/master.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/login_style.css') }}">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="{{ url_for('static',filename='js/login.js') }}"></script>
         <title>VetSys</title>
     </head>
     <body>
@@ -16,7 +18,9 @@
                 {{ form.staff_id }}<br><br>
                 {{ form.password.label }}<br>
                 {{ form.password }}<br><br>
-                
+                {% if context %}
+                    {{ context.err_msg }}
+                {% endif %}
                 {{ form.submit_button(class_="submit_button") }}
             </form>
         </div>

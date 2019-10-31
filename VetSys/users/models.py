@@ -21,3 +21,6 @@ class Staff(db.Model, UserMixin):
     total_hours = db.Column(db.Interval, nullable=False, default=datetime.timedelta(hours=180))
 
 
+
+
+
