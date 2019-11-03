@@ -2,30 +2,17 @@ from flask import Blueprint
 from flask import render_template, redirect, url_for, request
 from .models import Staff
 from flask_login import login_required, login_user, current_user, logout_user
-from .forms import LoginForm,RegistrationForm
+from .forms import LoginForm
 from VetSys import bc,db
+from flask_user import roles_required
 
 users = Blueprint('users', __name__)
 
 
-@users.route('/createstaff',method=['POST','GET'])
+@users.route('/createstaff',methods=['POST','GET'])
 def create_staff():
-    form=RegistrationForm()
-    if form.validate_on_submit():
-        new_staff=Staff(email=form.email.data,
-                        password=bc.generate_password_hash(form.password.data),
-                        salary=form.salary.data,
-                        phone_number=form.phone_number.data,
-                        name=form.name.data,
-                        address=form.address.data,
-                        start_at=form.start_at.data,
-                        finish_at=form.finish_at.data,
-        )
-        db.Session.add(new_staff)
-        db.Session.commit()
-        return redirect(url_for('dashboard.profile'))
+    pass
 
-    return render_template('create_staff.html',form=form)
 
 
 
@@ -56,5 +43,10 @@ def login():
 def logout():
     logout_user()
     return redirect(url_for('users.login'))
+
+@users.route('/admin')
+@roles_required('Admin')
+def admin():
+    return
 
 

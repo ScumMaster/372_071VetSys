@@ -8,12 +8,3 @@ class LoginForm(FlaskForm):
     password=PasswordField('Password',validators=[DataRequired()])
     submit_button=SubmitField('Login')
 
-class RegistrationForm(FlaskForm):
-    email= StringField('Email',validators=[Email,DataRequired])
-    password= PasswordField('Password',validators=[DataRequired])
-    salary=FloatField('Salary')
-    phone_number=IntegerField('Phone')
-    name=StringField('Name',validators=[DataRequired])
-    address=StringField('Address')
-    start_at=StringField('Starting at:',validators=[Length(min(3),max(5)),DataRequired])
-    finish_at=StringField('Finish at:',validators=[Length(min(3),max(5)),DataRequired])
