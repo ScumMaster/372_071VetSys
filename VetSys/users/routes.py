@@ -1,19 +1,12 @@
-from flask import Blueprint
+from flask import Blueprint,flash
 from flask import render_template, redirect, url_for, request
-from .models import Staff
+from .models import User
 from flask_login import login_required, login_user, current_user, logout_user
-from .forms import LoginForm,AdminLoginForm
+from .forms import LoginForm
 from VetSys import bc,db
 from flask_user import roles_required
 
 users = Blueprint('users', __name__)
-
-
-@users.route('/createstaff',methods=['POST','GET'])
-def create_staff():
-    pass
-
-
 
 
 @users.route('/', methods=['GET', 'POST'])
@@ -22,12 +15,11 @@ def login():
     if current_user.is_authenticated:
         redirect(url_for('dashboard.profile'))
     form = LoginForm()
-    print('hey')
     if form.validate_on_submit():
-        staff = Staff.query.filter_by(email=form.email.data).first()
-        if staff and bc.check_password_hash(staff.password, form.password.data):
-            login_user(staff)
-            if staff.is_admin:
+        user = User.query.filter_by(username=form.username.data).first()
+        if user and bc.check_password_hash(user.password, form.password.data):
+            login_user(user)
+            if user.is_admin:
                 return redirect('/admin')
             next_page = request.args.get('next')
             if next_page:
@@ -35,8 +27,8 @@ def login():
             else:
                 return redirect(url_for('dashboard.profile'))
         else:
-            err = {'err_msg': 'Email or password is incorrect.'}
-            return render_template('login.html', form=form, context=err)
+            flash('Incorrect email or password!')
+            return render_template('login.html', form=form)
 
 
     return render_template('login.html', form=form)
