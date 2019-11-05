@@ -10,13 +10,14 @@
     <div class="left_panel">
         <h1 class="logo">VetSys</h1>
         <div class="content">
-            <p><a href="#">Randevu Yaz</a></p>
-            <p><a href="#">Yeni Kayıt</a></p>
-            <p><a href="#">Kayıtları Görüntüle</a></p>
+            <p><a href="/add_appointment">Randevu Yaz</a></p>
+            <p><a href="/add_register">Yeni Kayıt</a></p>
+            <p><a href="/display_registers">Kayıtları Görüntüle</a></p>
         </div>
     </div>
     <div class="main_zone">
-
+        {% block page_content %}
+        {% endblock %}
     </div>
     </body>
 </html>
