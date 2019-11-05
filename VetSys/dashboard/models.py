@@ -126,10 +126,11 @@ class Treatment(db.Model):
     record_id = db.Column(db.Integer, primary_key=True)
     start_date = db.Column(db.DateTime)
     end_date = db.Column(db.DateTime)
+    #has relationship?
 
 
 class Staff(db.Model):
-    # __tablename__ ?
+    __tablename__  = 'staff'
     staff_id = db.Column(db.String(60), nullable=False, unique=True)
     name = db.Column(db.String(60), nullable=False)
     sex = db.Column(db.String(6))
@@ -142,5 +143,10 @@ class Staff(db.Model):
 
 # class Custadion(db.Model):
 # class Secretary(db.Model):
-# class Assistant(db.Model):
+class Assistant(db.Model):
+    staff_id = db.Column(db.Integer, db.ForeignKey('staff.staff_id'), primary_key=True)
+    field = db.Column(db.String(60), nullable=False)
+    end_date = db.Column(db.DateTime)
+
+
 
