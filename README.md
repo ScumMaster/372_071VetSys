@@ -38,3 +38,14 @@ Run it.
 ```
 
 If everything is ok, website should be appear on your http://localhost:5000/
+
+
+Dependencies:
+-flask
+-flask_admin
+-flask_login
+-flask_sqlalchemy
+-flask_bcrypt
+
+
+
