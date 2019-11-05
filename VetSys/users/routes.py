@@ -2,7 +2,7 @@ from flask import Blueprint,flash
 from flask import render_template, redirect, url_for, request
 from .models import User
 from flask_login import login_required, login_user, current_user, logout_user
-from .forms import LoginForm,AdminLoginForm
+from .forms import LoginForm
 from VetSys import bc,db
 from flask_user import roles_required
 
