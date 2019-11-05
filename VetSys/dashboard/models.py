@@ -121,7 +121,12 @@ class Medicine(db.Model):
 
 # class Service(db.Model):
 # class Accomodation(db.Model):
-# class Treatment(db.Model):
+class Treatment(db.Model):
+    _tablename_ = 'treatment'
+    record_id = db.Column(db.Integer, primary_key=True)
+    start_date = db.Column(db.DateTime)
+    end_date = db.Column(db.DateTime)
+
 
 class Staff(db.Model):
     # __tablename__ ?
