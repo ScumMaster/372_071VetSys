@@ -1,13 +1,15 @@
 from VetSys import db
 from datetime import datetime
+import enum
+
 
 
 class Owner(db.Model):
     __tablename__ = 'owner'
-    owner_id = db.Column(db.Integer, primary_key=True)
+    owner_id = db.Column(db.Integer, primary_key=True,autoincrement=True)
     name = db.Column(db.String(100), nullable=False)
-    sex = db.Column(db.String(6), nullable=False)
-    email = db.Column(db.String(60), nullable=False, unique=True)
+    sex = db.Column(db.String(5), nullable=False)
+    email = db.Column(db.String(60),)
     address = db.Column(db.String(60))
     phone = db.Column(db.Integer, nullable=False, unique=True)
     # Owner makes Appointment (Weak entity)
@@ -18,19 +20,26 @@ class Owner(db.Model):
     pets = db.relationship('Pet', backref='owner')
 
     def __repr__(self):
-        return "id:{} name:{} sex:{} email:{} phone:{}".format(self.id, self.name, self.sex, self.email, self.phone)
+        return "id:{} name:{} sex:{} email:{} phone:{}".format(self.owner_id, self.name, self.sex, self.email, self.phone)
 
-
+    @classmethod
+    def create_owner(cls,owner_name,owner_sex,owner_email,owner_address,owner_phone):
+        new_owner=cls(name=owner_name,sex=owner_sex,email=owner_email,address=owner_address,phone=owner_phone)
+        db.session.add(new_owner)
+        db.session.commit()
+        return new_owner
 ''' Weak Entity in relation with Owner'''
+
+
 
 
 class Appointment(db.Model):
     __tablename__ = 'appointment'
-    appo_id = db.Column(db.Integer, primary_key=False)
+    appo_id = db.Column(db.Integer, primary_key=True)
     on = db.Column(db.DateTime, nullable=False)
     appo_type = db.Column(db.String, nullable=False)
 
-    owner_id = db.Column(db.Integer, db.ForeignKey('owner.owner_id'), nullable=False, primary_key=True,
+    owner_id = db.Column(db.Integer, db.ForeignKey('owner.owner_id'), primary_key=True,
                          autoincrement=False)
 
 
@@ -83,39 +92,37 @@ class Pet(db.Model):
 
     owner_id = db.Column(db.Integer, db.ForeignKey('owner.owner_id'))
 
-    # multivalued notes
-    notes = db.relationship('PetNotes', backref='pet')
-
     # multivalued disabilities
-    disabilities = db.relationship('Disability', backref='pet')
+    disabilities = db.relationship('Disability')
 
 
 class PetNotes(db.Model):
     pet = db.Column(db.Integer, db.ForeignKey('pet.pet_id'), primary_key=True)
-    note = db.Column(db.String, primary_key=True)
+    note_desc = db.Column(db.String(260),nullable=False,primary_key=True)
 
 
 class Disability(db.Model):
     pet = db.Column(db.Integer, db.ForeignKey('pet.pet_id'), primary_key=True)
-    disab = db.Column(db.String, primary_key=True)
+    disab_desc=db.Column(db.String(260),nullable=False,primary_key=True)
 
-## cd ->
 
+#cd
 class Clinic(db.Model):
     __tablename__ = 'clinic'
+    clinic_id=db.Column(db.Integer,primary_key=True)
     contact_info = db.Column(db.String, nullable=False)
     location = db.Column(db.String, nullable=False)
 
     # clinic has medicines
-    medicines = db.relationship('medicine', backref='clinic')
+    medicines = db.relationship('Medicine', backref='clinics')
 
 class Medicine(db.Model):
     __tablename__ = 'medicine'
     name = db.Column(db.String(60), nullable=False)
     expiration_date = db.Column(db.DateTime, nullable=False)
     barcode_number = db.Column(db.String(60), nullable=False, unique=True)
-    serial_number = db.Column(db.String(60), nullable=False, unique=True)
-
+    serial_number = db.Column(db.String(60), nullable=False, unique=True,primary_key=True)
+    clinic_id= db.Column(db.Integer,db.ForeignKey('clinic.clinic_id'))
     # distributor = db.Column(db.String(60), )
     # distributor has name, phone_number and email
 
@@ -131,8 +138,6 @@ class Treatment(db.Model):
 
 
 
-# class Custadion(db.Model):
-# class Secretary(db.Model):
 
 
 
