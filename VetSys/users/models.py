@@ -83,6 +83,9 @@ class AdminView(AdminIndexView):
         return redirect(url_for('users.login'))
 
 
+<<<<<<< HEAD
+admin=Administrator(app,index_view=AdminView())
+=======
 class UserView(ModelView):
     column_display_pk = True
     column_searchable_list = ['username']
@@ -98,4 +101,8 @@ class StaffView(ModelView):
 
 admin = Administrator(app, index_view=AdminView())
 admin.add_view(UserView(User, db.session))
+<<<<<<< HEAD
 admin.add_view(StaffView(Staff, db.session))
+=======
+>>>>>>> 8b999cd298e4c3e6ace6f83706a0476cfa5cfea7
+>>>>>>> 4db61590cc9f4980e1ae2e4cce8bd7d0582b30e2

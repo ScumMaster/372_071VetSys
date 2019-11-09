@@ -8,11 +8,11 @@ from datetime import datetime
 dashboard = Blueprint('dashboard', __name__)
 
 
+@dashboard.route('/')
 @dashboard.route('/dashboard')
 @login_required
 def profile():
     return render_template('dashboard.html')
-
 
 
 @dashboard.route('/register_owner')
@@ -59,4 +59,14 @@ def create_appointment():
 
 
 
+
+# "yeni kayit" on the left panel
+@dashboard.route('/add_register', methods=['GET', 'POST'])
+def add_register():
+    return render_template('add_register.html')
+
+# "kayitlari goruntule" on the left panel
+@dashboard.route('/display_registers', methods=['GET', 'POST'])
+def display_registers():
+    return render_template('display_registers.html')
 
