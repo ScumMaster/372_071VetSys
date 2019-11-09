@@ -39,6 +39,7 @@ def create_appointment():
     form=AppointmentCreationForm()
     if request.method=='GET':
         return render_template('appointment.html', form=form)
+
     if request.method=='POST':
         print(type(form.on.data))
         owner=Owner.query.filter_by(name=form.owner_name.data).first()
