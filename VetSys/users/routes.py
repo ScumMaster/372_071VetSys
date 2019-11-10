@@ -1,9 +1,9 @@
-from flask import Blueprint,flash
+from flask import Blueprint, flash
 from flask import render_template, redirect, url_for, request
 from .models import User
 from flask_login import login_required, login_user, current_user, logout_user
 from .forms import LoginForm
-from VetSys import bc,db
+from VetSys import bc, db
 from flask_user import roles_required
 
 users = Blueprint('users', __name__)
@@ -30,16 +30,11 @@ def login():
             flash('Incorrect email or password!')
             return render_template('login.html', form=form)
 
-
     return render_template('login.html', form=form)
+
 
 @users.route('/logout')
 @login_required
 def logout():
     logout_user()
     return redirect(url_for('users.login'))
-
-
-
-
-

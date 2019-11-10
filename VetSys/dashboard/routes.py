@@ -1,7 +1,7 @@
-from flask import Blueprint, render_template,flash,request
+from flask import Blueprint, render_template, flash, request
 from flask_login import login_required, current_user
-from .forms import OwnerCreationForm,AppointmentCreationForm
-from .models import Owner,Appointment
+from .forms import OwnerCreationForm, AppointmentCreationForm
+from .models import Owner, Appointment
 from VetSys import db
 from datetime import datetime
 
@@ -33,31 +33,29 @@ def create_owner():
         return None
     return None
 
-@dashboard.route('/make_appointment',methods=['GET','POST'])
+
+@dashboard.route('/make_appointment', methods=['GET', 'POST'])
 @login_required
 def create_appointment():
-    form=AppointmentCreationForm()
-    if request.method=='GET':
+    form = AppointmentCreationForm()
+    if request.method == 'GET':
         return render_template('appointment.html', form=form)
 
-    if request.method=='POST':
+    if request.method == 'POST':
         print(type(form.on.data))
-        owner=Owner.query.filter_by(name=form.owner_name.data).first()
-        new_appointment=Appointment(
+        owner = Owner.query.filter_by(name=form.owner_name.data).first()
+        new_appointment = Appointment(
             appo_id=Appointment.query.filter_by().count()+1,
             on=form.on.data,
             appo_type=form.appointment_type.data
         )
 
         owner.appointments.append(new_appointment)
-        db.session.add_all([owner,new_appointment])
+        db.session.add_all([owner, new_appointment])
         db.session.commit()
         flash('Appointment created succesffully')
 
     return render_template('appointment.html', form=form)
-
-
-
 
 
 # "yeni kayit" on the left panel
@@ -69,4 +67,3 @@ def add_register():
 @dashboard.route('/display_registers', methods=['GET', 'POST'])
 def display_registers():
     return render_template('display_registers.html')
-

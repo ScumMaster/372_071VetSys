@@ -26,7 +26,8 @@ class User(db.Model, UserMixin):
     @classmethod
     def create_user(cls, username: str, password: str, is_admin: bool):
         hashed_pass = bc.generate_password_hash(password).decode('utf-8')
-        new_user = cls(username=username, password=hashed_pass, is_admin=is_admin)
+        new_user = cls(username=username,
+                       password=hashed_pass, is_admin=is_admin)
         try:
             db.session.add(new_user)
             db.session.commit()
@@ -36,18 +37,22 @@ class User(db.Model, UserMixin):
 
 
 class Assistant(db.Model):
-    staff_id = db.Column(db.Integer, db.ForeignKey('staff.staff_id'), primary_key=True)
+    staff_id = db.Column(db.Integer, db.ForeignKey(
+        'staff.staff_id'), primary_key=True)
     field = db.Column(db.String(60), nullable=False)
     end_date = db.Column(db.DateTime)
     user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'))
-    supervisor_id = db.Column(db.Integer, db.ForeignKey('vet.staff_id'), nullable=False)
+    supervisor_id = db.Column(
+        db.Integer, db.ForeignKey('vet.staff_id'), nullable=False)
 
 
 class Vet(db.Model):
     __name__ = 'vet'
-    staff_id = db.Column(db.Integer, db.ForeignKey('staff.staff_id'), primary_key=True)
+    staff_id = db.Column(db.Integer, db.ForeignKey(
+        'staff.staff_id'), primary_key=True)
     field = db.Column(db.String, default='Genel uzman', nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey(
+        'user.user_id'), nullable=False)
 
     # Vet supervises assistant
     supervisee = db.relationship('Assistant', backref='supervisor')
@@ -68,6 +73,7 @@ class Staff(db.Model):
     # finish_at = db.Column(db.DateTime)
     # total_hours = db.Column(db.Interval, nullable=False, default=datetime.timedelta(hours=180))
     profile = db.relationship('User', backref='staff')
+
     def __repr__(self):
         return 'email: {} admin: {}'.format(self.email, self.is_admin)
 
@@ -83,9 +89,6 @@ class AdminView(AdminIndexView):
         return redirect(url_for('users.login'))
 
 
-<<<<<<< HEAD
-admin=Administrator(app,index_view=AdminView())
-=======
 class UserView(ModelView):
     column_display_pk = True
     column_searchable_list = ['username']
@@ -101,8 +104,3 @@ class StaffView(ModelView):
 
 admin = Administrator(app, index_view=AdminView())
 admin.add_view(UserView(User, db.session))
-<<<<<<< HEAD
-admin.add_view(StaffView(Staff, db.session))
-=======
->>>>>>> 8b999cd298e4c3e6ace6f83706a0476cfa5cfea7
->>>>>>> 4db61590cc9f4980e1ae2e4cce8bd7d0582b30e2
