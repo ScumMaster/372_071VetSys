@@ -18,8 +18,6 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String, nullable=False)
     password = db.Column(db.String, nullable=False)
     is_admin = db.Column(db.Boolean, default=False, nullable=False)
-    staff_id = db.Column(db.Integer, db.ForeignKey(
-        'staff.staff_id'), primary_key=True)
     def get_id(self):
         return self.user_id
 
@@ -76,7 +74,6 @@ class Staff(db.Model):
     # start_at = db.Column(db.DateTime)
     # finish_at = db.Column(db.DateTime)
     # total_hours = db.Column(db.Interval, nullable=False, default=datetime.timedelta(hours=180))
-    profile = db.relationship('User', backref='staff')
 
     def __repr__(self):
         return 'email: {} admin: {}'.format(self.email, self.is_admin)

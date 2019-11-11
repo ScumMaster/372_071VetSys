@@ -17,7 +17,7 @@ class AppointmentCreationForm(FlaskForm):
     on = DateField('Date:')
     hour = TimeField('Time:')
     appointment_type = RadioField(
-        'Type:', choices=[('r1', 'Tek seferlik'), ('r2', 'Periyodik')])
+        'Type:', choices=[('r1', 'For once'), ('r2', 'Periodic')])
     period = StringField('Period:')
     owner_name = StringField('Name')
     submit_button = SubmitField('Create')
