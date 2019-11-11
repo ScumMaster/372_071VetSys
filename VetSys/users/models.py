@@ -18,10 +18,13 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String, nullable=False)
     password = db.Column(db.String, nullable=False)
     is_admin = db.Column(db.Boolean, default=False, nullable=False)
-    staff_id = db.Column(db.Integer, db.ForeignKey('staff.staff_id'))
-
+    staff_id = db.Column(db.Integer, db.ForeignKey(
+        'staff.staff_id'), primary_key=True)
     def get_id(self):
         return self.user_id
+
+    def generate_url(self):
+        return "/dashboard/{}".format(self.user_name)
 
     @classmethod
     def create_user(cls, username: str, password: str, is_admin: bool):
@@ -34,6 +37,7 @@ class User(db.Model, UserMixin):
         except:
             return Exception('Kullanıcı oluşturulurken hata meydana geldi')
         return new_user
+
 
 
 class Assistant(db.Model):

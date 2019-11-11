@@ -15,6 +15,7 @@ migrate = Migrate(app, db)
 login_manager = LoginManager(app)
 login_manager.login_view = 'users.login'
 
+
 # register dashboard app
 from VetSys.users.routes import users
 app.register_blueprint(users)

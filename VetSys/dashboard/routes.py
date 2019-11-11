@@ -30,7 +30,7 @@ def create_owner():
         db.session.add(new_owner)
         db.session.commit()
         flash('Entry has been created successfully!')
-        return None
+        return 'selam'
     return None
 
 
@@ -42,11 +42,10 @@ def create_appointment():
         return render_template('appointment.html', form=form)
 
     if request.method == 'POST':
-        print(type(form.on.data))
         owner = Owner.query.filter_by(name=form.owner_name.data).first()
         new_appointment = Appointment(
             appo_id=Appointment.query.filter_by().count()+1,
-            on=form.on.data,
+            on=datetime.combine(form.on.data,form.hour.data),
             appo_type=form.appointment_type.data
         )
 

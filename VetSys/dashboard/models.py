@@ -1,6 +1,5 @@
 from VetSys import db
 from datetime import datetime
-import enum
 
 
 class Owner(db.Model):
@@ -50,7 +49,6 @@ class Invoices(db.Model):
     quantity = db.Column(db.Integer, nullable=False)
     transaction_date = db.Column(db.DateTime, nullable=False)
     cost = db.Column(db.Float, nullable=False)
-    service_name = db.Column(db.String, db.ForeignKey('service.name'))
     service_quantity = db.Column(db.Integer, nullable=False)
     owner_id = db.Column(db.Integer, db.ForeignKey('owner.owner_id'))
     # Invoice has service
@@ -58,7 +56,7 @@ class Invoices(db.Model):
 
 class Service(db.Model):
     __tablename__ = 'service'
-    name = db.Column(db.String, primary_key=True, nullable=False)
+    name = db.Column(db.String, primary_key=True, nullable=False,autoincrement=False)
     cost = db.Column(db.Float, nullable=False)
     serial_number = db.Column(db.Integer, db.ForeignKey('invoices.serial_number'))
 
@@ -129,12 +127,13 @@ class Clinic(db.Model):
 
 class Medicine(db.Model):
     __tablename__ = 'medicine'
-    serial_number = db.Column(db.String(60), nullable=False, unique=True, primary_key=True)
+    serial_number = db.Column(db.String(60), primary_key=True)
     name = db.Column(db.String(60), nullable=False)
     barcode_number = db.Column(db.String(60), nullable=False)
     expiration_date = db.Column(db.DateTime, nullable=False)
     distributor_name = db.Column(db.String(60), nullable=False)
     distributor_phone = db.Column(db.String(20), nullable=False)
+    at_clinic=db.Column(db.Integer,db.ForeignKey('clinic.clinic_id'))
 
 
 
