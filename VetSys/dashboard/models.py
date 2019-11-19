@@ -1,3 +1,5 @@
+from sqlalchemy import Table
+
 from VetSys import db
 from datetime import datetime
 
@@ -52,13 +54,20 @@ class Invoices(db.Model):
     service_quantity = db.Column(db.Integer, nullable=False)
     owner_id = db.Column(db.Integer, db.ForeignKey('owner.owner_id'))
     # Invoice has service
-    services = db.relationship('Service', backref='service')
+    services = db.relationship('Service', secondary='association_table', backref='invoices')
+
+associatoin_table = Table('association', db.Model.metadata,
+                          db.Column('invoices_serialnumber', db.Integer, db.ForeignKey('invoices.serial_number')),
+                          db.Column('service_name', db.Integer, db.ForeignKey('service.name'))
+                          )
+
 
 class Service(db.Model):
     __tablename__ = 'service'
     name = db.Column(db.String, primary_key=True, nullable=False,autoincrement=False)
     cost = db.Column(db.Float, nullable=False)
     serial_number = db.Column(db.Integer, db.ForeignKey('invoices.serial_number'))
+    invoices = db.relationship('Invoices', secondary='association_table',)
 
 class Cages(db.Model):
     __tablename__ = 'cages'
@@ -122,7 +131,8 @@ class Clinic(db.Model):
     location = db.Column(db.String, nullable=False)
 
     # clinic has medicines
-    medicines = db.relationship('Medicine', backref='clinics')
+    # removed medicines from clinic
+    # medicines = db.relationship('Medicine', backref='clinics')
 
 
 class Medicine(db.Model):

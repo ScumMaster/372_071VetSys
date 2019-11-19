@@ -70,7 +70,6 @@ class Secretary(db.Model):
     __tablename__ = 'secretary'
     staff_id = db.Column(db.Integer, db.ForeignKey(
         'staff.staff_id'), primary_key=True)
-    # languages = db.Column(db.ARRAY(String), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), nullable=False)
     languages = db.relationship('Languages', backref='languages')
 
