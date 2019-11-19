@@ -10,7 +10,7 @@ class Owner(db.Model):
     last_name = db.Column(db.String(100), nullable=False)
     sex = db.Column(db.String(5), nullable=False)
     phone = db.Column(db.Integer, nullable=False, unique=True)
-    email = db.Column(db.String(60), )
+    email = db.Column(db.String(60))
     address = db.Column(db.String(60))
     # Owner makes Appointment (Weak entity)
     appointments = db.relationship('Appointment', backref='customer')
