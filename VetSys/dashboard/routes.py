@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, flash, request
 from flask_login import login_required, current_user
-from .forms import OwnerCreationForm, AppointmentCreationForm
+from .forms import OwnerCreationForm, AppointmentCreationForm, PetCreationForm
 from .models import Owner, Appointment
 from VetSys import db
 from datetime import datetime
@@ -55,6 +55,11 @@ def create_appointment():
         flash('Appointment created succesffully')
 
     return render_template('appointment.html', form=form)
+
+
+def create_pet():
+    pet_creation_form = PetCreationForm()
+    
 
 
 # "yeni kayit" on the left panel
