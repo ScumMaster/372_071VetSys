@@ -65,7 +65,7 @@ def create_pet():
 
     if request.method == 'POST':
         new_pet = Pet(
-            pet_name=pet_creation_form.pet_name.data,
+            name=pet_creation_form.pet_name.data,
             age=pet_creation_form.age.data,
             weight=pet_creation_form.weight.data,
             race=pet_creation_form.race.data,
