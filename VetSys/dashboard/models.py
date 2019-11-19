@@ -67,7 +67,7 @@ class Cages(db.Model):
     capacity = db.Column(db.Integer, nullable=False)
     emptiness = db.Column(db.Boolean, nullable=False, default=True)
 
-    # multivalu ed suitability attribute
+    # multivalued suitability attribute
     suitabilities = db.relationship('Suitability', backref='cage')
     # multivalued notes attribute
     notes = db.relationship('CageNotes', backref='cage')
