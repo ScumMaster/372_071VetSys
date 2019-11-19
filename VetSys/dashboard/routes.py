@@ -83,7 +83,7 @@ def create_pet():
 @login_required
 def list_pets():
     pets = Pet.query.all()
-    return render_template('list_pet', pets)
+    return render_template('list_pet', pets=pets)
 
 # "yeni kayit" on the left panel
 @dashboard.route('/add_register', methods=['GET', 'POST'])
