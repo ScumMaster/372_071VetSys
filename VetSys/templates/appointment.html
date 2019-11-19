@@ -1,21 +1,32 @@
 {% extends 'layout.html' %}
 {% block page_content %}
-           <form method="POST">
+           <form method="POST" class= appointment_zone>
                 {{ form.hidden_tag() }}
 
-                {{ form.on.label }}
-                {{ form.on}}
-                {{ form.hour.label }}
-                {{ form.hour }}<br><br>
-                {{ form.owner_name.label }}
-                {{ form.owner_name}}<br><br>
+                <div class="form">
+                    {{ form.on.label }}<br>
+                    {{ form.on(class_="form_textbox") }}
+                </div>
+                <div class="form">
+                    {{ form.hour.label }}<br>
+                    {{ form.hour(class_="form_textbox") }}
+                    <p style="color: grey; font-size: 0.8em;">
+                        example: 10:00 AM
+                    </p>
+                </div>
+                <div class="form">
+                    {{ form.owner_name.label }}<br>
+                    {{ form.owner_name(class_="form_textbox") }}
+                </div><br>
                 {% for subfield in form.appointment_type%}
                     {{ subfield.label }}
-                    {{ subfield }}
+                    {{ subfield }} &emsp;
                 {% endfor %}
-                <br/><br/>
-                {{ form.period.label }}
-                {{ form.period }}<br><br>
+                <div class="form">
+                    {{ form.period.label }}<br>
+                    {{ form.period(class_="form_textbox") }}
+                </div>
+                <br><br>
                 {{ form.submit_button(class_="submit_button") }}
                 <br/>
                {%  with messages=get_flashed_messages() %}

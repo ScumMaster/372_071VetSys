@@ -1,3 +1,4 @@
+from sqlalchemy import Table
 from VetSys import db
 from datetime import datetime
 
@@ -9,7 +10,7 @@ class Owner(db.Model):
     last_name = db.Column(db.String(100), nullable=False)
     sex = db.Column(db.String(5), nullable=False)
     phone = db.Column(db.Integer, nullable=False, unique=True)
-    email = db.Column(db.String(60),)
+    email = db.Column(db.String(60))
     address = db.Column(db.String(60))
     # Owner makes Appointment (Weak entity)
     appointments = db.relationship('Appointment', backref='customer')
@@ -19,7 +20,8 @@ class Owner(db.Model):
     pets = db.relationship('Pet', backref='owner')
 
     def __repr__(self):
-        return "id:{} name:{} sex:{} email:{} phone:{}".format(self.owner_id, self.name, self.sex, self.email, self.phone)
+        return "id:{} name:{} sex:{} email:{} phone:{}".format(self.owner_id, self.name, self.sex, self.email,
+                                                               self.phone)
 
     @classmethod
     def create_owner(cls, owner_name, owner_sex, owner_email, owner_address, owner_phone):
@@ -52,13 +54,24 @@ class Invoices(db.Model):
     service_quantity = db.Column(db.Integer, nullable=False)
     owner_id = db.Column(db.Integer, db.ForeignKey('owner.owner_id'))
     # Invoice has service
-    services = db.relationship('Service', backref='service')
+    services = db.relationship('Service', secondary='invoices_service_link')
+
 
 class Service(db.Model):
     __tablename__ = 'service'
-    name = db.Column(db.String, primary_key=True, nullable=False,autoincrement=False)
+    name = db.Column(db.String, primary_key=True, nullable=False, autoincrement=False)
     cost = db.Column(db.Float, nullable=False)
     serial_number = db.Column(db.Integer, db.ForeignKey('invoices.serial_number'))
+    invoices = db.relationship('Invoices', secondary='invoices_service_link')
+
+
+class InvoicesServiceLink(db.Model):
+    __tablename__ = 'invoices_service_link'
+    invoices_serial_number = db.Column(db.Integer, db.ForeignKey('invoices.serial_number'), primary_key=True)
+    service_name = db.Column(db.Integer, db.ForeignKey('service.name'), primary_key=True)
+    invoices = db.relationship(Invoices, backref=db.backref('invoices_assoc'))
+    service = db.relationship(Service, backref=db.backref('service_assoc'))
+
 
 class Cages(db.Model):
     __tablename__ = 'cages'
@@ -67,7 +80,7 @@ class Cages(db.Model):
     capacity = db.Column(db.Integer, nullable=False)
     emptiness = db.Column(db.Boolean, nullable=False, default=True)
 
-    # multivalu ed suitability attribute
+    # multivalued suitability attribute
     suitabilities = db.relationship('Suitability', backref='cage')
     # multivalued notes attribute
     notes = db.relationship('CageNotes', backref='cage')
@@ -93,7 +106,7 @@ class Pet(db.Model):
     checkin_date = db.Column(db.DateTime, default=datetime.utcnow)
     checkout_date = db.Column(db.DateTime)
 
-    specy = db.Column(db.String(60))
+    species = db.Column(db.String(60))
     race = db.Column(db.String(60))
     weight = db.Column(db.Float, nullable=False)
     age = db.Column(db.Integer, nullable=False)
@@ -122,7 +135,8 @@ class Clinic(db.Model):
     location = db.Column(db.String, nullable=False)
 
     # clinic has medicines
-    medicines = db.relationship('Medicine', backref='clinics')
+    # removed medicines from clinic
+    # medicines = db.relationship('Medicine', backref='clinics')
 
 
 class Medicine(db.Model):
@@ -133,13 +147,15 @@ class Medicine(db.Model):
     expiration_date = db.Column(db.DateTime, nullable=False)
     distributor_name = db.Column(db.String(60), nullable=False)
     distributor_phone = db.Column(db.String(20), nullable=False)
-    at_clinic=db.Column(db.Integer,db.ForeignKey('clinic.clinic_id'))
-
+    record_id = db.Column(db.Integer, db.ForeignKey('treatment.record_id'))
 
 
 class Treatment(db.Model):
     _tablename_ = 'treatment'
     record_id = db.Column(db.Integer, primary_key=True)
+    record_type = db.Column(db.String(250))
     start_date = db.Column(db.DateTime)
     end_date = db.Column(db.DateTime)
+    pet_id = db.Column(db.Integer, db.ForeignKey('pet.pet_id'))
+    medicines = db.relationship('Medicine', backref='medicines')
     # has relationship?

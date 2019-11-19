@@ -11,6 +11,11 @@
   padding-top: 20px;
 }
 
+.logo {
+    text-align: center;
+    border-bottom: 4px solid #3a3a3a;
+}
+
 .content {
     padding: 10px;
     text-align: right;
@@ -20,10 +25,36 @@
 .left_panel a,
 .left_panel a:visited {
   text-decoration: none;
-  font-size: 1.2em;
-  color: #999;
+  color: #ccc;
 }
 
 .left_panel a:hover {
   color: #f1f1f1;
+}
+
+.profile_picture {
+    border-radius: 50%;
+    margin: 20px auto;
+    display: block;
+    height: 128px;
+    width: 128px;
+}
+
+.vet_name {
+    text-align: center;
+    color: white;
+}
+
+.dropdown_text {
+    color: #ccc;
+    font-size: 1.3em;
+}
+.dropdown_text:hover { text-decoration: underline; }
+.dropdown_box {
+    display: none;
+}
+#pets_dropclose, #app_dropclose { display: none; }
+
+.left_panel_link {
+    font-size: 1.3em;
 }

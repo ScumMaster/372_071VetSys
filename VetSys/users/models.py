@@ -1,3 +1,4 @@
+from sqlalchemy import String
 from VetSys import db, login_manager, app, bc
 from flask import url_for, redirect, flash
 from flask_login import UserMixin, current_user
@@ -37,6 +38,7 @@ class User(db.Model, UserMixin):
     def create_user(cls, username, password):
         hashed_pw = bc.generate_password_hash(password).decode('utf-8')
         new_user = cls(username=username, password=hashed_pw);
+
         try:
             db.session.add(new_user)
             db.session.commit()
@@ -106,8 +108,24 @@ class Vet(User):
                                          'supervisees': self.supervisee})
 
 
-# class Custadion(db.Model):
-# class Secretary(db.Model):
+class Cleaner(db.Model):
+    __tablename__ = 'cleaner'
+    staff_id = db.Column(db.Integer, db.ForeignKey(
+        'staff.staff_id'), primary_key=True)
+    cleaning_company = db.Column(db.String, default='Caglayan pislik temizleyiciler', nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), nullable=False)
+
+class Secretary(db.Model):
+    __tablename__ = 'secretary'
+    staff_id = db.Column(db.Integer, db.ForeignKey(
+        'staff.staff_id'), primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), nullable=False)
+    languages = db.relationship('Languages', backref='languages')
+
+class Languages(db.Model):
+    staff_id = db.Column(db.Integer, db.ForeignKey(
+        'secretary.staff_id'), primary_key=True)
+    language = db.Column(db.String, primary_key=True)
 
 '''
 class Staff(db.Model):
@@ -134,7 +152,7 @@ class AdminView(AdminIndexView):
 
     def inaccessible_callback(self, name, **kwargs):
         flash('You are not allowed to enter admin section', 'error')
-        return redirect(url_for('users.login'))
+        return redirect(url_for('dashboard.profile'))
 
 
 class UserView(ModelView):

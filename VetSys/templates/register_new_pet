@@ -1,0 +1,37 @@
+{% extends 'layout.html' %}
+{% block page_content %}
+    <div class="new_pet_wrapper">
+        <form method="POST" class="appointment_zone">
+             {{ pet_creation_form.hidden_tag() }}
+
+             <div class="form">
+                 {{ pet_creation_form.pet_name.label }}<br>
+                 {{ pet_creation_form.pet_name(class_="form_textbox") }}
+             </div>
+             <div class="form">
+                 {{ pet_creation_form.species.label }}<br>
+                 {{ pet_creation_form.species(class_="form_textbox") }}
+             </div>
+             <div class="form">
+                 {{ pet_creation_form.race.label }}<br>
+                 {{ pet_creation_form.race(class_="form_textbox") }}
+             </div>
+             <div class="form">
+                 {{ pet_creation_form.age.label }}<br>
+                 {{ pet_creation_form.age(class_="form_textbox") }}
+             </div>
+             <div class="form">
+                 {{ pet_creation_form.weight.label }}<br>
+                 {{ pet_creation_form.weight(class_="form_textbox") }}
+             </div>
+             <div class="form">
+                 {{ pet_creation_form.disabilities.label }}<br>
+                 {{ pet_creation_form.disabilities(class_="form_textbox") }}
+             </div>
+             <br><br>
+
+         {% include 'treatment_records.html' %}
+    </div>
+
+
+{% endblock %}

@@ -17,7 +17,21 @@ class AppointmentCreationForm(FlaskForm):
     on = DateField('Date:')
     hour = TimeField('Time:')
     appointment_type = RadioField(
-        'Type:', choices=[('r1', 'Tek seferlik'), ('r2', 'Periyodik')])
+        'Type:', choices=[('r1', 'For once'), ('r2', 'Periodic')])
     period = StringField('Period:')
     owner_name = StringField('Name')
     submit_button = SubmitField('Create')
+
+class PetCreationForm(FlaskForm):
+    pet_name = StringField('Name:')
+    age = IntegerField('Age:')
+    weight = IntegerField('Weight:')
+    race = StringField('Race: ')
+    species = StringField('Species:')
+    disabilities = StringField('Disabilities:')
+    owner_name = StringField('Name:', validators=[DataRequired()])
+
+class TreatmentCreationForm(FlaskForm):
+    treatment_type = StringField('Treatment:')
+    start_date = DateField('Start Date:')
+    end_date = DateField('End Date: ')

@@ -36,8 +36,33 @@ button,
   color: ghostwhite;
   padding: 10px;
   margin: 5px;
+  min-width: 90px;
 }
 
 button:hover {
   background: #00bb88;
+}
+
+.form {
+    padding: 1em 0;
+}
+
+.form_textbox {
+    padding: 7px;
+    font-family: ttf_source_sans;
+    min-width: 250px;
+}
+
+
+form.appointment_zone {
+    max-width: 500px;
+    text-align: center;
+    padding: 2em;
+    background: #e6e6e6;
+    margin-right: 30px;
+}
+
+.new_pet_wrapper {
+    display: flex;
+    justify-content: flex-start;
 }
