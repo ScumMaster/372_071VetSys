@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, flash, request
 from flask_login import login_required, current_user
 from .forms import OwnerCreationForm, AppointmentCreationForm, PetCreationForm
-from .models import Owner, Appointment
+from .models import Owner, Appointment, Pet
 from VetSys import db
 from datetime import datetime
 
@@ -56,10 +56,30 @@ def create_appointment():
 
     return render_template('appointment.html', form=form)
 
-
+@dashboard.route('/register_new_pet', methods=['GET', 'POST'])
+@login_required
 def create_pet():
     pet_creation_form = PetCreationForm()
-    
+    if request.method == 'GET':
+        return render_template('register_new_pet', pet_creation_form = pet_creation_form)
+
+    if request.method == 'POST':
+        new_pet = Pet(
+            age=pet_creation_form.age.data,
+            weight=pet_creation_form.weight.data,
+            race=pet_creation_form.race.data,
+            species=pet_creation_form.species.data,
+            disabilities=pet_creation_form.disabilities.data,
+        )
+        
+        db.session.add(new_pet)
+        db.session.commit()
+        flash('Pet entry has been created successfully!')
+
+    return render_template('register_new_pet', pet_creation_form = pet_creation_form)
+
+
+
 
 
 # "yeni kayit" on the left panel
