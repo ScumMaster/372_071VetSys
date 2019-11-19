@@ -78,7 +78,8 @@ def create_pet():
         flash('Pet entry has been created successfully!')
 
     return render_template('register_new_pet', pet_creation_form = pet_creation_form)
-@dashboard.route('/list_pets')
+
+@dashboard.route('/list_pet')
 @login_required
 def list_pets():
     return render_template('list_pet', Pet.query.all)
