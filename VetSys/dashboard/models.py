@@ -10,7 +10,7 @@ class Owner(db.Model):
     last_name = db.Column(db.String(100), nullable=False)
     sex = db.Column(db.String(5), nullable=False)
     phone = db.Column(db.Integer, nullable=False, unique=True)
-    email = db.Column(db.String(60),)
+    email = db.Column(db.String(60), )
     address = db.Column(db.String(60))
     # Owner makes Appointment (Weak entity)
     appointments = db.relationship('Appointment', backref='customer')
@@ -20,7 +20,8 @@ class Owner(db.Model):
     pets = db.relationship('Pet', backref='owner')
 
     def __repr__(self):
-        return "id:{} name:{} sex:{} email:{} phone:{}".format(self.owner_id, self.name, self.sex, self.email, self.phone)
+        return "id:{} name:{} sex:{} email:{} phone:{}".format(self.owner_id, self.name, self.sex, self.email,
+                                                               self.phone)
 
     @classmethod
     def create_owner(cls, owner_name, owner_sex, owner_email, owner_address, owner_phone):
@@ -58,10 +59,11 @@ class Invoices(db.Model):
 
 class Service(db.Model):
     __tablename__ = 'service'
-    name = db.Column(db.String, primary_key=True, nullable=False,autoincrement=False)
+    name = db.Column(db.String, primary_key=True, nullable=False, autoincrement=False)
     cost = db.Column(db.Float, nullable=False)
     serial_number = db.Column(db.Integer, db.ForeignKey('invoices.serial_number'))
     invoices = db.relationship('Invoices', secondary='invoices_service_link')
+
 
 class InvoicesServiceLink(db.Model):
     __tablename__ = 'invoices_service_link'
@@ -69,6 +71,7 @@ class InvoicesServiceLink(db.Model):
     service_name = db.Column(db.Integer, db.ForeignKey('service.name'), primary_key=True)
     invoices = db.relationship(Invoices, backref=db.backref('invoices_assoc'))
     service = db.relationship(Service, backref=db.backref('service_assoc'))
+
 
 class Cages(db.Model):
     __tablename__ = 'cages'
@@ -144,7 +147,7 @@ class Medicine(db.Model):
     expiration_date = db.Column(db.DateTime, nullable=False)
     distributor_name = db.Column(db.String(60), nullable=False)
     distributor_phone = db.Column(db.String(20), nullable=False)
-    at_clinic=db.Column(db.Integer,db.ForeignKey('clinic.clinic_id'))
+    record_id = db.Column(db.Integer, db.ForeignKey('treatment.record_id'))
 
 
 class Treatment(db.Model):
@@ -154,4 +157,5 @@ class Treatment(db.Model):
     start_date = db.Column(db.DateTime)
     end_date = db.Column(db.DateTime)
     pet_id = db.Column(db.Integer, db.ForeignKey('pet.pet_id'))
+    medicines = db.relationship('Medicine')
     # has relationship?
