@@ -157,5 +157,5 @@ class Treatment(db.Model):
     start_date = db.Column(db.DateTime)
     end_date = db.Column(db.DateTime)
     pet_id = db.Column(db.Integer, db.ForeignKey('pet.pet_id'))
-    medicines = db.relationship('Medicine')
+    medicines = db.relationship('Medicine', backref='medicine')
     # has relationship?
