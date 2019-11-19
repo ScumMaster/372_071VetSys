@@ -30,3 +30,8 @@ class PetCreationForm(FlaskForm):
     species = StringField('Species:')
     disabilities = StringField('Disabilities:')
     owner_name = StringField('Name:', validators=[DataRequired()])
+
+class TreatmentCreationForm(FlaskForm):
+    treatment_type = StringField('Treatment:')
+    start_date = DateField('Start Date:')
+    end_date = DateField('End Date: ')
