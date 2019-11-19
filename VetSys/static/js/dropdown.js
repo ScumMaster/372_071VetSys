@@ -1,5 +1,3 @@
-document.getElementById('pets_dropdown').onclick() = function() { petsDropdown() };
-document.getElementById('pets_dropclose').onclick() = function() { petsDropclose() };
 
 function petsDropdown() {
     document.getElementById('pets_dropdown').style.display = "none";
