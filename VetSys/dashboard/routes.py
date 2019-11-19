@@ -65,22 +65,19 @@ def create_pet():
 
     if request.method == 'POST':
         new_pet = Pet(
+            pet_name=pet_creation_form.form.pet_name.data,
             age=pet_creation_form.age.data,
             weight=pet_creation_form.weight.data,
             race=pet_creation_form.race.data,
             species=pet_creation_form.species.data,
             disabilities=pet_creation_form.disabilities.data,
         )
-        
+
         db.session.add(new_pet)
         db.session.commit()
         flash('Pet entry has been created successfully!')
 
     return render_template('register_new_pet', pet_creation_form = pet_creation_form)
-
-
-
-
 
 # "yeni kayit" on the left panel
 @dashboard.route('/add_register', methods=['GET', 'POST'])

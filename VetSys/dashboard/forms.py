@@ -23,6 +23,7 @@ class AppointmentCreationForm(FlaskForm):
     submit_button = SubmitField('Create')
 
 class PetCreationForm(FlaskForm):
+    pet_name = StringField('Name:')
     age = IntegerField('Age:')
     weight = IntegerField('Weight:')
     race = StringField('Race: ')
