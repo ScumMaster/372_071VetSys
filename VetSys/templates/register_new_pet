@@ -1,6 +1,7 @@
 {% extends 'layout.html' %}
 {% block page_content %}
     <div class="new_pet_wrapper">
+        <div>
         <form method="POST" class="appointment_zone">
              {{ pet_creation_form.hidden_tag() }}
 
@@ -29,6 +30,8 @@
                  {{ pet_creation_form.disabilities(class_="form_textbox") }}
              </div>
              <br><br>
+         </form>
+     </div>
 
          {% include 'treatment_records.html' %}
     </div>

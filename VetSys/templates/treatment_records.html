@@ -1,25 +1,27 @@
-<form method="POST" class="appointment_zone">
-     {{ treatment_creation_form.hidden_tag() }}
+<div>
+    <form method="POST" class="appointment_zone">
+         {{ treatment_creation_form.hidden_tag() }}
 
-     <div class="form">
-         {{ treatment_creation_form.treatment_type.label }}<br>
-         {{ treatment_creation_form.treatment_type(class_="form_textbox") }}
-     </div>
-     <div class="form">
-         {{ treatment_creation_form.start_date.label }}<br>
-         {{ treatment_creation_form.start_date(class_="form_textbox") }}
-     </div>
-     <div class="form">
-         {{ treatment_creation_form.end_date.label }}<br>
-         {{ treatment_creation_form.end_date(class_="form_textbox") }}
-     </div>
+         <div class="form">
+             {{ treatment_creation_form.treatment_type.label }}<br>
+             {{ treatment_creation_form.treatment_type(class_="form_textbox") }}
+         </div>
+         <div class="form">
+             {{ treatment_creation_form.start_date.label }}<br>
+             {{ treatment_creation_form.start_date(class_="form_textbox") }}
+         </div>
+         <div class="form">
+             {{ treatment_creation_form.end_date.label }}<br>
+             {{ treatment_creation_form.end_date(class_="form_textbox") }}
+         </div>
 
 
-    {%  with messages=get_flashed_messages() %}
-             {% if messages %}
-                 {% for message in messages %}
-                     {{ message }}
-                 {% endfor %}
-             {% endif %}
-    {% endwith %}
- </form>
+        {%  with messages=get_flashed_messages() %}
+                 {% if messages %}
+                     {% for message in messages %}
+                         {{ message }}
+                     {% endfor %}
+                 {% endif %}
+        {% endwith %}
+     </form>
+</div>
