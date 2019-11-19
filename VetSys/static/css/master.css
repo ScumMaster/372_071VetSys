@@ -53,9 +53,16 @@ button:hover {
     min-width: 250px;
 }
 
+
 form.appointment_zone {
     max-width: 500px;
     text-align: center;
     padding: 2em;
     background: #e6e6e6;
+    margin-right: 30px;
+}
+
+.new_pet_wrapper {
+    display: flex;
+    justify-content: flex-start;
 }

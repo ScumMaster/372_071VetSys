@@ -54,3 +54,7 @@
     display: none;
 }
 #pets_dropclose, #app_dropclose { display: none; }
+
+.left_panel_link {
+    font-size: 1.3em;
+}
