@@ -22,6 +22,7 @@ class AppointmentCreationForm(FlaskForm):
     owner_name = StringField('Name')
     submit_button = SubmitField('Create')
 
+
 class PetCreationForm(FlaskForm):
     pet_name = StringField('Name:')
     age = IntegerField('Age:')
@@ -30,6 +31,7 @@ class PetCreationForm(FlaskForm):
     species = StringField('Species:')
     disabilities = StringField('Disabilities:')
     owner_name = StringField('Name:', validators=[DataRequired()])
+
 
 class TreatmentCreationForm(FlaskForm):
     treatment_type = StringField('Treatment:')

@@ -85,7 +85,7 @@ def list_pets():
     pets = Pet.query.all()
     return render_template('list_pet', pets=pets)
 
-@dashboard.route('/treatment_records')
+@dashboard.route('/treatment_records', methods=['GET', 'POST'])
 @login_required
 def create_treatment_record():
     treatment_creation_form = TreatmentCreationForm()
@@ -94,7 +94,7 @@ def create_treatment_record():
 
     if request.method == 'POST':
         new_treatment_record = Treatment(
-            treatment_type=treatment_creation_form.treatment_type.data,
+            record_type=treatment_creation_form.treatment_type.data,
             start_date=treatment_creation_form.start_date.data,
             end_date=treatment_creation_form.end_date.data
         )
