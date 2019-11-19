@@ -8,65 +8,110 @@ import datetime
 
 @login_manager.user_loader
 def user_loader(user_id):
-    return User.query.get(int(user_id))
+    return User.query.get(user_id)
 
 
 # Union with
 class User(db.Model, UserMixin):
-    __name__ = 'user'
-    user_id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String, nullable=False)
+    __tablename__ = 'user'
+    user_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    username = db.Column(db.String, nullable=False, unique=True)
     password = db.Column(db.String, nullable=False)
-    is_admin = db.Column(db.Boolean, default=False, nullable=False)
-    staff_id = db.Column(db.Integer, db.ForeignKey(
-        'staff.staff_id'), primary_key=True)
+    user_type = db.Column(db.String(50))
+
+    __mapper_args__ = {
+        "polymorphic_identity": "user",
+        "polymorphic_on": user_type
+    }
+
     def get_id(self):
         return self.user_id
 
-    def generate_url(self):
-        return "/dashboard/{}".format(self.user_name)
+    def __repr__(self):
+        return "USER_ID: {} , USERNAME: {} , TYPE: {} ".format(self.user_id, self.username, self.user_type)
+
+    def to_dict(self):
+        return dict({'id': self.user_id, 'username': self.username, 'type': self.user_type})
 
     @classmethod
-    def create_user(cls, username: str, password: str, is_admin: bool):
-        hashed_pass = bc.generate_password_hash(password).decode('utf-8')
-        new_user = cls(username=username,
-                       password=hashed_pass, is_admin=is_admin)
+    def create_user(cls, username, password):
+        hashed_pw = bc.generate_password_hash(password).decode('utf-8')
+        new_user = cls(username=username, password=hashed_pw);
         try:
             db.session.add(new_user)
             db.session.commit()
         except:
-            return Exception('Kullanıcı oluşturulurken hata meydana geldi')
-        return new_user
+            return Exception("Database error")
 
 
+class Admin(User):
+    __tablename__ = 'admin'
+    user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), primary_key=True)
+    __mapper_args__ = {
+        "polymorphic_identity": "admin",
+    }
 
-class Assistant(db.Model):
-    staff_id = db.Column(db.Integer, db.ForeignKey(
-        'staff.staff_id'), primary_key=True)
+    def __repr__(self):
+        return super().__repr__()
+
+    def dashboard(self):
+        return "/1"
+
+    @classmethod
+    def create_user(cls, username, password):
+        super().create_user(username,password)
+
+
+class Assistant(User):
+    __tablename__ = 'assistant'
     field = db.Column(db.String(60), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), primary_key=True)
     end_date = db.Column(db.DateTime)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'))
-    supervisor_id = db.Column(
-        db.Integer, db.ForeignKey('vet.staff_id'), nullable=False)
+
+    supervisor_id = db.Column(db.Integer, db.ForeignKey('vet.user_id'))
+
+    supervisor = db.relationship('Vet', back_populates='supervisee', foreign_keys=[supervisor_id])
+
+    __mapper_args__ = {
+        "polymorphic_identity": "assistant",
+    }
+
+    def __repr__(self):
+        return super().__repr__() + " FIELD: {} , END-DATE: {} ".format(self.field, self.end_date)
+
+    def to_dict(self):
+        return super().to_dict().update({'field': self.field,
+                                         'end_date': self.end_date.__str__(),
+                                         'supervisor': self.supervisor})
 
 
-class Vet(db.Model):
-    __name__ = 'vet'
-    staff_id = db.Column(db.Integer, db.ForeignKey(
-        'staff.staff_id'), primary_key=True)
+class Vet(User):
+    __tablename__ = 'vet'
+    user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), primary_key=True)
     field = db.Column(db.String, default='Genel uzman', nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey(
-        'user.user_id'), nullable=False)
 
     # Vet supervises assistant
-    supervisee = db.relationship('Assistant', backref='supervisor')
+    supervisee = db.relationship('Assistant', foreign_keys='Assistant.supervisor_id', back_populates='supervisor')
+
+    __mapper_args__ = {
+        "polymorphic_identity": "vet",
+    }
+
+    def __repr__(self):
+        return "{} FIELD: {}".format(super().__repr__(), self.field)
+
+    def to_dict(self):
+        return super().to_dict().update({'field': self.field,
+                                         'end_date': self.end_date.__str__(),
+                                         'supervisees': self.supervisee})
 
 
 # class Custadion(db.Model):
 # class Secretary(db.Model):
 
+'''
 class Staff(db.Model):
-    __name__ = 'staff'
+    __tablename__ = 'staff'
     staff_id = db.Column(db.Integer, primary_key=True)
     # salary = db.Column(db.Float, ddefault=db.Float(2200.5))
     phone_number = db.Column(db.Integer)
@@ -76,7 +121,6 @@ class Staff(db.Model):
     # start_at = db.Column(db.DateTime)
     # finish_at = db.Column(db.DateTime)
     # total_hours = db.Column(db.Interval, nullable=False, default=datetime.timedelta(hours=180))
-    profile = db.relationship('User', backref='staff')
 
     def __repr__(self):
         return 'email: {} admin: {}'.format(self.email, self.is_admin)
@@ -108,3 +152,4 @@ class StaffView(ModelView):
 
 admin = Administrator(app, index_view=AdminView())
 admin.add_view(UserView(User, db.session))
+'''

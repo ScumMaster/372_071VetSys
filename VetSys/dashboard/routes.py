@@ -9,10 +9,10 @@ dashboard = Blueprint('dashboard', __name__)
 
 
 @dashboard.route('/')
-@dashboard.route('/dashboard')
+@dashboard.route('/dashboard/<username>')
 @login_required
-def profile():
-    return render_template('dashboard.html')
+def profile(username):
+    return render_template('dashboard.html',user=current_user)
 
 
 @dashboard.route('/register_owner')

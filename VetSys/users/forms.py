@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from VetSys.users.models import Staff
+#from VetSys.users.models import Staff
 from wtforms import StringField, PasswordField, SubmitField, IntegerField, FloatField
 from wtforms.validators import DataRequired, Email, Length
 
