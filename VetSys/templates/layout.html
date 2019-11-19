@@ -4,15 +4,30 @@
         <meta charset="utf-8">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/master.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/left_panel_style.css') }}">
+        <script src="{{ url_for('static', filename='js/dropdown.js') }}"></script>
         <title>VetSys</title>
     </head>
     <body>
     <div class="left_panel">
         <h1 class="logo">VetSys</h1>
+        <img src="{{ url_for('static', filename='images/rs.png') }}" alt="" class="profile_picture">
+        <p class="vet_name">[Dr. Bilmemne]</p>
         <div class="content">
-            <p><a href="/make_appointment">Randevu Yaz</a></p>
-            <p><a href="/add_register">Yeni Kayıt</a></p>
-            <p><a href="/display_registers">Kayıtları Görüntüle</a></p>
+
+            <p class="dropdown_text" id="pets_dropdown" onclick="petsDropdown()">Pets &darr;</p>
+            <p class="dropdown_text" id="pets_dropclose" onclick="petsDropclose()">Pets &uarr;</p>
+            <div class="dropdown_box" id="pdb">
+                <p><a href="/register_new_pet">Register new pet</a></p>
+                <p><a href="/list_pet">List pets</a></p>
+            </div>
+
+            <p class="dropdown_text" id="app_dropdown" onclick="appDropdown()">Appointments &darr;</p>
+            <p class="dropdown_text" id="app_dropclose" onclick="appDropclose()">Appointments &uarr;</p>
+            <div class="dropdown_box" id="adb">
+                <p><a href="/register_new_pet">Register new appointment</a></p>
+                <p><a href="/list_pet">List appointments</a></p>
+            </div>
+
         </div>
     </div>
     <div class="main_zone">
