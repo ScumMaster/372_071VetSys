@@ -93,7 +93,7 @@ class Pet(db.Model):
     checkin_date = db.Column(db.DateTime, default=datetime.utcnow)
     checkout_date = db.Column(db.DateTime)
 
-    specy = db.Column(db.String(60))
+    species = db.Column(db.String(60))
     race = db.Column(db.String(60))
     weight = db.Column(db.Float, nullable=False)
     age = db.Column(db.Integer, nullable=False)

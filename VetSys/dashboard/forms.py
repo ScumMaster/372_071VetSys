@@ -21,3 +21,12 @@ class AppointmentCreationForm(FlaskForm):
     period = StringField('Period:')
     owner_name = StringField('Name')
     submit_button = SubmitField('Create')
+
+class PetCreationForm(FlaskForm):
+    pet_name = StringField('Name:')
+    age = IntegerField('Age:')
+    weight = IntegerField('Weight:')
+    race = StringField('Race: ')
+    species = StringField('Species:')
+    disabilities = StringField('Disabilities:')
+    owner_name = StringField('Name:', validators=[DataRequired()])
