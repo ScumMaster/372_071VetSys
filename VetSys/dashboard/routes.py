@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, flash, request
 from flask_login import login_required, current_user
-from .forms import OwnerCreationForm, AppointmentCreationForm, PetCreationForm
-from .models import Owner, Appointment, Pet
+from .forms import OwnerCreationForm, AppointmentCreationForm, PetCreationForm, TreatmentCreationForm
+from .models import Owner, Appointment, Pet, Treatment
 from VetSys import db
 from datetime import datetime
 
@@ -65,7 +65,7 @@ def create_pet():
 
     if request.method == 'POST':
         new_pet = Pet(
-            pet_name=pet_creation_form.form.pet_name.data,
+            pet_name=pet_creation_form.pet_name.data,
             age=pet_creation_form.age.data,
             weight=pet_creation_form.weight.data,
             race=pet_creation_form.race.data,
@@ -84,6 +84,26 @@ def create_pet():
 def list_pets():
     pets = Pet.query.all()
     return render_template('list_pet', pets=pets)
+
+@dashboard.route('/treatment_records')
+@login_required
+def create_treatment_record():
+    treatment_creation_form = TreatmentCreationForm()
+    if request.method == 'GET':
+        return render_template('treatment_records', treatment_creation_form=treatment_creation_form)
+
+    if request.method == 'POST':
+        new_treatment_record = Treatment(
+            treatment_type=treatment_creation_form.treatment_type.data,
+            start_date=treatment_creation_form.start_date.data,
+            end_date=treatment_creation_form.end_date.data
+        )
+
+        db.session.add(new_treatment_record)
+        db.session.commit()
+        flash('Treatment record has been created successfully!')
+
+    return render_template('treatment_record',treatment_creation_form=treatment_creation_form)
 
 # "yeni kayit" on the left panel
 @dashboard.route('/add_register', methods=['GET', 'POST'])
