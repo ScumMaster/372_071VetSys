@@ -107,27 +107,26 @@ class Vet(User):
                                          'end_date': self.end_date.__str__(),
                                          'supervisees': self.supervisee})
 
-
+'''
 class Cleaner(db.Model):
     __tablename__ = 'cleaner'
-    staff_id = db.Column(db.Integer, db.ForeignKey(
-        'staff.staff_id'), primary_key=True)
+    #staff_id = db.Column(db.Integer, db.ForeignKey('staff.staff_id'), primary_key=True)
     cleaning_company = db.Column(db.String, default='Caglayan pislik temizleyiciler', nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), nullable=False)
 
 class Secretary(db.Model):
     __tablename__ = 'secretary'
-    staff_id = db.Column(db.Integer, db.ForeignKey(
-        'staff.staff_id'), primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), nullable=False)
+    #staff_id = db.Column(db.Integer, db.ForeignKey('staff.staff_id'), primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), primary_key=True)
+    __mapper_args__ = {
+        "polymorphic_identity": "secretary",
+    }
     languages = db.relationship('Languages', backref='languages')
 
 class Languages(db.Model):
-    staff_id = db.Column(db.Integer, db.ForeignKey(
-        'secretary.staff_id'), primary_key=True)
+    #staff_id = db.Column(db.Integer, db.ForeignKey('secretary.staff_id'), primary_key=True)
     language = db.Column(db.String, primary_key=True)
 
-'''
+
 class Staff(db.Model):
     __tablename__ = 'staff'
     staff_id = db.Column(db.Integer, primary_key=True)
