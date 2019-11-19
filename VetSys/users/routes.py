@@ -21,6 +21,8 @@ def login():
             login_user(user)
             if user.is_admin:
                 return redirect('/admin')
+            else:
+                return redirect("/dashboard")
             next_page = request.args.get('next')
             if next_page:
                 return redirect(url_for(next_page))

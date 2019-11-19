@@ -1,3 +1,4 @@
+from sqlalchemy import String
 from VetSys import db, login_manager, app, bc
 from flask import url_for, redirect, flash
 from flask_login import UserMixin, current_user
@@ -13,7 +14,7 @@ def user_loader(user_id):
 
 # Union with
 class User(db.Model, UserMixin):
-    __name__ = 'user'
+    __tablename__ = 'user'
     user_id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String, nullable=False)
     password = db.Column(db.String, nullable=False)
@@ -27,8 +28,7 @@ class User(db.Model, UserMixin):
     @classmethod
     def create_user(cls, username: str, password: str, is_admin: bool):
         hashed_pass = bc.generate_password_hash(password).decode('utf-8')
-        new_user = cls(username=username,
-                       password=hashed_pass, is_admin=is_admin)
+        new_user = cls(username=username, password=hashed_pass, is_admin=is_admin)
         try:
             db.session.add(new_user)
             db.session.commit()
@@ -49,22 +49,38 @@ class Assistant(db.Model):
 
 
 class Vet(db.Model):
-    __name__ = 'vet'
+    __tablename__ = 'vet'
     staff_id = db.Column(db.Integer, db.ForeignKey(
         'staff.staff_id'), primary_key=True)
     field = db.Column(db.String, default='Genel uzman', nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey(
-        'user.user_id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), nullable=False)
 
     # Vet supervises assistant
     supervisee = db.relationship('Assistant', backref='supervisor')
 
 
-# class Custadion(db.Model):
-# class Secretary(db.Model):
+class Cleaner(db.Model):
+    __tablename__ = 'cleaner'
+    staff_id = db.Column(db.Integer, db.ForeignKey(
+        'staff.staff_id'), primary_key=True)
+    cleaning_company = db.Column(db.String, default='Caglayan pislik temizleyiciler', nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), nullable=False)
+
+class Secretary(db.Model):
+    __tablename__ = 'secretary'
+    staff_id = db.Column(db.Integer, db.ForeignKey(
+        'staff.staff_id'), primary_key=True)
+    # languages = db.Column(db.ARRAY(String), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), nullable=False)
+    languages = db.relationship('Languages', backref='languages')
+
+class Languages(db.Model):
+    staff_id = db.Column(db.Integer, db.ForeignKey(
+        'secretary.staff_id'), primary_key=True)
+    language = db.Column(db.String, primary_key=True)
 
 class Staff(db.Model):
-    __name__ = 'staff'
+    __tablename__ = 'staff'
     staff_id = db.Column(db.Integer, primary_key=True)
     # salary = db.Column(db.Float, ddefault=db.Float(2200.5))
     phone_number = db.Column(db.Integer)
@@ -87,7 +103,7 @@ class AdminView(AdminIndexView):
 
     def inaccessible_callback(self, name, **kwargs):
         flash('You are not allowed to enter admin section', 'error')
-        return redirect(url_for('users.login'))
+        return redirect(url_for('dashboard.profile'))
 
 
 class UserView(ModelView):

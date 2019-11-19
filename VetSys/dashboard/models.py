@@ -67,7 +67,7 @@ class Cages(db.Model):
     capacity = db.Column(db.Integer, nullable=False)
     emptiness = db.Column(db.Boolean, nullable=False, default=True)
 
-    # multivalu ed suitability attribute
+    # multivalued suitability attribute
     suitabilities = db.relationship('Suitability', backref='cage')
     # multivalued notes attribute
     notes = db.relationship('CageNotes', backref='cage')
@@ -93,7 +93,7 @@ class Pet(db.Model):
     checkin_date = db.Column(db.DateTime, default=datetime.utcnow)
     checkout_date = db.Column(db.DateTime)
 
-    specy = db.Column(db.String(60))
+    species = db.Column(db.String(60))
     race = db.Column(db.String(60))
     weight = db.Column(db.Float, nullable=False)
     age = db.Column(db.Integer, nullable=False)
