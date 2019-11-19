@@ -107,20 +107,23 @@ class Vet(User):
                                          'end_date': self.end_date.__str__(),
                                          'supervisees': self.supervisee})
 
+
+class Secretary(db.Model):
+    __tablename__ = 'secretary'
+    user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), primary_key=True)
+    __mapper_args__ = {
+        "polymorphic_identity": "secretary",
+    }
+    #languages = db.relationship('Languages', backref='languages')
+    #staff_id = db.Column(db.Integer, db.ForeignKey('staff.staff_id'), primary_key=True)
+
 '''
 class Cleaner(db.Model):
     __tablename__ = 'cleaner'
     #staff_id = db.Column(db.Integer, db.ForeignKey('staff.staff_id'), primary_key=True)
     cleaning_company = db.Column(db.String, default='Caglayan pislik temizleyiciler', nullable=False)
 
-class Secretary(db.Model):
-    __tablename__ = 'secretary'
-    #staff_id = db.Column(db.Integer, db.ForeignKey('staff.staff_id'), primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), primary_key=True)
-    __mapper_args__ = {
-        "polymorphic_identity": "secretary",
-    }
-    languages = db.relationship('Languages', backref='languages')
+
 
 class Languages(db.Model):
     #staff_id = db.Column(db.Integer, db.ForeignKey('secretary.staff_id'), primary_key=True)
