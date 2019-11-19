@@ -77,7 +77,7 @@ def create_pet():
         db.session.commit()
         flash('Pet entry has been created successfully!')
 
-    return render_template('register_new_pet', pet_creation_form = pet_creation_form)
+    return render_template('register_new_pet', pet_creation_form=pet_creation_form)
 
 @dashboard.route('/list_pet')
 @login_required

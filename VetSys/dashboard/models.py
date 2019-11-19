@@ -147,10 +147,11 @@ class Medicine(db.Model):
     at_clinic=db.Column(db.Integer,db.ForeignKey('clinic.clinic_id'))
 
 
-
 class Treatment(db.Model):
     _tablename_ = 'treatment'
     record_id = db.Column(db.Integer, primary_key=True)
+    record_type = db.Column(db.String(250))
     start_date = db.Column(db.DateTime)
     end_date = db.Column(db.DateTime)
+    pet_id = db.Column(db.Integer, db.ForeignKey('pet.pet_id'))
     # has relationship?
