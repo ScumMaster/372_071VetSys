@@ -60,8 +60,9 @@ def create_appointment():
 @login_required
 def create_pet():
     pet_creation_form = PetCreationForm()
+    treatment_creation_form = TreatmentCreationForm()
     if request.method == 'GET':
-        return render_template('register_new_pet', pet_creation_form=pet_creation_form)
+        return render_template('register_new_pet', pet_creation_form=pet_creation_form,treatment_creation_form=treatment_creation_form)
 
     if request.method == 'POST':
         new_pet = Pet(
@@ -77,7 +78,7 @@ def create_pet():
         db.session.commit()
         flash('Pet entry has been created successfully!')
 
-    return render_template('register_new_pet', pet_creation_form=pet_creation_form)
+    return render_template('register_new_pet', pet_creation_form=pet_creation_form,treatment_creation_form=treatment_creation_form)
 
 @dashboard.route('/list_pet')
 @login_required
