@@ -1,5 +1,4 @@
 from sqlalchemy import Table
-
 from VetSys import db
 from datetime import datetime
 
@@ -54,12 +53,7 @@ class Invoices(db.Model):
     service_quantity = db.Column(db.Integer, nullable=False)
     owner_id = db.Column(db.Integer, db.ForeignKey('owner.owner_id'))
     # Invoice has service
-    services = db.relationship('Service', secondary='association_table', backref='invoices')
-
-associatoin_table = Table('association', db.Model.metadata,
-                          db.Column('invoices_serialnumber', db.Integer, db.ForeignKey('invoices.serial_number')),
-                          db.Column('service_name', db.Integer, db.ForeignKey('service.name'))
-                          )
+    services = db.relationship('Service', secondary='invoices_service_link')
 
 
 class Service(db.Model):
@@ -67,7 +61,14 @@ class Service(db.Model):
     name = db.Column(db.String, primary_key=True, nullable=False,autoincrement=False)
     cost = db.Column(db.Float, nullable=False)
     serial_number = db.Column(db.Integer, db.ForeignKey('invoices.serial_number'))
-    invoices = db.relationship('Invoices', secondary='association_table',)
+    invoices = db.relationship('Invoices', secondary='invoices_service_link')
+
+class InvoicesServiceLink(db.Model):
+    __tablename__ = 'invoices_service_link'
+    invoices_serial_number = db.Column(db.Integer, db.ForeignKey('invoices.serial_number'), primary_key=True)
+    service_name = db.Column(db.Integer, db.ForeignKey('service.name'), primary_key=True)
+    invoices = db.relationship(Invoices, backref=db.backref('invoices_assoc'))
+    service = db.relationship(Service, backref=db.backref('service_assoc'))
 
 class Cages(db.Model):
     __tablename__ = 'cages'
