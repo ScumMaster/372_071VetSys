@@ -90,7 +90,7 @@ def register_new_pet():
             pet_id = new_pet.pet_id
         )
 
-        db.session.add_all(new_pet, new_treatment)
+        db.session.add_all([new_pet, new_treatment])
         db.session.commit()
         flash('Pet entry has been created successfully!')
 

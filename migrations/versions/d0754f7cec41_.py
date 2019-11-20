@@ -41,13 +41,13 @@ def upgrade():
     sa.UniqueConstraint('serial_number')
     )
     op.create_table('owner',
-    sa.Column('owner_id', sa.Integer(), nullable=False),
+    sa.Column('ssn', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(length=100), nullable=False),
     sa.Column('sex', sa.String(length=5), nullable=False),
     sa.Column('email', sa.String(length=60), nullable=True),
     sa.Column('address', sa.String(length=60), nullable=True),
     sa.Column('phone', sa.Integer(), nullable=False),
-    sa.PrimaryKeyConstraint('owner_id'),
+    sa.PrimaryKeyConstraint('ssn'),
     sa.UniqueConstraint('phone')
     )
     op.create_table('staff',
@@ -67,9 +67,9 @@ def upgrade():
     sa.Column('appo_id', sa.Integer(), nullable=True),
     sa.Column('on', sa.DateTime(), nullable=False),
     sa.Column('appo_type', sa.String(), nullable=False),
-    sa.Column('owner_id', sa.Integer(), autoincrement=False, nullable=False),
-    sa.ForeignKeyConstraint(['owner_id'], ['owner.owner_id'], ),
-    sa.PrimaryKeyConstraint('owner_id')
+    sa.Column('ssn', sa.Integer(), autoincrement=False, nullable=False),
+    sa.ForeignKeyConstraint(['ssn'], ['owner.ssn'], ),
+    sa.PrimaryKeyConstraint('ssn')
     )
     op.create_table('cage_notes',
     sa.Column('cage_id', sa.Integer(), nullable=False),
@@ -83,8 +83,8 @@ def upgrade():
     sa.Column('quantity', sa.Integer(), nullable=False),
     sa.Column('total_price', sa.Float(), nullable=False),
     sa.Column('transaction_date', sa.DateTime(), nullable=False),
-    sa.Column('owner_id', sa.Integer(), nullable=True),
-    sa.ForeignKeyConstraint(['owner_id'], ['owner.owner_id'], ),
+    sa.Column('ssn', sa.Integer(), nullable=True),
+    sa.ForeignKeyConstraint(['ssn'], ['owner.ssn'], ),
     sa.PrimaryKeyConstraint('serial_number')
     )
     op.create_table('pet',
@@ -96,8 +96,8 @@ def upgrade():
     sa.Column('race', sa.String(length=60), nullable=True),
     sa.Column('weight', sa.Float(), nullable=False),
     sa.Column('age', sa.Integer(), nullable=False),
-    sa.Column('owner_id', sa.Integer(), nullable=True),
-    sa.ForeignKeyConstraint(['owner_id'], ['owner.owner_id'], ),
+    sa.Column('ssn', sa.Integer(), nullable=True),
+    sa.ForeignKeyConstraint(['ssn'], ['owner.ssn'], ),
     sa.PrimaryKeyConstraint('pet_id')
     )
     op.create_table('suitability',
