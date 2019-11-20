@@ -80,6 +80,7 @@ def register_new_pet():
             weight=pet_creation_form.weight.data,
             race=pet_creation_form.race.data,
             species=pet_creation_form.species.data,
+            owner_ssn=pet_creation_form.owner_ssn.data
             # disabilities=pet_creation_form.disabilities.data,
         )
 
