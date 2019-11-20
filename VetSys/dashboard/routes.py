@@ -113,9 +113,9 @@ def create_treatment_record():
 
     return render_template('treatment_records',treatment_creation_form=treatment_creation_form)
 
-@dashboard.rote('/create_owner', methods=['GET','POST'])
+@dashboard.route('/create_owner', methods=['GET','POST'])
 @login_required
-def create_owner():
+def create_owner():gi
     create_owner_form = OwnerCreationForm()
     if request.method == 'GET':
         return render_template('create_owner', create_owner_form=create_owner_form)
