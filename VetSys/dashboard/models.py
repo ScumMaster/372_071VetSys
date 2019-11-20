@@ -1,4 +1,3 @@
-from sqlalchemy import Table
 from VetSys import db
 from datetime import datetime
 

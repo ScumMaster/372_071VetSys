@@ -1,10 +1,11 @@
-from sqlalchemy import String
 from VetSys import db, login_manager, app, bc
 from flask import url_for, redirect, flash
 from flask_login import UserMixin, current_user
-from flask_admin import Admin as Administrator, AdminIndexView, expose
+from flask_admin import Admin as Administrator, AdminIndexView
 from flask_admin.contrib.sqla import ModelView
 import datetime
+import inspect
+from VetSys.dashboard import models as dmodels
 
 
 @login_manager.user_loader
@@ -108,7 +109,7 @@ class Vet(User):
                                          'supervisees': self.supervisee})
 
 
-class Secretary(db.Model):
+class Secretary(User):
     __tablename__ = 'secretary'
     user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), primary_key=True)
     __mapper_args__ = {
@@ -144,11 +145,11 @@ class Staff(db.Model):
 
     def __repr__(self):
         return 'email: {} admin: {}'.format(self.email, self.is_admin)
-
+'''
 
 class AdminView(AdminIndexView):
     def is_accessible(self):
-        if current_user.is_authenticated and current_user.is_admin:
+        if current_user.is_authenticated and current_user.user_type=='admin':
             return True
         return False
 
@@ -157,19 +158,40 @@ class AdminView(AdminIndexView):
         return redirect(url_for('dashboard.profile'))
 
 
+
 class UserView(ModelView):
     column_display_pk = True
     column_searchable_list = ['username']
-    can_export = True
+
     export_types = ['csv', 'json']
     column_exclude_list = ['password']
+    form_edit_rules = ['user_id','username','user_type']
+    form_excluded_columns= ['user_type']
 
+    def create_model(self,form):
+        form.password.data=bc.generate_password_hash(form.password.data)
+        super().create_model(form)
 
-class StaffView(ModelView):
-    column_display_pk = True
-    can_export = True
+class VetView(UserView):
+    column_exclude_list = UserView.column_exclude_list[:].append('user_type')
+    column_list = ['user_id','username','supervisee','field']
+
+class AssistantView(UserView):
+    column_exclude_list = UserView.column_exclude_list[:].append('user_type')
+
+class SecretaryView(UserView):
+    column_exclude_list = UserView.column_exclude_list[:].append('user_type')
 
 
 admin = Administrator(app, index_view=AdminView())
 admin.add_view(UserView(User, db.session))
-'''
+admin.add_view(VetView(Vet,db.session))
+admin.add_view(AssistantView(Assistant,db.session))
+admin.add_view(SecretaryView(Secretary,db.session))
+
+for name,obj in inspect.getmembers(dmodels,inspect.isclass):
+    if name !='datetime':
+        admin.add_view(ModelView(obj,db.session))
+
+
+
