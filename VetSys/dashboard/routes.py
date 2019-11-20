@@ -15,27 +15,6 @@ dashboard = Blueprint('dashboard', __name__)
 def profile():
     return render_template('dashboard.html', user=current_user)
 
-
-@dashboard.route('/register_owner')
-@login_required
-@access_granted(role='admin')
-def create_owner():
-    owner_creation_form = OwnerCreationForm()
-    if owner_creation_form.validate_on_submit():
-        new_owner = Owner(
-            name=owner_creation_form.owner_name.data,
-            sex=owner_creation_form.sex.data,
-            email=owner_creation_form.email.data,
-            address=owner_creation_form.address,
-            phone=owner_creation_form.phone
-        )
-        db.session.add(new_owner)
-        db.session.commit()
-        flash('Entry has been created successfully!')
-        return 'selam'
-    return None
-
-
 @dashboard.route('/make_appointment', methods=['GET', 'POST'])
 @login_required
 def create_appointment():
@@ -111,11 +90,12 @@ def create_treatment_record():
         db.session.commit()
         flash('Treatment record has been created successfully!')
 
-    return render_template('treatment_records',treatment_creation_form=treatment_creation_form)
+    return render_template('treatment_records', treatment_creation_form=treatment_creation_form)
 
-@dashboard.route('/create_owner', methods=['GET','POST'])
+
+@dashboard.route('/create_owner', methods=['GET', 'POST'])
 @login_required
-def create_owner():gi
+def create_owner():
     create_owner_form = OwnerCreationForm()
     if request.method == 'GET':
         return render_template('create_owner', create_owner_form=create_owner_form)
@@ -135,7 +115,6 @@ def create_owner():gi
         flash('Owner record has been created successfully!')
 
     return render_template('create_owner', create_owner_form=create_owner_form)
-
 
 
 # "yeni kayit" on the left panel
