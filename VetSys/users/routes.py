@@ -23,7 +23,7 @@ def login():
             if next_page:
                 return redirect(next_page)
             else:
-                return redirect(url_for('dashboard.profile',username=user.username))
+                return redirect(url_for('dashboard.profile'))
         else:
             flash('Incorrect email or password!')
             return render_template('login.html', form=form)
