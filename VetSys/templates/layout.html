@@ -11,9 +11,8 @@
     <div class="left_panel">
         <h1 class="logo">VetSys</h1>
         <img src="{{ url_for('static', filename='images/rs.png') }}" alt="" class="profile_picture">
-        <p class="vet_name">[Dr. Bimlembe]</p>
+        <p class="vet_name">{{ user.username }}</p>
         <div class="content">
-
             <p class="dropdown_text" id="pets_dropdown"
                onclick="petsDropdown()">
                 Pets &darr;

@@ -13,7 +13,7 @@ users = Blueprint('users', __name__)
 @users.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('dashboard.profile',username=current_user.username))
+        return redirect(url_for('dashboard.profile'))
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
@@ -23,7 +23,7 @@ def login():
             if next_page:
                 return redirect(next_page)
             else:
-                return redirect(url_for('dashboard.profile',username=user.username))
+                return redirect(url_for('dashboard.profile'))
         else:
             flash('Incorrect email or password!')
             return render_template('login.html', form=form)
