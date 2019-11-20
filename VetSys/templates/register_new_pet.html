@@ -4,7 +4,7 @@
         <div>
         <form method="POST" class="appointment_zone">
              {{ pet_creation_form.hidden_tag() }}
-
+            <p>Type the data about the pet and submit it to the database.</p>
              <div class="form">
                  {{ pet_creation_form.pet_name.label }}<br>
                  {{ pet_creation_form.pet_name(class_="form_textbox") }}
@@ -30,6 +30,7 @@
                  {{ pet_creation_form.disabilities(class_="form_textbox") }}
              </div>
              <br><br>
+             {{ pet_creation_form.submit_button(class_="submit_button") }}
          </form>
      </div>
 

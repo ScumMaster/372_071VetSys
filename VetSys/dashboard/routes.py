@@ -62,7 +62,7 @@ def create_pet():
     pet_creation_form = PetCreationForm()
     treatment_creation_form = TreatmentCreationForm()
     if request.method == 'GET':
-        return render_template('register_new_pet', pet_creation_form=pet_creation_form,treatment_creation_form=treatment_creation_form)
+        return render_template('register_new_pet.html', pet_creation_form=pet_creation_form,treatment_creation_form=treatment_creation_form)
 
     if request.method == 'POST':
         new_pet = Pet(
@@ -78,13 +78,13 @@ def create_pet():
         db.session.commit()
         flash('Pet entry has been created successfully!')
 
-    return render_template('register_new_pet', pet_creation_form=pet_creation_form,treatment_creation_form=treatment_creation_form)
+    return render_template('register_new_pet.html', pet_creation_form=pet_creation_form,treatment_creation_form=treatment_creation_form)
 
 @dashboard.route('/list_pet')
 @login_required
 def list_pets():
     pets = Pet.query.all()
-    return render_template('list_pet', pets=pets)
+    return render_template('list_pet.html', pets=pets)
 
 @dashboard.route('/treatment_records', methods=['GET', 'POST'])
 @login_required
@@ -114,4 +114,5 @@ def add_register():
 # "kayitlari goruntule" on the left panel
 @dashboard.route('/display_registers', methods=['GET', 'POST'])
 def display_registers():
-    return render_template('display_registers.html')
+    appointments = Appointment.query.all()
+    return render_template('display_registers.html', appointments=appointments)
