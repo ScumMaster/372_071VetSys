@@ -5,7 +5,7 @@ from datetime import datetime
 
 class Owner(db.Model):
     __tablename__ = 'owner'
-    owner_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    ssn = db.Column(db.Integer, primary_key=True, autoincrement=False)
     name = db.Column(db.String(100), nullable=False)
     last_name = db.Column(db.String(100), nullable=False)
     sex = db.Column(db.String(5), nullable=False)
@@ -20,7 +20,7 @@ class Owner(db.Model):
     pets = db.relationship('Pet', backref='owner')
 
     def __repr__(self):
-        return "id:{} name:{} sex:{} email:{} phone:{}".format(self.owner_id, self.name, self.sex, self.email,
+        return "id:{} name:{} sex:{} email:{} phone:{}".format(self.ssn, self.name, self.sex, self.email,
                                                                self.phone)
 
     @classmethod
@@ -41,7 +41,7 @@ class Appointment(db.Model):
     on = db.Column(db.DateTime, nullable=False)
     appo_type = db.Column(db.String, nullable=False)
 
-    owner_id = db.Column(db.Integer, db.ForeignKey('owner.owner_id'), primary_key=True,
+    owner_ssn = db.Column(db.Integer, db.ForeignKey('owner.ssn'), primary_key=True,
                          autoincrement=False)
 
 
@@ -52,7 +52,7 @@ class Invoices(db.Model):
     transaction_date = db.Column(db.DateTime, nullable=False)
     cost = db.Column(db.Float, nullable=False)
     service_quantity = db.Column(db.Integer, nullable=False)
-    owner_id = db.Column(db.Integer, db.ForeignKey('owner.owner_id'))
+    owner_ssn = db.Column(db.Integer, db.ForeignKey('owner.ssn'))
     # Invoice has service
     services = db.relationship('Service', secondary='invoices_service_link')
 
@@ -67,24 +67,20 @@ class Service(db.Model):
 
 class InvoicesServiceLink(db.Model):
     __tablename__ = 'invoices_service_link'
-    invoices_serial_number = db.Column(db.Integer, db.ForeignKey('invoices.serial_number'), primary_key=True)
-    service_name = db.Column(db.Integer, db.ForeignKey('service.name'), primary_key=True)
+    invoices_serial_number = db.Column(
+        db.Integer,
+        db.ForeignKey('invoices.serial_number'),
+        primary_key=True,
+        autoincrement=False)
+
+    service_name = db.Column(
+        db.Integer,
+        db.ForeignKey('service.name'),
+        primary_key=True,
+        autoincrement=False)
+
     invoices = db.relationship(Invoices, backref=db.backref('invoices_assoc'))
     service = db.relationship(Service, backref=db.backref('service_assoc'))
-
-
-class Cages(db.Model):
-    __tablename__ = 'cages'
-    cage_id = db.Column(db.Integer, nullable=False, primary_key=True)
-    size = db.Column(db.Integer, nullable=False)
-    capacity = db.Column(db.Integer, nullable=False)
-    emptiness = db.Column(db.Boolean, nullable=False, default=True)
-
-    # multivalued suitability attribute
-    suitabilities = db.relationship('Suitability', backref='cage')
-    # multivalued notes attribute
-    notes = db.relationship('CageNotes', backref='cage')
-
 
 class Suitability(db.Model):
     cage_id = db.Column(db.Integer, db.ForeignKey(
@@ -111,10 +107,26 @@ class Pet(db.Model):
     weight = db.Column(db.Float, nullable=False)
     age = db.Column(db.Integer, nullable=False)
 
-    owner_id = db.Column(db.Integer, db.ForeignKey('owner.owner_id'))
+    owner_ssn = db.Column(db.Integer, db.ForeignKey('owner.ssn'))
 
     # multivalued disabilities
     # disabilities = db.relationship('Disability')
+
+class Cages(db.Model):
+    __tablename__ = 'cages'
+    cage_id = db.Column(db.Integer, nullable=False, primary_key=True)
+    size = db.Column(db.Integer, nullable=False)
+    capacity = db.Column(db.Integer, nullable=False)
+    emptiness = db.Column(db.Boolean, nullable=False, default=True)
+
+    # multivalued suitability attribute
+    suitabilities = db.relationship('Suitability', backref='cage')
+    # multivalued notes attribute
+    notes = db.relationship('CageNotes', backref='cage')
+
+# class PetCagesLink(db.Model):
+#     __tablename__ = 'pet_cages_link'
+#     pet_id = db.Column()
 
 
 class PetNotes(db.Model):

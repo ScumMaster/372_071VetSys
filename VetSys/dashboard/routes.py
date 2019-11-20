@@ -15,6 +15,31 @@ dashboard = Blueprint('dashboard', __name__)
 def profile():
     return render_template('dashboard.html', user=current_user)
 
+
+@dashboard.route('/create_owner', methods=['GET', 'POST'])
+@login_required
+def create_owner():
+    owner_creation_form = OwnerCreationForm()
+    if request.method == 'GET':
+        return render_template('create_owner.html', owner_creation_form=owner_creation_form)
+
+    if request.method == 'POST':
+        if owner_creation_form.validate_on_submit():
+            new_owner = Owner(
+                ssn = owner_creation_form.ssn.data,
+                name=owner_creation_form.name.data,
+                last_name=owner_creation_form.last_name.data,
+                sex=owner_creation_form.sex.data,
+                phone=owner_creation_form.phone,
+                email=owner_creation_form.email.data,
+                address=owner_creation_form.address
+            )
+            db.session.add(new_owner)
+            db.session.commit()
+            flash('Owner added successfully!')
+    return None
+
+
 @dashboard.route('/make_appointment', methods=['GET', 'POST'])
 @login_required
 def create_appointment():
@@ -23,24 +48,26 @@ def create_appointment():
         return render_template('appointment.html', form=form)
 
     if request.method == 'POST':
-        owner = Owner.query.filter_by(name=form.owner_name.data).first()
+        owner = Owner.query.filter_by(ssn=form.owner_ssn.data).first()
         new_appointment = Appointment(
             appo_id=Appointment.query.filter_by().count() + 1,
             on=datetime.combine(form.on.data, form.hour.data),
             appo_type=form.appointment_type.data
         )
-
-        owner.appointments.append(new_appointment)
-        db.session.add_all([owner, new_appointment])
-        db.session.commit()
-        flash('Appointment created succesffully')
+        try:
+            owner.appointments.append(new_appointment)
+            db.session.add_all([owner, new_appointment])
+            db.session.commit()
+            flash('Appointment created succesffully')
+        except:
+            return Exception('An error occurred while creating appointment')
 
     return render_template('appointment.html', form=form)
 
 
 @dashboard.route('/register_new_pet', methods=['GET', 'POST'])
 @login_required
-def create_pet():
+def register_new_pet():
     pet_creation_form = PetCreationForm()
     treatment_creation_form = TreatmentCreationForm()
     if request.method == 'GET':
@@ -56,6 +83,13 @@ def create_pet():
             # disabilities=pet_creation_form.disabilities.data,
         )
 
+        new_treatment = Treatment(
+            record_type = treatment_creation_form.treatment_type.data,
+            start_date = treatment_creation_form.start_date.data,
+            end_date = treatment_creation_form.start_date.data,
+            pet_id = new_pet.pet_id
+        )
+
         db.session.add(new_pet)
         db.session.commit()
         flash('Pet entry has been created successfully!')
@@ -64,7 +98,7 @@ def create_pet():
 
 @dashboard.route('/list_pet')
 @login_required
-def list_pets():
+def list_pet():
     pets = Pet.query.all()
     return render_template('list_pet.html', pets=pets)
 
@@ -74,7 +108,7 @@ def list_pets():
 def create_treatment_record():
     treatment_creation_form = TreatmentCreationForm()
     if request.method == 'GET':
-        return render_template('treatment_records', treatment_creation_form=treatment_creation_form)
+        return render_template('treatment_records.html', treatment_creation_form=treatment_creation_form)
 
     if request.method == 'POST':
         new_treatment_record = Treatment(
@@ -88,30 +122,6 @@ def create_treatment_record():
         flash('Treatment record has been created successfully!')
 
     return render_template('treatment_records', treatment_creation_form=treatment_creation_form)
-
-
-@dashboard.route('/create_owner', methods=['GET', 'POST'])
-@login_required
-def create_owner():
-    create_owner_form = OwnerCreationForm()
-    if request.method == 'GET':
-        return render_template('create_owner', create_owner_form=create_owner_form)
-
-    if request.method == 'POST':
-        new_owner = Owner(
-            name=create_owner_form.owner_name.data,
-            last_name=create_owner_form.last_name.data,
-            sex=create_owner_form.sex.data,
-            phone=create_owner_form.phone.data,
-            email=create_owner_form.email.data,
-            address=create_owner_form.address.data
-        )
-
-        db.session.add(new_owner)
-        db.session.commit()
-        flash('Owner record has been created successfully!')
-
-    return render_template('create_owner', create_owner_form=create_owner_form)
 
 
 # "yeni kayit" on the left panel
