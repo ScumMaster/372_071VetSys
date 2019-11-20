@@ -53,7 +53,7 @@ def create_pet():
             weight=pet_creation_form.weight.data,
             race=pet_creation_form.race.data,
             species=pet_creation_form.species.data,
-            disabilities=pet_creation_form.disabilities.data,
+            # disabilities=pet_creation_form.disabilities.data,
         )
 
         db.session.add(new_pet)
