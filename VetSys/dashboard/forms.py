@@ -7,6 +7,7 @@ from wtforms.validators import DataRequired, Email, Optional
 
 class OwnerCreationForm(FlaskForm):
     owner_name = StringField('Name:', validators=[DataRequired()])
+    last_name = StringField('Name: ', validators=[DataRequired()])
     sex = RadioField('Sex:', choices=['Man', 'Woman'])
     email = StringField('Email', validators=[Email()])
     address = StringField('Address:')

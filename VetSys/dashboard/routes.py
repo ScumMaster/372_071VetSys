@@ -104,7 +104,31 @@ def create_treatment_record():
         db.session.commit()
         flash('Treatment record has been created successfully!')
 
-    return render_template('treatment_record',treatment_creation_form=treatment_creation_form)
+    return render_template('treatment_records',treatment_creation_form=treatment_creation_form)
+
+@dashboard.rote('/create_owner', methods=['GET','POST'])
+@login_required
+def create_owner():
+    create_owner_form = OwnerCreationForm()
+    if request.method == 'GET':
+        return render_template('create_owner', create_owner_form=create_owner_form)
+
+    if request.method == 'POST':
+        new_owner = Owner(
+            name=create_owner_form.owner_name.data,
+            last_name=create_owner_form.last_name.data,
+            sex=create_owner_form.sex.data,
+            phone=create_owner_form.phone.data,
+            email=create_owner_form.email.data,
+            address=create_owner_form.address.data
+        )
+
+        db.session.add(new_owner)
+        db.session.commit()
+        flash('Owner record has been created successfully!')
+
+    return render_template('create_owner', create_owner_form=create_owner_form)
+
 
 # "yeni kayit" on the left panel
 @dashboard.route('/add_register', methods=['GET', 'POST'])
