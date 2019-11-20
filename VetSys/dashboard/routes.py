@@ -88,8 +88,8 @@ def register_new_pet():
             record_type = treatment_creation_form.treatment_type.data,
             start_date = treatment_creation_form.start_date.data,
             end_date = treatment_creation_form.start_date.data,
-            pet_id = new_pet.pet_id
         )
+        new_pet.treatments.append(new_treatment)
 
         db.session.add_all([new_pet, new_treatment])
         db.session.commit()
