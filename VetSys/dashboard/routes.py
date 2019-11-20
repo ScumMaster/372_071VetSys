@@ -111,7 +111,6 @@ def create_treatment_record():
         db.session.commit()
         flash('Treatment record has been created successfully!')
 
-<<<<<<< HEAD
     return render_template('treatment_records',treatment_creation_form=treatment_creation_form)
 
 @dashboard.rote('/create_owner', methods=['GET','POST'])
@@ -136,9 +135,7 @@ def create_owner():
         flash('Owner record has been created successfully!')
 
     return render_template('create_owner', create_owner_form=create_owner_form)
-=======
-    return render_template('treatment_record', treatment_creation_form=treatment_creation_form)
->>>>>>> aa5db1f43e6631381b58c6300f1bea2a07b6141b
+
 
 
 # "yeni kayit" on the left panel
