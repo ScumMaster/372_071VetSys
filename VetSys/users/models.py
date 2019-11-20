@@ -40,16 +40,15 @@ class User(db.Model, UserMixin):
         hashed_pw = bc.generate_password_hash(password).decode('utf-8')
         new_user = cls(username=username, password=hashed_pw);
 
-        try:
-            db.session.add(new_user)
-            db.session.commit()
-        except:
-            return Exception("Database error")
+        db.session.add(new_user)
+        db.session.commit()
+
 
 
 class Admin(User):
     __tablename__ = 'admin'
     user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), primary_key=True)
+
     __mapper_args__ = {
         "polymorphic_identity": "admin",
     }
@@ -67,8 +66,8 @@ class Admin(User):
 
 class Assistant(User):
     __tablename__ = 'assistant'
-    field = db.Column(db.String(60), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), primary_key=True)
+    field = db.Column(db.String(60), nullable=False)
     end_date = db.Column(db.DateTime)
 
     supervisor_id = db.Column(db.Integer, db.ForeignKey('vet.user_id'))
@@ -78,7 +77,7 @@ class Assistant(User):
     __mapper_args__ = {
         "polymorphic_identity": "assistant",
     }
-
+    # buraya supervisor ismini de ekleyelim
     def __repr__(self):
         return super().__repr__() + " FIELD: {} , END-DATE: {} ".format(self.field, self.end_date)
 
@@ -124,13 +123,6 @@ class Cleaner(db.Model):
     #staff_id = db.Column(db.Integer, db.ForeignKey('staff.staff_id'), primary_key=True)
     cleaning_company = db.Column(db.String, default='Caglayan pislik temizleyiciler', nullable=False)
 
-
-
-class Languages(db.Model):
-    #staff_id = db.Column(db.Integer, db.ForeignKey('secretary.staff_id'), primary_key=True)
-    language = db.Column(db.String, primary_key=True)
-
-
 class Staff(db.Model):
     __tablename__ = 'staff'
     staff_id = db.Column(db.Integer, primary_key=True)
@@ -145,7 +137,15 @@ class Staff(db.Model):
 
     def __repr__(self):
         return 'email: {} admin: {}'.format(self.email, self.is_admin)
+
 '''
+
+
+class Languages(db.Model):
+    #staff_id = db.Column(db.Integer, db.ForeignKey('secretary.staff_id'), primary_key=True)
+    language = db.Column(db.String, primary_key=True)
+
+
 
 class AdminView(AdminIndexView):
     def is_accessible(self):

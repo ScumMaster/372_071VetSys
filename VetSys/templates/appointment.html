@@ -1,40 +1,40 @@
 {% extends 'layout.html' %}
 {% block page_content %}
-           <form method="POST" class= appointment_zone>
-                {{ form.hidden_tag() }}
+    <form method="POST" class= appointment_zone>
+        {{ form.hidden_tag() }}
 
-                <div class="form">
-                    {{ form.on.label }}<br>
-                    {{ form.on(class_="form_textbox") }}
-                </div>
-                <div class="form">
-                    {{ form.hour.label }}<br>
-                    {{ form.hour(class_="form_textbox") }}
-                    <p style="color: grey; font-size: 0.8em;">
-                        example: 10:00 AM
-                    </p>
-                </div>
-                <div class="form">
-                    {{ form.owner_name.label }}<br>
-                    {{ form.owner_name(class_="form_textbox") }}
-                </div><br>
-                {% for subfield in form.appointment_type%}
-                    {{ subfield.label }}
-                    {{ subfield }} &emsp;
+        <div class="form">
+            {{ form.on.label }}<br>
+            {{ form.on(class_="form_textbox") }}
+        </div>
+        <div class="form">
+            {{ form.hour.label }}<br>
+            {{ form.hour(class_="form_textbox") }}
+            <p style="color: grey; font-size: 0.8em;">
+                example: 10:00 AM
+            </p>
+        </div>
+        <div class="form">
+            {{ form.owner_ssn.label }}<br>
+            {{ form.owner_ssn(class_="form_textbox") }}
+        </div><br>
+        {% for subfield in form.appointment_type%}
+            {{ subfield.label }}
+            {{ subfield }} &emsp;
+        {% endfor %}
+        <div class="form">
+            {{ form.period.label }}<br>
+            {{ form.period(class_="form_textbox") }}
+        </div>
+        <br><br>
+        {{ form.submit_button(class_="submit_button") }}
+        <br/>
+        {%  with messages=get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    {{ message }}
                 {% endfor %}
-                <div class="form">
-                    {{ form.period.label }}<br>
-                    {{ form.period(class_="form_textbox") }}
-                </div>
-                <br><br>
-                {{ form.submit_button(class_="submit_button") }}
-                <br/>
-               {%  with messages=get_flashed_messages() %}
-                        {% if messages %}
-                            {% for message in messages %}
-                                {{ message }}
-                            {% endfor %}
-                        {% endif %}
-               {% endwith %}
-            </form>
+            {% endif %}
+        {% endwith %}
+    </form>
 {% endblock %}

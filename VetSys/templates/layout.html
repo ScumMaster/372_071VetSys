@@ -11,7 +11,9 @@
     <div class="left_panel">
         <h1 class="logo">VetSys</h1>
         <img src="{{ url_for('static', filename='images/rs.png') }}" alt="" class="profile_picture">
+        {% if user %}
         <p class="vet_name">{{ user.username }}</p>
+        {%endif%}
         <div class="content">
             <p class="dropdown_text" id="pets_dropdown"
                onclick="petsDropdown()">
@@ -36,7 +38,7 @@
             </p>
             <div class="dropdown_box" id="adb">
                 <p><a href="/make_appointment">Register new appointment</a></p>
-                <p><a href="/list_pet">List appointments</a></p>
+                <p><a href="/display_registers">List appointments</a></p>
             </div>
 
             <p><a href="/profile" class="left_panel_link">Profile</a>
