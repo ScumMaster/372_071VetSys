@@ -62,10 +62,16 @@ def create_pet():
 
     return render_template('register_new_pet.html', pet_creation_form=pet_creation_form,treatment_creation_form=treatment_creation_form)
 
-@dashboard.route('/list_pet')
+@dashboard.route('/list_pet', methods=['GET', 'POST'])
 @login_required
 def list_pets():
     pets = Pet.query.all()
+    if request.method == "POST":
+        id=request.form['button-delete']
+        Pet.query.filter_by(pet_id=id).delete()
+        db.session.commit()
+        pets = Pet.query.all()
+        return render_template('list_pet.html', pets=pets)
     return render_template('list_pet.html', pets=pets)
 
 
