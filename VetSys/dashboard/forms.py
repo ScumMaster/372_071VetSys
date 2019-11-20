@@ -30,7 +30,7 @@ class PetCreationForm(FlaskForm):
     weight = IntegerField('Weight:')
     race = StringField('Race: ')
     species = StringField('Species:')
-    disabilities = StringField('Disabilities:')
+    # disabilities = StringField('Disabilities:')
     owner_name = StringField('Name:', validators=[DataRequired()])
     submit_button = SubmitField('Create')
 
