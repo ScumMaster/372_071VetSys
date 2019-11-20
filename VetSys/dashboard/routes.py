@@ -4,19 +4,21 @@ from .forms import OwnerCreationForm, AppointmentCreationForm, PetCreationForm, 
 from .models import Owner, Appointment, Pet, Treatment
 from VetSys import db
 from datetime import datetime
+from VetSys.decorators.route_decorators import access_granted
 
 dashboard = Blueprint('dashboard', __name__)
 
 
 @dashboard.route('/')
-@dashboard.route('/dashboard/<username>')
+@dashboard.route('/dashboard')
 @login_required
-def profile(username):
-    return render_template('dashboard.html',user=current_user)
+def profile():
+    return render_template('dashboard.html', user=current_user)
 
 
 @dashboard.route('/register_owner')
 @login_required
+@access_granted(role='admin')
 def create_owner():
     owner_creation_form = OwnerCreationForm()
     if owner_creation_form.validate_on_submit():
@@ -44,8 +46,8 @@ def create_appointment():
     if request.method == 'POST':
         owner = Owner.query.filter_by(name=form.owner_name.data).first()
         new_appointment = Appointment(
-            appo_id=Appointment.query.filter_by().count()+1,
-            on=datetime.combine(form.on.data,form.hour.data),
+            appo_id=Appointment.query.filter_by().count() + 1,
+            on=datetime.combine(form.on.data, form.hour.data),
             appo_type=form.appointment_type.data
         )
 
@@ -56,13 +58,15 @@ def create_appointment():
 
     return render_template('appointment.html', form=form)
 
+
 @dashboard.route('/register_new_pet', methods=['GET', 'POST'])
 @login_required
 def create_pet():
     pet_creation_form = PetCreationForm()
     treatment_creation_form = TreatmentCreationForm()
     if request.method == 'GET':
-        return render_template('register_new_pet', pet_creation_form=pet_creation_form,treatment_creation_form=treatment_creation_form)
+        return render_template('register_new_pet', pet_creation_form=pet_creation_form,
+                               treatment_creation_form=treatment_creation_form)
 
     if request.method == 'POST':
         new_pet = Pet(
@@ -78,13 +82,16 @@ def create_pet():
         db.session.commit()
         flash('Pet entry has been created successfully!')
 
-    return render_template('register_new_pet', pet_creation_form=pet_creation_form,treatment_creation_form=treatment_creation_form)
+    return render_template('register_new_pet', pet_creation_form=pet_creation_form,
+                           treatment_creation_form=treatment_creation_form)
+
 
 @dashboard.route('/list_pet')
 @login_required
 def list_pets():
     pets = Pet.query.all()
     return render_template('list_pet', pets=pets)
+
 
 @dashboard.route('/treatment_records', methods=['GET', 'POST'])
 @login_required
@@ -104,6 +111,7 @@ def create_treatment_record():
         db.session.commit()
         flash('Treatment record has been created successfully!')
 
+<<<<<<< HEAD
     return render_template('treatment_records',treatment_creation_form=treatment_creation_form)
 
 @dashboard.rote('/create_owner', methods=['GET','POST'])
@@ -128,12 +136,16 @@ def create_owner():
         flash('Owner record has been created successfully!')
 
     return render_template('create_owner', create_owner_form=create_owner_form)
+=======
+    return render_template('treatment_record', treatment_creation_form=treatment_creation_form)
+>>>>>>> aa5db1f43e6631381b58c6300f1bea2a07b6141b
 
 
 # "yeni kayit" on the left panel
 @dashboard.route('/add_register', methods=['GET', 'POST'])
 def add_register():
     return render_template('add_register.html')
+
 
 # "kayitlari goruntule" on the left panel
 @dashboard.route('/display_registers', methods=['GET', 'POST'])
