@@ -29,6 +29,9 @@
                  {{ pet_creation_form.disabilities.label }}<br>
                  {{ pet_creation_form.disabilities(class_="form_textbox") }}
              </div>
+            <div>
+                <button type="button">Create</button>
+            </div>
              <br><br>
          </form>
      </div>
