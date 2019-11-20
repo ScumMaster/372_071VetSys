@@ -114,7 +114,7 @@ class Pet(db.Model):
     owner_id = db.Column(db.Integer, db.ForeignKey('owner.owner_id'))
 
     # multivalued disabilities
-    disabilities = db.relationship('Disability')
+    # disabilities = db.relationship('Disability')
 
 
 class PetNotes(db.Model):

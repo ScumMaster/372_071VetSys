@@ -1,5 +1,16 @@
 {% extends "layout.html" %}
 {% block page_content %}
-    <p>this is list pets</p>
-
+    <p style="font-size:1.2em">All pets in your database and data about them: </p>
+    {% for pet in pets %}
+        <div class="pet_data">
+            <img src="{{ url_for('static', filename='images/logoimg_paw.png') }}" class="data_pawicon">
+            <br><br>
+            <p class="page_data_text">
+                Name: <b>{{ pet.name }}</b> <br>
+                Species is <b>{{ pet.species }}</b> and race is <b>{{ pet.race }}</b> <br>
+                Age: <b>{{ pet.age }}</b> <br>
+                Weight: <b>{{ pet.weight }}</b> <br>
+            </p>
+        </div>
+    {% endfor %}
 {% endblock %}

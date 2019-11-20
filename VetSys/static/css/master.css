@@ -66,3 +66,18 @@ form.appointment_zone {
     display: flex;
     justify-content: flex-start;
 }
+
+.pet_data {
+    padding: 10px;
+    background: #e6e6e6;
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 20px;
+}
+
+.data_pawicon {
+    height: 42px;
+    width: 42px;
+    margin-top: 20px;
+    margin-right: 20px;
+}
