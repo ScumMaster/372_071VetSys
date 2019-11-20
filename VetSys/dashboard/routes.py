@@ -44,12 +44,7 @@ def create_pet():
     pet_creation_form = PetCreationForm()
     treatment_creation_form = TreatmentCreationForm()
     if request.method == 'GET':
-<<<<<<< HEAD
         return render_template('register_new_pet.html', pet_creation_form=pet_creation_form,treatment_creation_form=treatment_creation_form)
-=======
-        return render_template('register_new_pet', pet_creation_form=pet_creation_form,
-                               treatment_creation_form=treatment_creation_form)
->>>>>>> 1b9b722ba13c002bee33bd3f5577725570854cf0
 
     if request.method == 'POST':
         new_pet = Pet(
@@ -65,13 +60,7 @@ def create_pet():
         db.session.commit()
         flash('Pet entry has been created successfully!')
 
-<<<<<<< HEAD
     return render_template('register_new_pet.html', pet_creation_form=pet_creation_form,treatment_creation_form=treatment_creation_form)
-=======
-    return render_template('register_new_pet', pet_creation_form=pet_creation_form,
-                           treatment_creation_form=treatment_creation_form)
-
->>>>>>> 1b9b722ba13c002bee33bd3f5577725570854cf0
 
 @dashboard.route('/list_pet')
 @login_required
