@@ -100,13 +100,12 @@ class Pet(db.Model):
     ''' Attributes inherited from Stays relation'''
     checkin_date = db.Column(db.DateTime, default=datetime.utcnow)
     checkout_date = db.Column(db.DateTime)
-
     species = db.Column(db.String(60))
     race = db.Column(db.String(60))
     weight = db.Column(db.Float, nullable=False)
     age = db.Column(db.Integer, nullable=False)
-
     owner_ssn = db.Column(db.Integer, db.ForeignKey('owner.ssn'))
+    treatments = db.relationship('Treatment', backref='pet')
 
     # multivalued disabilities
     # disabilities = db.relationship('Disability')

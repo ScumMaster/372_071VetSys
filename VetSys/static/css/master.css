@@ -39,8 +39,9 @@ button,
   min-width: 90px;
 }
 
-button:hover {
-  background: #00bb88;
+button:hover,
+.submit_button:hover {
+    background: #00bb88;
 }
 
 .form {
@@ -71,10 +72,14 @@ form.appointment_zone {
     padding: 10px;
     background: #e6e6e6;
     display: flex;
-    justify-content: flex-start;
+    justify-content: space-between;
     margin-bottom: 20px;
 }
 
+.thrash {
+    height: 35px;
+    width: 35px;
+}
 .data_pawicon {
     height: 42px;
     width: 42px;
@@ -82,12 +87,10 @@ form.appointment_zone {
     margin-right: 20px;
 }
 
-.delete_zone {
-    float: right;
-}
 .delete_button {
-    float: right;
     background: #e6e6e6;
-    border: 1px solid red;
-    text-align: right;
+    margin: 40px auto;
+}
+.delete_button:hover {
+    background: #d6d6d6;
 }
