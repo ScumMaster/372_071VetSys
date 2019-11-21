@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, flash, request
+from flask import Blueprint, render_template, flash, request, jsonify
 from flask_login import login_required, current_user
 from .forms import OwnerCreationForm, AppointmentCreationForm, PetCreationForm, TreatmentCreationForm
 from .models import Owner, Appointment, Pet, Treatment
@@ -13,7 +13,7 @@ dashboard = Blueprint('dashboard', __name__)
 @dashboard.route('/dashboard')
 @login_required
 def profile():
-    return render_template('dashboard.html', user=current_user)
+    return current_user.user_dashboard()
 
 
 @dashboard.route('/create_owner', methods=['GET', 'POST'])
@@ -26,7 +26,7 @@ def create_owner():
     if request.method == 'POST':
         if owner_creation_form.validate_on_submit():
             new_owner = Owner(
-                ssn = owner_creation_form.ssn.data,
+                ssn=owner_creation_form.ssn.data,
                 name=owner_creation_form.name.data,
                 last_name=owner_creation_form.last_name.data,
                 sex=owner_creation_form.sex.data,
@@ -71,7 +71,8 @@ def register_new_pet():
     pet_creation_form = PetCreationForm()
     treatment_creation_form = TreatmentCreationForm()
     if request.method == 'GET':
-        return render_template('register_new_pet.html', pet_creation_form=pet_creation_form,treatment_creation_form=treatment_creation_form)
+        return render_template('register_new_pet.html', pet_creation_form=pet_creation_form,
+                               treatment_creation_form=treatment_creation_form)
 
     if request.method == 'POST':
         new_pet = Pet(
@@ -85,29 +86,41 @@ def register_new_pet():
         )
 
         new_treatment = Treatment(
-            record_type = treatment_creation_form.treatment_type.data,
-            start_date = treatment_creation_form.start_date.data,
-            end_date = treatment_creation_form.start_date.data,
-            pet_id = new_pet.pet_id
+            record_type=treatment_creation_form.treatment_type.data,
+            start_date=treatment_creation_form.start_date.data,
+            end_date=treatment_creation_form.start_date.data,
+            pet_id=new_pet.pet_id
         )
 
         db.session.add_all([new_pet, new_treatment])
         db.session.commit()
         flash('Pet entry has been created successfully!')
 
-    return render_template('register_new_pet.html', pet_creation_form=pet_creation_form,treatment_creation_form=treatment_creation_form)
+    return render_template('register_new_pet.html', pet_creation_form=pet_creation_form,
+                           treatment_creation_form=treatment_creation_form)
+
 
 @dashboard.route('/list_pet', methods=['GET', 'POST'])
 @login_required
 def list_pet():
     pets = Pet.query.all()
     if request.method == "POST":
-        id=request.form['button-delete']
+        id = request.form['button-delete']
         Pet.query.filter_by(pet_id=id).delete()
         db.session.commit()
         pets = Pet.query.all()
         return render_template('list_pet.html', pets=pets)
     return render_template('list_pet.html', pets=pets)
+
+
+@dashboard.route('/delete_pet', methods=['GET'])
+@login_required
+def delete_pet():
+    pet_id = request.args['button-delete']
+    temp_pet = Pet.query.filter_by(pet_id=pet_id)
+    Pet.query.filter_by(pet_id=pet_id).delete()
+    db.session.commit()
+    return jsonify({'msg':"{} has been deleted.".format(temp_pet.name)})
 
 
 @dashboard.route('/treatment_records', methods=['GET', 'POST'])

@@ -2,7 +2,7 @@
 {% block page_content %}
     <p style="font-size:1.2em">All pets in your database and data about them: </p>
     {% for pet in pets %}
-        <div class="pet_data">
+        <div class="pet_data" id="{{ pet.pet_id }}">
             <div>
                 <img src="{{ url_for('static', filename='images/logoimg_paw.png') }}" class="data_pawicon">
                 <br><br>
@@ -13,7 +13,7 @@
                     Weight: <b>{{ pet.weight }}</b> <br>
                 </p>
             </div>
-            <form class=""  method="POST">
+            <form class="delete-form" action="{{ url_for('dashboard.delete_pet')}}" method="GET">
                 <div class="delete_zone">
                     <button type="submit"  class="delete_button" name="button-delete" value="{{pet.pet_id}}">
                         <img src="{{ url_for('static', filename='images/logoimg_paw.png') }}" class="data_pawicon">
@@ -24,3 +24,4 @@
         </div>
     {% endfor %}
 {% endblock %}
+

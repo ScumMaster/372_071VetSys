@@ -1,5 +1,5 @@
 from VetSys import db, login_manager, app, bc
-from flask import url_for, redirect, flash
+from flask import url_for, redirect, flash, render_template
 from flask_login import UserMixin, current_user
 from flask_admin import Admin as Administrator, AdminIndexView
 from flask_admin.contrib.sqla import ModelView
@@ -38,11 +38,13 @@ class User(db.Model, UserMixin):
     @classmethod
     def create_user(cls, username, password):
         hashed_pw = bc.generate_password_hash(password).decode('utf-8')
-        new_user = cls(username=username, password=hashed_pw);
+        new_user = cls(username=username, password=hashed_pw)
 
         db.session.add(new_user)
         db.session.commit()
 
+    def user_dashboard(self, user):
+        pass
 
 
 class Admin(User):
@@ -56,12 +58,12 @@ class Admin(User):
     def __repr__(self):
         return super().__repr__()
 
-    def dashboard(self):
-        return "/1"
-
     @classmethod
     def create_user(cls, username, password):
-        super().create_user(username,password)
+        super().create_user(username, password)
+
+    def user_dashboard(self):
+        return redirect('/admin')
 
 
 class Assistant(User):
@@ -77,6 +79,7 @@ class Assistant(User):
     __mapper_args__ = {
         "polymorphic_identity": "assistant",
     }
+
     # buraya supervisor ismini de ekleyelim
     def __repr__(self):
         return super().__repr__() + " FIELD: {} , END-DATE: {} ".format(self.field, self.end_date)
@@ -85,6 +88,9 @@ class Assistant(User):
         return super().to_dict().update({'field': self.field,
                                          'end_date': self.end_date.__str__(),
                                          'supervisor': self.supervisor})
+
+    def user_dashboard(self):
+        return render_template("assistant_dashboard.html", user=self)
 
 
 class Vet(User):
@@ -107,6 +113,16 @@ class Vet(User):
                                          'end_date': self.end_date.__str__(),
                                          'supervisees': self.supervisee})
 
+    def user_dashboard(self):
+        return render_template("vet_dashboard.html", user=self)
+
+    @classmethod
+    def create_user(cls, username, password,field=None):
+        hashed_pw = bc.generate_password_hash(password).decode('utf-8')
+        new_user = cls(username=username, password=hashed_pw,field=field)
+        db.session.add(new_user)
+        db.session.commit()
+
 
 class Secretary(User):
     __tablename__ = 'secretary'
@@ -114,19 +130,35 @@ class Secretary(User):
     __mapper_args__ = {
         "polymorphic_identity": "secretary",
     }
-    #languages = db.relationship('Languages', backref='languages')
-    #staff_id = db.Column(db.Integer, db.ForeignKey('staff.staff_id'), primary_key=True)
+
+
+    # languages = db.relationship('Languages', backref='languages')
+    # staff_id = db.Column(db.Integer, db.ForeignKey('staff.staff_id'), primary_key=True)
+
+    @classmethod
+    def create_user(cls, username, password):
+        super().create_user(username=username, password=password)
+
+    def user_dashboard(self):
+        return render_template("secretary_dashboard.html", user=self)
+
+
+class Languages(db.Model):
+    # staff_id = db.Column(db.Integer, db.ForeignKey('secretary.staff_id'), primary_key=True)
+    language = db.Column(db.String, primary_key=True)
+
 
 '''
 class Cleaner(db.Model):
     __tablename__ = 'cleaner'
     #staff_id = db.Column(db.Integer, db.ForeignKey('staff.staff_id'), primary_key=True)
     cleaning_company = db.Column(db.String, default='Caglayan pislik temizleyiciler', nullable=False)
+'''
 
 class Staff(db.Model):
     __tablename__ = 'staff'
     staff_id = db.Column(db.Integer, primary_key=True)
-    # salary = db.Column(db.Float, ddefault=db.Float(2200.5))
+    # salary = db.Column(db.Float, default=db.Float(2200.5))
     phone_number = db.Column(db.Integer)
     name = db.Column(db.String(60), nullable=False)
 
@@ -135,21 +167,13 @@ class Staff(db.Model):
     # finish_at = db.Column(db.DateTime)
     # total_hours = db.Column(db.Interval, nullable=False, default=datetime.timedelta(hours=180))
 
-    def __repr__(self):
-        return 'email: {} admin: {}'.format(self.email, self.is_admin)
 
-'''
-
-
-class Languages(db.Model):
-    #staff_id = db.Column(db.Integer, db.ForeignKey('secretary.staff_id'), primary_key=True)
-    language = db.Column(db.String, primary_key=True)
 
 
 
 class AdminView(AdminIndexView):
     def is_accessible(self):
-        if current_user.is_authenticated and current_user.user_type=='admin':
+        if current_user.is_authenticated and current_user.user_type == 'admin':
             return True
         return False
 
@@ -158,26 +182,28 @@ class AdminView(AdminIndexView):
         return redirect(url_for('dashboard.profile'))
 
 
-
 class UserView(ModelView):
     column_display_pk = True
     column_searchable_list = ['username']
 
     export_types = ['csv', 'json']
     column_exclude_list = ['password']
-    form_edit_rules = ['user_id','username','user_type']
-    form_excluded_columns= ['user_type']
+    form_edit_rules = ['user_id', 'username', 'user_type']
+    form_excluded_columns = ['user_type']
 
-    def create_model(self,form):
-        form.password.data=bc.generate_password_hash(form.password.data)
+    def create_model(self, form):
+        form.password.data = bc.generate_password_hash(form.password.data)
         super().create_model(form)
+
 
 class VetView(UserView):
     column_exclude_list = UserView.column_exclude_list[:].append('user_type')
-    column_list = ['user_id','username','supervisee','field']
+    column_list = ['user_id', 'username', 'supervisee', 'field']
+
 
 class AssistantView(UserView):
     column_exclude_list = UserView.column_exclude_list[:].append('user_type')
+
 
 class SecretaryView(UserView):
     column_exclude_list = UserView.column_exclude_list[:].append('user_type')
@@ -185,13 +211,10 @@ class SecretaryView(UserView):
 
 admin = Administrator(app, index_view=AdminView())
 admin.add_view(UserView(User, db.session))
-admin.add_view(VetView(Vet,db.session))
-admin.add_view(AssistantView(Assistant,db.session))
-admin.add_view(SecretaryView(Secretary,db.session))
+admin.add_view(VetView(Vet, db.session))
+admin.add_view(AssistantView(Assistant, db.session))
+admin.add_view(SecretaryView(Secretary, db.session))
 
-for name,obj in inspect.getmembers(dmodels,inspect.isclass):
-    if name !='datetime':
-        admin.add_view(ModelView(obj,db.session))
-
-
-
+for name, obj in inspect.getmembers(dmodels, inspect.isclass):
+    if name != 'datetime':
+        admin.add_view(ModelView(obj, db.session))
