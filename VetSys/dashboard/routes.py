@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, flash, request, jsonify
 from flask_login import login_required, current_user
 from .forms import OwnerCreationForm, AppointmentCreationForm, PetCreationForm, TreatmentCreationForm
 from .models import Owner, Appointment, Pet, Treatment
+from VetSys.users.models import  User
 from VetSys import db
 from datetime import datetime
 from VetSys.decorators.route_decorators import access_granted
@@ -26,7 +27,7 @@ def create_owner():
     if request.method == 'POST':
         if owner_creation_form.validate_on_submit():
             new_owner = Owner(
-                ssn=owner_creation_form.ssn.data,
+                ssn = owner_creation_form.ssn.data,
                 name=owner_creation_form.name.data,
                 last_name=owner_creation_form.last_name.data,
                 sex=owner_creation_form.sex.data,
@@ -48,19 +49,20 @@ def create_appointment():
         return render_template('appointment.html', form=form)
 
     if request.method == 'POST':
-        owner = Owner.query.filter_by(ssn=form.owner_ssn.data).first()
-        new_appointment = Appointment(
-            appo_id=Appointment.query.filter_by().count() + 1,
-            on=datetime.combine(form.on.data, form.hour.data),
-            appo_type=form.appointment_type.data
-        )
-        try:
-            owner.appointments.append(new_appointment)
-            db.session.add_all([owner, new_appointment])
-            db.session.commit()
-            flash('Appointment created succesffully')
-        except:
-            return "selam"
+        if form.validate_on_submit():
+            owner = Owner.query.filter_by(ssn=form.owner_ssn.data).first()
+            new_appointment = Appointment(
+                appo_id=Appointment.query.filter_by().count() + 1,
+                on=datetime.combine(form.on.data, form.hour.data),
+                appo_type=form.appointment_type.data
+            )
+            try:
+                owner.appointments.append(new_appointment)
+                db.session.add_all([owner, new_appointment])
+                db.session.commit()
+                flash('Appointment created succesffully')
+            except:
+                return "selam"
 
     return render_template('appointment.html', form=form)
 
@@ -75,27 +77,27 @@ def register_new_pet():
                                treatment_creation_form=treatment_creation_form)
 
     if request.method == 'POST':
-        new_pet = Pet(
-            name=pet_creation_form.pet_name.data,
-            age=pet_creation_form.age.data,
-            weight=pet_creation_form.weight.data,
-            race=pet_creation_form.race.data,
-            species=pet_creation_form.species.data,
-            owner_ssn=pet_creation_form.owner_ssn.data
-            # disabilities=pet_creation_form.disabilities.data,
-        )
+        if pet_creation_form.validate_on_submit() and treatment_creation_form.validate_on_submit():
+            new_pet = Pet(
+                name=pet_creation_form.pet_name.data,
+                age=pet_creation_form.age.data,
+                weight=pet_creation_form.weight.data,
+                race=pet_creation_form.race.data,
+                species=pet_creation_form.species.data,
+                owner_ssn=pet_creation_form.owner_ssn.data
+                # disabilities=pet_creation_form.disabilities.data,
+            )
+            new_treatment = Treatment(
+                record_type = treatment_creation_form.treatment_type.data,
+                start_date = treatment_creation_form.start_date.data,
+                end_date = treatment_creation_form.start_date.data,
+            )
+        # ownerla baglamak lazim burda henuz yapmadim -cagatay
 
-        new_treatment = Treatment(
-            record_type = treatment_creation_form.treatment_type.data,
-            start_date = treatment_creation_form.start_date.data,
-            end_date = treatment_creation_form.start_date.data,
-
-        )
-        new_pet.treatments.append(new_treatment)
-
-        db.session.add_all([new_pet, new_treatment])
-        db.session.commit()
-        flash('Pet entry has been created successfully!')
+            new_pet.treatments.append(new_treatment)
+            db.session.add_all([new_pet, new_treatment])
+            db.session.commit()
+            flash('Pet entry has been created successfully!')
 
     return render_template('register_new_pet.html', pet_creation_form=pet_creation_form,
                            treatment_creation_form=treatment_creation_form)
@@ -132,19 +134,30 @@ def create_treatment_record():
         return render_template('treatment_records.html', treatment_creation_form=treatment_creation_form)
 
     if request.method == 'POST':
-        new_treatment_record = Treatment(
-            record_type=treatment_creation_form.treatment_type.data,
-            start_date=treatment_creation_form.start_date.data,
-            end_date=treatment_creation_form.end_date.data
-        )
-
-        db.session.add(new_treatment_record)
-        db.session.commit()
-        flash('Treatment record has been created successfully!')
+        if treatment_creation_form.validate_on_submit():
+            new_treatment_record = Treatment(
+                record_type=treatment_creation_form.treatment_type.data,
+                start_date=treatment_creation_form.start_date.data,
+                end_date=treatment_creation_form.end_date.data
+            )
+        # burayi bi duzeltsenize ya henuz legit olmamis - cagatay
+            pet = Pet.query.filter_by(name=treatment_creation_form.pet_name.data).first()
+            pet.treatments.append(new_treatment_record)
+            db.session.add_all([new_treatment_record,pet])
+            db.session.commit()
+            flash('Treatment record has been created successfully!')
 
     return render_template('treatment_records', treatment_creation_form=treatment_creation_form)
 
 @dashboard.route('/display_registers', methods=['GET', 'POST'])
+@login_required
 def display_registers():
     appointments = Appointment.query.all()
     return render_template('display_registers.html', appointments=appointments)
+
+@dashboard.route('/profile', methods=['GET', 'POST'])
+@login_required
+def profile2():
+    user = current_user.query.filter_by().first()
+    # user.query.all()
+    return render_template('profile.html', user=user)

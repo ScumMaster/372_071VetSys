@@ -110,6 +110,7 @@ class Pet(db.Model):
     # multivalued disabilities
     # disabilities = db.relationship('Disability')
 
+
 class Cages(db.Model):
     __tablename__ = 'cages'
     cage_id = db.Column(db.Integer, nullable=False, primary_key=True)
@@ -121,6 +122,7 @@ class Cages(db.Model):
     suitabilities = db.relationship('Suitability', backref='cage')
     # multivalued notes attribute
     notes = db.relationship('CageNotes', backref='cage')
+
 
 # class PetCagesLink(db.Model):
 #     __tablename__ = 'pet_cages_link'
@@ -138,15 +140,15 @@ class Disability(db.Model):
 
 
 # cd
-class Clinic(db.Model):
-    __tablename__ = 'clinic'
-    clinic_id = db.Column(db.Integer, primary_key=True)
-    contact_info = db.Column(db.String, nullable=False)
-    location = db.Column(db.String, nullable=False)
-
-    # clinic has medicines
-    # removed medicines from clinic
-    # medicines = db.relationship('Medicine', backref='clinics')
+# class Clinic(db.Model):
+#     __tablename__ = 'clinic'
+#     clinic_id = db.Column(db.Integer, primary_key=True)
+#     contact_info = db.Column(db.String, nullable=False)
+#     location = db.Column(db.String, nullable=False)
+#
+#     # clinic has medicines
+#     # removed medicines from clinic
+#     # medicines = db.relationship('Medicine', backref='clinics')
 
 
 class Medicine(db.Model):
