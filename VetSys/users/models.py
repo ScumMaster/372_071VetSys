@@ -20,7 +20,6 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String, nullable=False, unique=True)
     password = db.Column(db.String, nullable=False)
     user_type = db.Column(db.String(50))
-
     __mapper_args__ = {
         "polymorphic_identity": "user",
         "polymorphic_on": user_type
@@ -221,7 +220,7 @@ class AdminView(AdminIndexView):
             return True
         return False
 
-    def inaccessible_callback(self, name, **kwargs):
+    def inaccessible_callback(self, **kwargs):
         flash('You are not allowed to enter admin section', 'error')
         return redirect(url_for('dashboard.profile'))
 
