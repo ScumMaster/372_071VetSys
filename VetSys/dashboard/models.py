@@ -41,7 +41,7 @@ class Appointment(db.Model):
     appo_type = db.Column(db.String, nullable=False)
 
     owner_ssn = db.Column(db.Integer, db.ForeignKey('owner.ssn'), primary_key=True,
-                         autoincrement=False)
+                          autoincrement=False)
 
 
 class Invoices(db.Model):
@@ -81,6 +81,7 @@ class InvoicesServiceLink(db.Model):
     invoices = db.relationship(Invoices, backref=db.backref('invoices_assoc'))
     service = db.relationship(Service, backref=db.backref('service_assoc'))
 
+
 class Suitability(db.Model):
     cage_id = db.Column(db.Integer, db.ForeignKey(
         'cages.cage_id'), primary_key=True)
@@ -91,6 +92,13 @@ class CageNotes(db.Model):
     cage_id = db.Column(db.Integer, db.ForeignKey(
         'cages.cage_id'), primary_key=True)
     note = db.Column(db.String, primary_key=True)
+
+
+Stay = db.Table(
+    'stay',
+    db.Column('pet_id', db.Integer, db.ForeignKey('pet.pet_id'), primary_key=True),
+    db.Column('cage_id', db.Integer, db.ForeignKey('cages.cage_id'), primary_key=True)
+)
 
 
 class Pet(db.Model):
@@ -104,13 +112,18 @@ class Pet(db.Model):
     race = db.Column(db.String(60))
     weight = db.Column(db.Float, nullable=False)
     age = db.Column(db.Integer, nullable=False)
+
     owner_ssn = db.Column(db.Integer, db.ForeignKey('owner.ssn'))
+
     treatments = db.relationship('Treatment', backref='pet')
+    # Stays relation
+    cage = db.relationship('Cage', secondary=Stay, back_populates='pet')
 
     # multivalued disabilities
-    # disabilities = db.relationship('Disability')
+    disabilities = db.relationship('Disability')
 
-class Cages(db.Model):
+
+class Cage(db.Model):
     __tablename__ = 'cages'
     cage_id = db.Column(db.Integer, nullable=False, primary_key=True)
     size = db.Column(db.Integer, nullable=False)
@@ -121,10 +134,8 @@ class Cages(db.Model):
     suitabilities = db.relationship('Suitability', backref='cage')
     # multivalued notes attribute
     notes = db.relationship('CageNotes', backref='cage')
-
-# class PetCagesLink(db.Model):
-#     __tablename__ = 'pet_cages_link'
-#     pet_id = db.Column()
+    # Stays relation
+    pet = db.relationship('Pet', secondary=Stay, back_populates='cage')
 
 
 class PetNotes(db.Model):
