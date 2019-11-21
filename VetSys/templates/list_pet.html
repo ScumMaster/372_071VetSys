@@ -3,23 +3,27 @@
     <p style="font-size:1.2em">All pets in your database and data about them: </p>
     {% for pet in pets %}
         <div class="pet_data">
-            <div>
+
+            <div style="display: flex;
+                        justify-content: flex-start;">
                 <img src="{{ url_for('static', filename='images/logoimg_paw.png') }}" class="data_pawicon">
                 <br><br>
                 <p class="page_data_text">
                     Name: <b>{{ pet.name }}</b> <br>
+                    Owner: <b>{{ pet.owner_ssn }}</b> <br>
                     Species is <b>{{ pet.species }}</b> and race is <b>{{ pet.race }}</b> <br>
                     Age: <b>{{ pet.age }}</b> <br>
                     Weight: <b>{{ pet.weight }}</b> <br>
                 </p>
             </div>
-            <form class=""  method="POST">
-                <div class="delete_zone">
+
+            <div class="delete_zone">
+                <form class="" method="POST">
                     <button type="submit"  class="delete_button" name="button-delete" value="{{pet.pet_id}}">
-                        <img src="{{ url_for('static', filename='images/logoimg_paw.png') }}" class="data_pawicon">
+                        <img src="{{ url_for('static', filename='images/thrash.png') }}" class="thrash">
                     </button>
-                </div>
-            </form>
+                </form>
+            </div>
 
         </div>
     {% endfor %}

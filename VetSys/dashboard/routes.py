@@ -60,7 +60,7 @@ def create_appointment():
             db.session.commit()
             flash('Appointment created succesffully')
         except:
-            return Exception('An error occurred while creating appointment')
+            return "selam"
 
     return render_template('appointment.html', form=form)
 
@@ -130,14 +130,6 @@ def create_treatment_record():
 
     return render_template('treatment_records', treatment_creation_form=treatment_creation_form)
 
-
-# "yeni kayit" on the left panel
-@dashboard.route('/add_register', methods=['GET', 'POST'])
-def add_register():
-    return render_template('add_register.html')
-
-
-# "kayitlari goruntule" on the left panel
 @dashboard.route('/display_registers', methods=['GET', 'POST'])
 def display_registers():
     appointments = Appointment.query.all()
