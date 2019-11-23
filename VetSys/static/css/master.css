@@ -94,3 +94,10 @@ form.appointment_zone {
 .delete_button:hover {
     background: #d6d6d6;
 }
+
+.message {
+    padding: 10px;
+    margin: 10px 0;
+    font-size: 1.2em;
+    color: #009966;
+}

@@ -49,6 +49,21 @@ def create_appointment():
         return render_template('appointment.html', form=form)
 
     if request.method == 'POST':
+
+        owner = Owner.query.filter_by(ssn=form.owner_ssn.data).first()
+        new_appointment = Appointment(
+            appo_id=Appointment.query.filter_by().count() + 1,
+            on=datetime.combine(form.on.data, form.hour.data),
+            appo_type=form.appointment_type.data
+        )
+
+        owner.appointments.append(new_appointment)
+        db.session.add_all([owner, new_appointment])
+        db.session.commit()
+        flash('Appointment created succesffully')
+
+
+
         if form.validate_on_submit():
             owner = Owner.query.filter_by(ssn=form.owner_ssn.data).first()
             new_appointment = Appointment(
@@ -63,6 +78,7 @@ def create_appointment():
                 flash('Appointment created succesffully')
             except:
                 return "selam"
+
 
     return render_template('appointment.html', form=form)
 

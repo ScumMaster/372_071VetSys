@@ -1,7 +1,11 @@
 {% extends "layout.html" %}
+
 {% block page_content %}
-    <p>this is profile page content.</p>
     <p>
-        {{ user.username }}
+        You exist in the system as <b>{{ user.user_type }}</b><br>
+        with user_id <b>{{ user.user_id }}</b>
     </p>
+    <p>Name: <b>{{ user.username }}</b></p>
+
+
 {% endblock %}
