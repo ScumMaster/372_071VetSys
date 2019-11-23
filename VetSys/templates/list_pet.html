@@ -1,6 +1,13 @@
 {% extends "layout.html" %}
 {% block page_content %}
     <p style="font-size:1.2em">All pets in your database and data about them: </p>
+    <div>
+        <label for="search_box">Search pets by name:</label>
+        <input type="text" id="search_box" onkeyup="">
+        <div id="search-result">
+
+        </div>
+    </div>
     {% for pet in pets %}
         <div class="pet_data">
             <div style="display: flex;
@@ -27,4 +34,5 @@
         </div>
     {% endfor %}
 {% endblock %}
+<script src="{{ url_for('static', filename='js/listpet.js') }}"></script>
 

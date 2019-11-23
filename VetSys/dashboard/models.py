@@ -122,6 +122,14 @@ class Pet(db.Model):
     # multivalued disabilities
     disabilities = db.relationship('Disability')
 
+    def to_dict(self):
+        return {
+                "id":self.pet_id,
+                "name":self.name
+            }
+
+
+
 
 class Cage(db.Model):
     __tablename__ = 'cages'
@@ -148,16 +156,11 @@ class Disability(db.Model):
     disab_desc = db.Column(db.String(260), nullable=False, primary_key=True)
 
 
-# cd
 class Clinic(db.Model):
     __tablename__ = 'clinic'
     clinic_id = db.Column(db.Integer, primary_key=True)
     contact_info = db.Column(db.String, nullable=False)
     location = db.Column(db.String, nullable=False)
-
-    # clinic has medicines
-    # removed medicines from clinic
-    # medicines = db.relationship('Medicine', backref='clinics')
 
 
 class Medicine(db.Model):
@@ -179,4 +182,6 @@ class Treatment(db.Model):
     end_date = db.Column(db.DateTime)
     pet_id = db.Column(db.Integer, db.ForeignKey('pet.pet_id'))
     medicines = db.relationship('Medicine', backref='medicines')
-    # has relationship?
+
+
+

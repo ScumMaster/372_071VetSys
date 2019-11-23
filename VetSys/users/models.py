@@ -75,6 +75,9 @@ class Assistant(User):
 
     supervisor = db.relationship('Vet', back_populates='supervisee', foreign_keys=[supervisor_id])
 
+    staff_id=db.Column(db.Integer,db.ForeignKey('staff.staff_id'))
+    staff_t=db.relationship('Staff',back_populates='user_t',foreign_keys=[staff_id])
+
     __mapper_args__ = {
         "polymorphic_identity": "assistant",
     }
@@ -131,6 +134,8 @@ class Secretary(User):
     }
 
 
+
+
     # languages = db.relationship('Languages', backref='languages')
     # staff_id = db.Column(db.Integer, db.ForeignKey('staff.staff_id'), primary_key=True)
 
@@ -162,6 +167,7 @@ class Staff(db.Model):
     name = db.Column(db.String(60), nullable=False)
 
     address = db.Column(db.String(100))
+    user_t = db.relationship('Assistant',back_populates='staff_t',foreign_keys='Assistant.staff_id')
     # start_at = db.Column(db.DateTime)
     # finish_at = db.Column(db.DateTime)
     # total_hours = db.Column(db.Interval, nullable=False, default=datetime.timedelta(hours=180))
@@ -202,7 +208,7 @@ class VetView(UserView):
 
 class AssistantView(UserView):
     column_exclude_list = UserView.column_exclude_list[:].append('user_type')
-
+    column_list = ['user_id', 'username', 'supervisee', 'field','staff_t']
 
 class SecretaryView(UserView):
     column_exclude_list = UserView.column_exclude_list[:].append('user_type')
@@ -213,6 +219,7 @@ admin.add_view(UserView(User, db.session))
 admin.add_view(VetView(Vet, db.session))
 admin.add_view(AssistantView(Assistant, db.session))
 admin.add_view(SecretaryView(Secretary, db.session))
+admin.add_view(ModelView(Staff,db.session))
 
 for name, obj in inspect.getmembers(dmodels, inspect.isclass):
     if name != 'datetime':

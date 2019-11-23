@@ -145,6 +145,17 @@ def create_treatment_record():
     return render_template('treatment_records', treatment_creation_form=treatment_creation_form)
 
 @dashboard.route('/display_registers', methods=['GET', 'POST'])
+@login_required
 def display_registers():
     appointments = Appointment.query.all()
     return render_template('display_registers.html', appointments=appointments)
+
+
+@dashboard.route('/search_pet',methods=['POST'])
+@login_required
+def search_pet():
+    pets=Pet.query.filter(Pet.name.like(request.form['text'])).all()
+    results=[p.to_dict() for p in pets]
+    print(jsonify({'query' : results}))
+    return jsonify({'query' : results})
+
