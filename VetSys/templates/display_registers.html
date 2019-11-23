@@ -1,5 +1,7 @@
 {% extends "layout.html" %}
 {% block page_content %}
-    <p>this is display registers page content.</p>
-    <p>here, all registers exist in the database will be displayed...</p>
+    {% for appo in appointments %}
+        {{ appo.appo_type }}<br>
+        {{ appo.on }}
+    {% endfor %}
 {% endblock %}

@@ -54,13 +54,13 @@ def create_appointment():
             on=datetime.combine(form.on.data, form.hour.data),
             appo_type=form.appointment_type.data
         )
-        try:
-            owner.appointments.append(new_appointment)
-            db.session.add_all([owner, new_appointment])
-            db.session.commit()
-            flash('Appointment created succesffully')
-        except:
-            return "selam"
+
+        owner.appointments.append(new_appointment)
+        db.session.add_all([owner, new_appointment])
+        db.session.commit()
+        flash('Appointment created succesffully')
+
+
 
     return render_template('appointment.html', form=form)
 
@@ -134,3 +134,9 @@ def create_treatment_record():
 def display_registers():
     appointments = Appointment.query.all()
     return render_template('display_registers.html', appointments=appointments)
+
+@dashboard.route('/profile', methods=['GET', 'POST'])
+@login_required
+def profile2():
+    # user.query.all()
+    return render_template('profile.html', user=current_user)

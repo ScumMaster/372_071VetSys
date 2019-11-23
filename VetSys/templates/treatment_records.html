@@ -14,14 +14,5 @@
              {{ treatment_creation_form.end_date.label }}<br>
              {{ treatment_creation_form.end_date(class_="form_textbox") }}
          </div>
-
-
-        {%  with messages=get_flashed_messages() %}
-                 {% if messages %}
-                     {% for message in messages %}
-                         {{ message }}
-                     {% endfor %}
-                 {% endif %}
-        {% endwith %}
      </form>
 </div>

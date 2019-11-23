@@ -36,6 +36,14 @@
 
          {% include 'treatment_records.html' %}
     </div>
-
+    <div class="message">
+    {%  with messages=get_flashed_messages() %}
+             {% if messages %}
+                 {% for message in messages %}
+                     {{ message }}
+                 {% endfor %}
+             {% endif %}
+    {% endwith %}
+    </div>
 
 {% endblock %}
