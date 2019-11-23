@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 #from VetSys.users.models import Staff
-from wtforms import StringField, PasswordField, SubmitField, IntegerField, RadioField
+from wtforms import StringField, PasswordField, SubmitField, IntegerField, RadioField, DecimalField
 from wtforms.fields.html5 import DateField, TimeField
 from wtforms.validators import DataRequired, Email, Optional
 
@@ -14,6 +14,7 @@ class OwnerCreationForm(FlaskForm):
     email = StringField('Email', validators=[Email()])
     address = StringField('Address:')
     phone = IntegerField('Phone:')
+    submit_button = SubmitField('Register an Owner')
 
 
 class AppointmentCreationForm(FlaskForm):
@@ -40,4 +41,31 @@ class PetCreationForm(FlaskForm):
 class TreatmentCreationForm(FlaskForm):
     treatment_type = StringField('Treatment Type:')
     start_date = DateField('Start Date:')
-    end_date = DateField('End Date: ')
+    end_date = DateField('End Date:')
+    pet_name = StringField('Pet Name:')
+    submit_button = SubmitField('Create')
+
+class InvoiceCreationForm(FlaskForm):
+    quantity = IntegerField('Quantity:')
+    transaction_date = DateField('Invoice Date:')
+    service_name = StringField('Service name:') #burasi dropdown box gibi bisi olacak aslinda ama duzelticem onu -cagatay
+    # bi de nasil yapacaksam multiple selection olacak
+    service_quantity = IntegerField('Service quantity:')
+    owner_ssn = IntegerField('Owner SSN:')
+    submit_button = SubmitField('Create')
+
+class ServiceCreationForm(FlaskForm):
+    name = StringField('Service name:')
+    cost = DecimalField('Cost: ')
+    submit_button = SubmitField('Create')
+
+class MedicineCreationForm(FlaskForm):
+    serial_number = IntegerField('Serial number:')
+    name = StringField('Name of Medicine')
+    barcode_number = IntegerField('Barcode number:')
+    expiration_date = DateField('Expiration Date:')
+    distributor_name = StringField('Distributor name:')
+    distributor_phone = IntegerField('Distributor phone:')
+    submit_button = SubmitField('Create')
+
+

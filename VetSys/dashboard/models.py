@@ -23,8 +23,8 @@ class Owner(db.Model):
                                                                self.phone)
 
     @classmethod
-    def create_owner(cls, owner_name, owner_sex, owner_email, owner_address, owner_phone):
-        new_owner = cls(name=owner_name, sex=owner_sex,
+    def create_owner(cls, ssn,owner_name, last_name, owner_sex, owner_email, owner_address, owner_phone):
+        new_owner = cls(ssn=ssn,name=owner_name, last_name=last_name, sex=owner_sex,
                         email=owner_email, address=owner_address, phone=owner_phone)
         db.session.add(new_owner)
         db.session.commit()
@@ -80,7 +80,6 @@ class InvoicesServiceLink(db.Model):
 
     invoices = db.relationship(Invoices, backref=db.backref('invoices_assoc'))
     service = db.relationship(Service, backref=db.backref('service_assoc'))
-
 
 class Suitability(db.Model):
     cage_id = db.Column(db.Integer, db.ForeignKey(

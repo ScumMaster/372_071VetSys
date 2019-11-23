@@ -7,6 +7,10 @@
              {{ treatment_creation_form.treatment_type(class_="form_textbox") }}
          </div>
          <div class="form">
+             {{ treatment_creation_form.pet_name.label }}<br>
+             {{ treatment_creation_form.pet_name(class_="form_textbox") }}
+         </div>
+         <div class="form">
              {{ treatment_creation_form.start_date.label }}<br>
              {{ treatment_creation_form.start_date(class_="form_textbox") }}
          </div>
@@ -23,5 +27,7 @@
                      {% endfor %}
                  {% endif %}
         {% endwith %}
+            <br><br>
+            {{ treatment_creation_form.submit_button(class_="submit_button") }}
      </form>
 </div>
