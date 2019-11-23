@@ -1,7 +1,7 @@
 
 .left_panel {
   height: 100%;
-  width: 250px;
+  width: 300px;
   position: fixed;
   z-index: 1;
   top: 0;
@@ -56,5 +56,28 @@
 #pets_dropclose, #app_dropclose { display: none; }
 
 .left_panel_link {
-    font-size: 1.3em;
+    font-size: 1.2em;
+}
+
+.d-triangle {
+    width: 0;
+    height: 0;
+    border-top: solid 8px rgb(200,30,50);
+    border-left: solid 8px transparent;
+    border-right: solid 8px transparent;
+}
+
+/* unnecessary now... */
+.logout-button {
+    padding: 0;
+    min-width: 0;
+    font-size: 1.1em;
+    background: #1a1a1a;
+    color: #e6e6e6;
+    text-decoration: none;
+    font-family: ttf_source_sans;
+}
+.logout-button:hover {
+    background: #1a1a1a;
+    color: #fff;
 }

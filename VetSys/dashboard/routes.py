@@ -169,6 +169,13 @@ def create_treatment_record():
 @login_required
 def display_registers():
     appointments = Appointment.query.all()
+    if request.method == "POST":
+        id = request.form['button-delete']
+        Appointment.query.filter_by(appo_id=id).delete()
+        db.session.commit()
+        appointments = Appointment.query.all()
+        return render_template('display_registers.html', appointments=appointments)
+
     return render_template('display_registers.html', appointments=appointments)
 
 
@@ -180,6 +187,16 @@ def search_pet():
     results=[p.to_dict() for p in pets]
     print(jsonify({'query' : results}))
     return jsonify({'query' : results})
+
+
+@dashboard.route('/delete_appointment', methods=['GET'])
+@login_required
+def delete_appointment():
+    appo_id = request.args['button-delete']
+    temp_appo = Appointment.query.filter_by(appo_id=appo_id)
+    Appointment.query.filter_by(appo_id=appo_id).delete()
+    db.session.commit()
+    return jsonify({'msg':"{} has been deleted.".format(temp_appo.appo_id)})
 
 
 @dashboard.route('/profile', methods=['GET', 'POST'])
