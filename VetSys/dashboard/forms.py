@@ -59,4 +59,13 @@ class ServiceCreationForm(FlaskForm):
     cost = DecimalField('Cost: ')
     submit_button = SubmitField('Create')
 
+class MedicineCreationForm(FlaskForm):
+    serial_number = IntegerField('Serial number:')
+    name = StringField('Name of Medicine')
+    barcode_number = IntegerField('Barcode number:')
+    expiration_date = DateField('Expiration Date:')
+    distributor_name = StringField('Distributor name:')
+    distributor_phone = IntegerField('Distributor phone:')
+    submit_button = SubmitField('Create')
+
 
