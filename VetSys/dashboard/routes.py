@@ -49,7 +49,7 @@ def create_appointment():
         return render_template('appointment.html', form=form)
 
     if request.method == 'POST':
-<<<<<<< HEAD
+
         owner = Owner.query.filter_by(ssn=form.owner_ssn.data).first()
         new_appointment = Appointment(
             appo_id=Appointment.query.filter_by().count() + 1,
@@ -63,7 +63,7 @@ def create_appointment():
         flash('Appointment created succesffully')
 
 
-=======
+
         if form.validate_on_submit():
             owner = Owner.query.filter_by(ssn=form.owner_ssn.data).first()
             new_appointment = Appointment(
@@ -78,7 +78,7 @@ def create_appointment():
                 flash('Appointment created succesffully')
             except:
                 return "selam"
->>>>>>> 23393b2815a6eb8a0db0affff133f5d6e0a342ee
+
 
     return render_template('appointment.html', form=form)
 
@@ -174,11 +174,6 @@ def display_registers():
 @dashboard.route('/profile', methods=['GET', 'POST'])
 @login_required
 def profile2():
-<<<<<<< HEAD
-    # user.query.all()
-    return render_template('profile.html', user=current_user)
-=======
     user = current_user.query.filter_by().first()
     # user.query.all()
     return render_template('profile.html', user=user)
->>>>>>> 23393b2815a6eb8a0db0affff133f5d6e0a342ee
