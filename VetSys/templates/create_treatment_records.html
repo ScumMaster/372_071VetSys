@@ -20,14 +20,7 @@
          </div>
 
 
-        {%  with messages=get_flashed_messages() %}
-                 {% if messages %}
-                     {% for message in messages %}
-                         {{ message }}
-                     {% endfor %}
-                 {% endif %}
-        {% endwith %}
-            <br><br>
-            {{ treatment_creation_form.submit_button(class_="submit_button") }}
+        <br><br>
+        {{ treatment_creation_form.submit_button(class_="submit_button") }}
      </form>
 </div>

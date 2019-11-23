@@ -11,7 +11,7 @@ body, p {
 }
 @font-face {
     font-family: ttf_source_sans;
-    src: url(fonts/Source_Sans_Pro/SourceSansPro-Regular.ttf);
+    src: url(fonts/Open-Sans/OpenSans-Regular.ttf);
 }
 @@font-face {
     font-family: ttf_source_code;
@@ -20,7 +20,7 @@ body, p {
 
 
 .main_zone {
-  margin: 20px 20%;
+  margin: 20px 25%;
   display: block;
 }
 
@@ -87,6 +87,13 @@ form.appointment_zone {
     margin-right: 20px;
 }
 
+.data_appoicon {
+    height: 75px;
+    width: 75px;
+    margin-top: 20px;
+    margin-right: 20px;
+}
+
 .delete_button {
     background: #e6e6e6;
     margin: 40px auto;
@@ -100,4 +107,13 @@ form.appointment_zone {
     margin: 10px 0;
     font-size: 1.2em;
     color: #009966;
+}
+
+.dropdown_box {
+    border-right: 6px solid #676;
+    background: #2d2d2d;
+    padding: 1px 12px 1px 1px;
+}
+.dropdown_box a::after {
+    color: #fff;
 }

@@ -11,7 +11,7 @@
     </head>
     <body>
     <div class="left_panel">
-        <h1 class="logo">VetSys</h1>
+        <a href="/"><h1 class="logo">VetSys</h1></a>
         <img src="{{ url_for('static', filename='images/rs.png') }}" alt="" class="profile_picture">
         {% if user %}
         <p class="vet_name">{{ user.username }}</p>
@@ -19,11 +19,11 @@
         <div class="content">
             <p class="dropdown_text" id="pets_dropdown"
                onclick="petsDropdown()">
-                Pets &darr;
+                Pets &ensp; <span style="font-size: 0.9em"> &#9660;</span>
             </p>
             <p class="dropdown_text" id="pets_dropclose"
                onclick="petsDropclose()">
-                Pets &uarr;
+                Pets &ensp; <span style="font-size: 0.9em"> &#9650;</span>
             </p>
             <div class="dropdown_box" id="pdb">
                 <p><a href="/register_new_pet">Register new pet</a></p>
@@ -32,18 +32,19 @@
 
             <p class="dropdown_text" id="app_dropdown"
                onclick="appDropdown()">
-                Appointments &darr;
+                Appointments &ensp; <span style="font-size: 0.9em"> &#9660;</span>
             </p>
             <p class="dropdown_text" id="app_dropclose"
                onclick="appDropclose()">
-                Appointments &uarr;
+                Appointments &ensp; <span style="font-size: 0.9em"> &#9650;</span>
             </p>
             <div class="dropdown_box" id="adb">
                 <p><a href="/make_appointment">Register new appointment</a></p>
                 <p><a href="/display_registers">List appointments</a></p>
             </div>
 
-            <p><a href="/profile" class="left_panel_link">Profile</a>
+            <p><a href="/profile" class="left_panel_link">Profile</a></p>
+            <p><a href="/logout" class="left_panel_link">Logout</a></p>
 
         </div>
     </div>

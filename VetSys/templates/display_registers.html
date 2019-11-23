@@ -1,7 +1,35 @@
 {% extends "layout.html" %}
 {% block page_content %}
+    <p style="font-size:1.2em">All appointments in your database and data about them: </p>
     {% for appo in appointments %}
-        {{ appo.appo_type }}<br>
-        {{ appo.on }}
+        <div class="pet_data">
+            <div style="display: flex;
+                        justify-content: flex-start;">
+                <img src="{{ url_for('static', filename='images/iconbl.png') }}" class="data_appoicon">
+                <br><br>
+                <p class="page_data_text">
+                    You have an appointment on <b>{{ appo.on }}</b><br>
+                    Appointment type is
+                    {% if appo.appo_type == "r1" %}
+                        <b>for once</b>
+                    {% endif %}
+                    {% if appo.appo_type == "r2" %}
+                        <b>Periodic</b>
+                    {% endif %}
+                    <br>
+                    [[buraya owner_ssn'den elde edilen isim soyisim vs gelecek]]
+
+                </p>
+            </div>
+
+            <div class="delete_zone">
+                <form class="" method="POST">
+                    <button type="submit"  class="delete_button" name="button-delete" value="{{ appo.appo_id }}">
+                        <img src="{{ url_for('static', filename='images/thrash.png') }}" class="thrash">
+                    </button>
+                </form>
+            </div>
+        </div>
+
     {% endfor %}
 {% endblock %}
