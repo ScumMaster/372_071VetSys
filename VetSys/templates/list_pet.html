@@ -3,7 +3,6 @@
     <p style="font-size:1.2em">All pets in your database and data about them: </p>
     {% for pet in pets %}
         <div class="pet_data">
-
             <div style="display: flex;
                         justify-content: flex-start;">
                 <img src="{{ url_for('static', filename='images/logoimg_paw.png') }}" class="data_pawicon">
@@ -28,3 +27,4 @@
         </div>
     {% endfor %}
 {% endblock %}
+

@@ -1,0 +1,36 @@
+<div>
+    <form method="POST" class="appointment_zone">
+         {{ treatment_creation_form.hidden_tag() }}
+
+         <div class="form">
+             {{ treatment_creation_form.treatment_type.label }}<br>
+             {{ treatment_creation_form.treatment_type(class_="form_textbox") }}
+         </div>
+         <div class="form">
+             {{ treatment_creation_form.pet_name.label }}<br>
+             {{ treatment_creation_form.pet_name(class_="form_textbox") }}
+         </div>
+         <div class="form">
+             {{ treatment_creation_form.start_date.label }}<br>
+             {{ treatment_creation_form.start_date(class_="form_textbox") }}
+         </div>
+         <div class="form">
+             {{ treatment_creation_form.end_date.label }}<br>
+             {{ treatment_creation_form.end_date(class_="form_textbox") }}
+         </div>
+<<<<<<< HEAD:VetSys/templates/treatment_records.html
+=======
+
+
+        {%  with messages=get_flashed_messages() %}
+                 {% if messages %}
+                     {% for message in messages %}
+                         {{ message }}
+                     {% endfor %}
+                 {% endif %}
+        {% endwith %}
+            <br><br>
+            {{ treatment_creation_form.submit_button(class_="submit_button") }}
+>>>>>>> 23393b2815a6eb8a0db0affff133f5d6e0a342ee:VetSys/templates/create_treatment_records.html
+     </form>
+</div>

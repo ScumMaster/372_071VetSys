@@ -40,4 +40,14 @@ class PetCreationForm(FlaskForm):
 class TreatmentCreationForm(FlaskForm):
     treatment_type = StringField('Treatment Type:')
     start_date = DateField('Start Date:')
-    end_date = DateField('End Date: ')
+    end_date = DateField('End Date:')
+    pet_name = StringField('Pet Name:')
+    submit_button = SubmitField('Create')
+
+class InvoiceCreationForm(FlaskForm):
+    quantity = IntegerField('Quantity:')
+    transaction_date = DateField('Invoice Date:')
+    service_name = StringField('Service name:') #burasi dropdown box gibi bisi olacak aslinda ama duzelticem onu -cagatay
+    # bi de nasil yapacaksam multiple selection olacak
+    service_quantity = IntegerField('Service quantity:')
+    owner_ssn = IntegerField('Owner SSN:')
