@@ -124,9 +124,9 @@ class Assistant(User):
     }
 
     @classmethod
-    def create_user(cls, username, password, field):
+    def create_user(cls, username, password):
         hashed_pw = bc.generate_password_hash(password).decode('utf-8')
-        new_user = cls(username=username, password=hashed_pw, field=field)
+        new_user = cls(username=username, password=hashed_pw)
         db.session.add(new_user)
         db.session.commit()
 
