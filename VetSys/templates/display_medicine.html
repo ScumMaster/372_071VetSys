@@ -9,7 +9,7 @@
 </script>
 {% block page_content %}
     <p style="font-size:1.2em">All appointments in your database and data about them: </p>
-    {% for med in medicines %}
+    {% for i in range(medicines|length)  %}
         <div class="pet_data">
             <div style="display: flex;
                         justify-content: flex-start;">
@@ -17,15 +17,16 @@
                 <br><br>
                 <p class="page_data_text">
 
-                    {{ med.name }}
+                    {{ medicines[i].name }} <br>
+                    amount in the stock: {{ quantity[i] }} <br>
+                    <span style="font-size: 0.8em;"><b>serial number: {{ medicines[i].serial_number }}</b></span>
 
-                    {{ medicines|length }}
                 </p>
             </div>
 
             <div class="delete_zone">
                 <form class="" method="POST">
-                    <button type="submit"  class="delete_button" name="button-delete" value="{{ med.record_id }}">
+                    <button type="submit"  class="delete_button" name="button-delete" value="{{ i.record_id }}">
                         <img src="{{ url_for('static', filename='images/thrash.png') }}" class="thrash">
                     </button>
                 </form>

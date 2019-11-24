@@ -104,7 +104,7 @@ def register_new_pet():
             db.session.commit()
             flash('Pet entry has been created successfully!')
 
-    return render_template('register_new_pet.html', pet_creation_form=pet_creation_form,
+    return render_template('register_new_pet.html',user=current_user,pet_creation_form=pet_creation_form,
                            treatment_creation_form=treatment_creation_form)
 
 
@@ -211,7 +211,7 @@ def profile2():
 @dashboard.route('/add_medicine', methods=['GET', 'POST'])
 @login_required
 def add_medicine():
-    medicine_form = MedicineCreationForm
+    medicine_form = MedicineCreationForm()
     if request.method == 'GET':
         return render_template('add_medicine.html', medicine_form=medicine_form)
 

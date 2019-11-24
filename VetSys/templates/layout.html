@@ -14,7 +14,8 @@
         <img src="{{ url_for('static', filename='images/rs.png') }}" alt="" class="profile_picture">
         {% if user %}
         <p class="vet_name">{{ user.username }}</p>
-        {%endif%}
+        {% endif %}
+
         <div class="content">
             <p class="dropdown_text" id="pets_dropdown"
                onclick="petsDropdown()">
@@ -42,7 +43,10 @@
                 <p><a href="/display_registers">List appointments</a></p>
             </div>
 
-            <p><a href="add_medicine" class="left_panel_link">Add Medicine</a></p>
+            <p><a href="/add_medicine" class="left_panel_link">Add Medicine</a></p>
+            {% if user_type == "secretary" %}
+                <p><a href="/display_medicine" class="left_panel_link">Display Medicine</a></p>
+            {% endif %}
             <p><a href="/profile" class="left_panel_link">Profile</a></p>
             <p><a href="/logout" class="left_panel_link">Logout</a></p>
 

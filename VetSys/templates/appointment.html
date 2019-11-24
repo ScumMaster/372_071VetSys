@@ -1,45 +1,48 @@
 {% extends 'layout.html' %}
 {% block page_content %}
-    <div id="search-result">
+    <div class="appos_data">
 
+        <form method="POST" class= appointment_zone>
+            {{ form.hidden_tag() }}
+            <div class="form">
+                {{ form.owner_ssn.label }}<br>
+                {{ form.owner_ssn(class_="form_textbox") }}
+            </div><br>
+
+            <div class="form">
+                {{ form.on.label }}<br>
+                {{ form.on(class_="form_textbox") }}
+            </div>
+            <div class="form">
+                {{ form.hour.label }}<br>
+                {{ form.hour(class_="form_textbox") }}
+                <p style="color: grey; font-size: 0.8em;">
+                    example: 10:00 AM
+                </p>
+            </div>
+            {% for subfield in form.appointment_type%}
+                {{ subfield.label }}
+                {{ subfield }} &emsp;
+            {% endfor %}
+            <div class="form">
+                {{ form.period.label }}<br>
+                {{ form.period(class_="form_textbox") }}
+            </div>
+            <br><br>
+            {{ form.submit_button(class_="submit_button") }}
+            <br/>
+            {%  with messages=get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                        {{ message }}
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </form>
+        <div id="search-result">
+
+        </div>
     </div>
-    <form method="POST" class= appointment_zone>
-        {{ form.hidden_tag() }}
-        <div class="form">
-            {{ form.owner_ssn.label }}<br>
-            {{ form.owner_ssn(class_="form_textbox") }}
-        </div><br>
-
-        <div class="form">
-            {{ form.on.label }}<br>
-            {{ form.on(class_="form_textbox") }}
-        </div>
-        <div class="form">
-            {{ form.hour.label }}<br>
-            {{ form.hour(class_="form_textbox") }}
-            <p style="color: grey; font-size: 0.8em;">
-                example: 10:00 AM
-            </p>
-        </div>
-        {% for subfield in form.appointment_type%}
-            {{ subfield.label }}
-            {{ subfield }} &emsp;
-        {% endfor %}
-        <div class="form">
-            {{ form.period.label }}<br>
-            {{ form.period(class_="form_textbox") }}
-        </div>
-        <br><br>
-        {{ form.submit_button(class_="submit_button") }}
-        <br/>
-        {%  with messages=get_flashed_messages() %}
-            {% if messages %}
-                {% for message in messages %}
-                    {{ message }}
-                {% endfor %}
-            {% endif %}
-        {% endwith %}
-    </form>
 {% endblock %}
 {% block scripts %}
         <script>
@@ -57,14 +60,18 @@
                             $('#search-result').html("");
                             var parsed="";
                             $.each(owners, function(k, v) {
-                                parsed+='<div class="owner-listing" id="'+v.id+'">'+
-                                            'ssn: '+v.id+","+
-                                            'name: '+v.name+","+
-                                            'last_name'+v.last_name+","+
-                                            'phone'+v.phone+
+                                parsed+='<p class="search-result-exp">Search Results: <br> ' +
+                                        '(you can select any result in order for the form complete itself)</p>' +
+
+                                        '<div class="owner-listing" id="'+v.id+'">'+
+                                            '<p>' + 'SSN: '+v.id+","+ "</p>" +
+                                            '<p>' + 'Name: '+v.name+","+ "</p>" +
+                                            '<p>' + 'Last_name: '+v.last_name+","+ "</p>" +
+                                            '<p>' + 'Phone Number: '+v.phone+ "</p>" +
                                         '</div>'
                             });
                             $('#search-result').html(parsed);
+
                         });
             }
         });
