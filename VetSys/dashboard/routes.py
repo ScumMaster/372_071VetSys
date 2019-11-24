@@ -4,6 +4,7 @@ from sqlalchemy import func
 
 from .forms import OwnerCreationForm, AppointmentCreationForm, PetCreationForm, TreatmentCreationForm, MedicineCreationForm
 from .models import Owner, Appointment, Pet, Treatment, Medicine
+from VetSys.users.forms import VetForm
 from VetSys.users.models import User
 from VetSys import db
 from datetime import datetime
@@ -201,9 +202,10 @@ def delete_appointment():
 @dashboard.route('/profile', methods=['GET', 'POST'])
 @login_required
 def profile2():
+    vet = VetForm()
     user = current_user.query.filter_by().first()
     # user.query.all()
-    return render_template('profile.html', user=user)
+    return render_template('profile.html', user=user, vet=vet)
 
 
 @dashboard.route('/add_medicine', methods=['GET', 'POST'])
