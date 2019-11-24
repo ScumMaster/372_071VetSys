@@ -7,11 +7,12 @@
         <div id="search-result">
 
         </div>
-        <p>Selam</p>
     </div>
+    <hr style="margin-top: 5%;margin-bottom: 5%">
+
     {% for pet in pets %}
         <div class="pet_data">
-            <div style="display: flex;
+            <div class="listed" style="display: flex;
                         justify-content: flex-start;">
                 <img src="{{ url_for('static', filename='images/logoimg_paw.png') }}" class="data_pawicon">
                 <br><br>
@@ -50,12 +51,26 @@
                             $('#search-result').html("");
                             var parsed="";
                             $.each(data.query, function(k, v) {
-                                parsed+="<p>"+v.id+", "+v.name+", "+v.weight+", "+v.race+"</p>"
+                                parsed+='<div class="pet-data">' +
+                                            '<div  style="display: flex;justify-content: flex-start;">'+
+                                                '<img src="{{ url_for('static', filename='images/logoimg_paw.png') }}" class="data_pawicon">'+
+                                                '<br><br>'+
+                                                '<p class="page_data_text">'+
+                                                    'Name: '+"<b>"+v.Name+"</b>"+",   "+
+                                                    'Owner:'+"<b>"+v.Owner+"</b>"+",   "+
+                                                    'Age: '+"<b>"+v.Age+"</b>"+",   "+
+                                                    'Weight:'+"<b>"+ v.Weight+"</b>"+
+                                                '</p>'+
+                                            '</div>'+
+                                        '</div>'
                             });
                             $('#search-result').html(parsed);
                         });
             }
         });
+    </script>
+    <script>
+
     </script>
 
 {% endblock %}

@@ -123,12 +123,11 @@ class Pet(db.Model):
 
     def to_dict(self):
         return {
-                "id":self.pet_id,
-                "name":self.name,
-                "race":self.race,
-                "weight":self.weight,
+                "Age":self.age,
+                "Name":self.name,
+                "Owner":[self.owner.name if self.owner is not None else "Noone"],
+                "Weight":self.weight,
             }
-
 
 
 
