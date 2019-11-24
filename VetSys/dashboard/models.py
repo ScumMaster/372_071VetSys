@@ -18,6 +18,7 @@ class Owner(db.Model):
     # Owner owns Pet
     pets = db.relationship('Pet', backref='owner')
 
+
     def __repr__(self):
         return "id:{} name:{} sex:{} email:{} phone:{}".format(self.ssn, self.name, self.sex, self.email,
                                                                self.phone)
@@ -42,6 +43,9 @@ class Appointment(db.Model):
 
     owner_ssn = db.Column(db.Integer, db.ForeignKey('owner.ssn'), primary_key=True,
                           autoincrement=False)
+
+
+
 
 
 class Invoices(db.Model):
