@@ -17,8 +17,5 @@ function appDropdown() {
     document.getElementById('adb').style.display = "block";
 }
 
-function appDropclose() {
-    document.getElementById('app_dropdown').style.display = "block";
-    document.getElementById('app_dropclose').style.display = "none";
-    document.getElementById('adb').style.display = "none";
-}
+
+
