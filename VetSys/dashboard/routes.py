@@ -1,7 +1,9 @@
 from flask import Blueprint, render_template, flash, request, jsonify
 from flask_login import login_required, current_user
-from .forms import OwnerCreationForm, AppointmentCreationForm, PetCreationForm, TreatmentCreationForm
-from .models import Owner, Appointment, Pet, Treatment
+from sqlalchemy import func
+
+from .forms import OwnerCreationForm, AppointmentCreationForm, PetCreationForm, TreatmentCreationForm, MedicineCreationForm
+from .models import Owner, Appointment, Pet, Treatment, Medicine
 from VetSys.users.models import User
 from VetSys import db
 from datetime import datetime
@@ -202,4 +204,42 @@ def profile2():
     user = current_user.query.filter_by().first()
     # user.query.all()
     return render_template('profile.html', user=user)
+
+
+@dashboard.route('/add_medicine', methods=['GET', 'POST'])
+@login_required
+def add_medicine():
+    medicine_form = MedicineCreationForm()
+    if request.method == 'GET':
+        return render_template('add_medicine.html', medicine_form=medicine_form)
+
+    if request.method == 'POST':
+        if medicine_form.validate_on_submit():
+            new_medicine = Medicine(
+            serial_number=medicine_form.serial_number.data,
+            name = medicine_form.name.data,
+            barcode_number = medicine_form.barcode_number.data,
+            expiration_date = medicine_form.expiration_date.data,
+            distributor_name = medicine_form.distributor_name.data,
+            distributor_phone = medicine_form.distributor_phone.data,
+            )
+            flash('Treatment record has been created successfully!')
+            db.session.add(new_medicine)
+            db.session.commit()
+
+    return render_template('add_medicine.html', medicine_form=medicine_form)
+
+
+@dashboard.route('/display_medicine', methods=['GET', 'POST'])
+@login_required
+def display_medicine():
+    medicines = Medicine.query.group_by(Medicine.name).all()
+    quantity = []
+    for q in medicines:
+        quantity.append(Medicine.query.filter_by(name=q.name).count())
+
+    if request.method == 'GET':
+        return render_template('/display_medicine.html', medicines=medicines, quantity=quantity)
+
+
 

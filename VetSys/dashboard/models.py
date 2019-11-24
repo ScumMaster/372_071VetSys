@@ -18,6 +18,7 @@ class Owner(db.Model):
     # Owner owns Pet
     pets = db.relationship('Pet', backref='owner')
 
+
     def __repr__(self):
         return "id:{} name:{} sex:{} email:{} phone:{}".format(self.ssn, self.name, self.sex, self.email,
                                                                self.phone)
@@ -52,6 +53,9 @@ class Appointment(db.Model):
 
     vet_id=db.Column(db.Integer,db.ForeignKey('vet.id'))
     assigned=db.relationship('Vet',back_populates='appos',foreign_keys=[vet_id])
+
+
+
 
 
 class Invoices(db.Model):
@@ -175,7 +179,7 @@ class Clinic(db.Model):
 
 class Medicine(db.Model):
     __tablename__ = 'medicine'
-    serial_number = db.Column(db.String(60), primary_key=True)
+    serial_number = db.Column(db.Integer, primary_key=True, nullable=False, autoincrement=True)
     name = db.Column(db.String(60), nullable=False)
     barcode_number = db.Column(db.String(60), nullable=False)
     expiration_date = db.Column(db.DateTime, nullable=False)
