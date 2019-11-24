@@ -1,7 +1,14 @@
 {% extends 'layout.html' %}
 {% block page_content %}
+    <div id="search-result">
+
+    </div>
     <form method="POST" class= appointment_zone>
         {{ form.hidden_tag() }}
+        <div class="form">
+            {{ form.owner_ssn.label }}<br>
+            {{ form.owner_ssn(class_="form_textbox") }}
+        </div><br>
 
         <div class="form">
             {{ form.on.label }}<br>
@@ -14,10 +21,6 @@
                 example: 10:00 AM
             </p>
         </div>
-        <div class="form">
-            {{ form.owner_ssn.label }}<br>
-            {{ form.owner_ssn(class_="form_textbox") }}
-        </div><br>
         {% for subfield in form.appointment_type%}
             {{ subfield.label }}
             {{ subfield }} &emsp;
@@ -37,4 +40,47 @@
             {% endif %}
         {% endwith %}
     </form>
+{% endblock %}
+{% block scripts %}
+        <script>
+        var owners;
+        $('#owner_ssn').keyup(function (key) {
+            var key_value=key.which;
+            if(key_value != ""){
+                $.ajax({
+                        url: "/search_owner",
+                        data: {text:$('#owner_ssn').val()},
+                        type: 'POST',
+                       }
+                ).done(function (data) {
+                            owners=data.query;
+                            $('#search-result').html("");
+                            var parsed="";
+                            $.each(owners, function(k, v) {
+                                parsed+='<div class="owner-listing" id="'+v.id+'">'+
+                                            'ssn: '+v.id+","+
+                                            'name: '+v.name+","+
+                                            'last_name'+v.last_name+","+
+                                            'phone'+v.phone+
+                                        '</div>'
+                            });
+                            $('#search-result').html(parsed);
+                        });
+            }
+        });
+
+        $('#search-result').on("click","div.owner-listing",function (e) {
+            var owner_id=toString($(this).attr('id'));
+            console.log(owner_id);
+            $.each(owners,function (k,v) {
+                if(toString(v.id)===owner_id){
+                    $('#owner_ssn').val(v.id);
+                }
+            });
+
+        });
+    </script>
+
+
+
 {% endblock %}

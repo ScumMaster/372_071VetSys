@@ -30,7 +30,14 @@ class Owner(db.Model):
         db.session.commit()
         return new_owner
 
-
+    def to_dict(self):
+        return {
+            "id":self.ssn,
+            "tc":self.ssn,
+            "name":self.name,
+            "last_name":self.last_name,
+            "phone":self.phone
+        }
 ''' Weak Entity in relation with Owner'''
 
 
@@ -42,6 +49,9 @@ class Appointment(db.Model):
 
     owner_ssn = db.Column(db.Integer, db.ForeignKey('owner.ssn'), primary_key=True,
                           autoincrement=False)
+
+    vet_id=db.Column(db.Integer,db.ForeignKey('vet.id'))
+    assigned=db.relationship('Vet',back_populates='appos',foreign_keys=[vet_id])
 
 
 class Invoices(db.Model):
