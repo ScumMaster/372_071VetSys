@@ -3,10 +3,11 @@
     <p style="font-size:1.2em">All pets in your database and data about them: </p>
     <div>
         <label for="search_box">Search pets by name:</label>
-        <input type="text" id="search_box" onkeyup="">
+        <input type="text" id="search_box">
         <div id="search-result">
 
         </div>
+        <p>Selam</p>
     </div>
     {% for pet in pets %}
         <div class="pet_data">
@@ -34,5 +35,28 @@
         </div>
     {% endfor %}
 {% endblock %}
-<script src="{{ url_for('static', filename='js/listpet.js') }}"></script>
+
+{% block scripts %}
+    <script>
+        $('#search_box').keyup(function (key) {
+            var key_value=key.which;
+            if(key_value != ""){
+                $.ajax({
+                        url: "/search_pet",
+                        data: {text:$('#search_box').val()},
+                        type: 'POST',
+                       }
+                ).done(function (data) {
+                            $('#search-result').html("");
+                            var parsed="";
+                            $.each(data.query, function(k, v) {
+                                parsed+="<p>"+v.id+", "+v.name+", "+v.weight+", "+v.race+"</p>"
+                            });
+                            $('#search-result').html(parsed);
+                        });
+            }
+        });
+    </script>
+
+{% endblock %}
 

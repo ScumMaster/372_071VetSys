@@ -124,7 +124,9 @@ class Pet(db.Model):
     def to_dict(self):
         return {
                 "id":self.pet_id,
-                "name":self.name
+                "name":self.name,
+                "race":self.race,
+                "weight":self.weight,
             }
 
 

@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, flash, request, jsonify
 from flask_login import login_required, current_user
 from .forms import OwnerCreationForm, AppointmentCreationForm, PetCreationForm, TreatmentCreationForm
 from .models import Owner, Appointment, Pet, Treatment
-from VetSys.users.models import  User
+from VetSys.users.models import User
 from VetSys import db
 from datetime import datetime
 from VetSys.decorators.route_decorators import access_granted
@@ -27,7 +27,7 @@ def create_owner():
     if request.method == 'POST':
         if owner_creation_form.validate_on_submit():
             new_owner = Owner(
-                ssn = owner_creation_form.ssn.data,
+                ssn=owner_creation_form.ssn.data,
                 name=owner_creation_form.name.data,
                 last_name=owner_creation_form.last_name.data,
                 sex=owner_creation_form.sex.data,
@@ -62,8 +62,6 @@ def create_appointment():
         db.session.commit()
         flash('Appointment created succesffully')
 
-
-
         if form.validate_on_submit():
             owner = Owner.query.filter_by(ssn=form.owner_ssn.data).first()
             new_appointment = Appointment(
@@ -78,7 +76,6 @@ def create_appointment():
                 flash('Appointment created succesffully')
             except:
                 return "selam"
-
 
     return render_template('appointment.html', form=form)
 
@@ -104,11 +101,11 @@ def register_new_pet():
                 # disabilities=pet_creation_form.disabilities.data,
             )
             new_treatment = Treatment(
-                record_type = treatment_creation_form.treatment_type.data,
-                start_date = treatment_creation_form.start_date.data,
-                end_date = treatment_creation_form.start_date.data,
+                record_type=treatment_creation_form.treatment_type.data,
+                start_date=treatment_creation_form.start_date.data,
+                end_date=treatment_creation_form.start_date.data,
             )
-        # ownerla baglamak lazim burda henuz yapmadim -cagatay
+            # ownerla baglamak lazim burda henuz yapmadim -cagatay
 
             new_pet.treatments.append(new_treatment)
             db.session.add_all([new_pet, new_treatment])
@@ -139,7 +136,7 @@ def delete_pet():
     temp_pet = Pet.query.filter_by(pet_id=pet_id)
     Pet.query.filter_by(pet_id=pet_id).delete()
     db.session.commit()
-    return jsonify({'msg':"{} has been deleted.".format(temp_pet.name)})
+    return jsonify({'msg': "{} has been deleted.".format(temp_pet.name)})
 
 
 @dashboard.route('/treatment_records', methods=['GET', 'POST'])
@@ -156,14 +153,15 @@ def create_treatment_record():
                 start_date=treatment_creation_form.start_date.data,
                 end_date=treatment_creation_form.end_date.data
             )
-        # burayi bi duzeltsenize ya henuz legit olmamis - cagatay
+            # burayi bi duzeltsenize ya henuz legit olmamis - cagatay
             pet = Pet.query.filter_by(name=treatment_creation_form.pet_name.data).first()
             pet.treatments.append(new_treatment_record)
-            db.session.add_all([new_treatment_record,pet])
+            db.session.add_all([new_treatment_record, pet])
             db.session.commit()
             flash('Treatment record has been created successfully!')
 
     return render_template('treatment_records', treatment_creation_form=treatment_creation_form)
+
 
 @dashboard.route('/display_registers', methods=['GET', 'POST'])
 @login_required
@@ -179,14 +177,14 @@ def display_registers():
     return render_template('display_registers.html', appointments=appointments)
 
 
-
-@dashboard.route('/search_pet',methods=['POST'])
+@dashboard.route('/search_pet', methods=['POST'])
 @login_required
 def search_pet():
-    pets=Pet.query.filter(Pet.name.like(request.form['text'])).all()
-    results=[p.to_dict() for p in pets]
-    print(jsonify({'query' : results}))
-    return jsonify({'query' : results})
+    if request.form['text'] == "":
+        return jsonify({})
+    pets = Pet.query.filter(Pet.name.like("%" + request.form['text'] + "%")).all()
+    results = [p.to_dict() for p in pets]
+    return jsonify({'query': results})
 
 
 @dashboard.route('/delete_appointment', methods=['GET'])
@@ -196,7 +194,7 @@ def delete_appointment():
     temp_appo = Appointment.query.filter_by(appo_id=appo_id)
     Appointment.query.filter_by(appo_id=appo_id).delete()
     db.session.commit()
-    return jsonify({'msg':"{} has been deleted.".format(temp_appo.appo_id)})
+    return jsonify({'msg': "{} has been deleted.".format(temp_appo.appo_id)})
 
 
 @dashboard.route('/profile', methods=['GET', 'POST'])
@@ -205,4 +203,3 @@ def profile2():
     user = current_user.query.filter_by().first()
     # user.query.all()
     return render_template('profile.html', user=user)
-

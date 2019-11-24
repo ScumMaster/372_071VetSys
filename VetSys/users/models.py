@@ -119,9 +119,6 @@ class Assistant(User):
     def user_dashboard(self):
         return render_template("assistant_dashboard.html", user=self)
 
-    staff_id=db.Column(db.Integer,db.ForeignKey('staff.staff_id'))
-    staff_t=db.relationship('Staff',back_populates='user_t',foreign_keys=[staff_id])
-
     __mapper_args__ = {
         "polymorphic_identity": "assistant",
     }
@@ -169,16 +166,9 @@ class Vet(User):
 
 class Secretary(User):
     __tablename__ = 'secretary'
-    user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), primary_key=True)
-    __mapper_args__ = {
-        "polymorphic_identity": "secretary",
-    }
-
-
     id = db.Column(db.Integer, db.ForeignKey('user.user_id'), primary_key=True)
     staff_id = db.Column(db.Integer, db.ForeignKey('staff.staff_id'))
     staff_t = db.relationship('Staff', back_populates='secretary_t', foreign_keys=[staff_id])
-
     # languages = db.relationship('Languages', backref='languages')
 
     @classmethod
@@ -198,12 +188,6 @@ class Cleaner(User):
     cleaning_company = db.Column(db.String, default='Caglayan pislik temizleyiciler', nullable=False)
     staff_id = db.Column(db.Integer, db.ForeignKey('staff.staff_id'))
     staff_t = db.relationship('Staff', back_populates='cleaner_t', foreign_keys=[staff_id])
-    address = db.Column(db.String(100))
-    user_t = db.relationship('Assistant',back_populates='staff_t',foreign_keys='Assistant.staff_id')
-
-    # start_at = db.Column(db.DateTime)
-    # finish_at = db.Column(db.DateTime)
-    # total_hours = db.Column(db.Interval, nullable=False, default=datetime.timedelta(hours=180))
 
     def __repr__(self):
         return 'email: {} admin: {}'.format(self.email, self.is_admin)
@@ -212,13 +196,16 @@ class Cleaner(User):
     def create_user(cls, username, password, cleaning_company):
         cleaner = super().create_user(username=username, password=password)
         cleaner.cleaning_company = cleaning_company
-
     def user_dashboard(self):
         return render_template("cleaner_dashboard.html", user=self)
 
     __mapper_args__ = {
         "polymorphic_identity": "cleaner",
     }
+
+# class Languages(db.Model):
+#     language = db.Column(db.String, primary_key=True)
+
 
 
 
@@ -259,7 +246,7 @@ class VetView(UserView):
 
 class AssistantView(UserView):
     column_exclude_list = UserView.column_exclude_list[:].append('user_type')
-    column_list = ['user_id', 'username', 'supervisee', 'field','staff_t']
+
 
 class SecretaryView(UserView):
     column_exclude_list = UserView.column_exclude_list[:].append('user_type')
@@ -270,7 +257,6 @@ admin.add_view(UserView(User, db.session))
 admin.add_view(VetView(Vet, db.session))
 admin.add_view(AssistantView(Assistant, db.session))
 admin.add_view(SecretaryView(Secretary, db.session))
-admin.add_view(ModelView(Staff,db.session))
 
 for name, obj in inspect.getmembers(dmodels, inspect.isclass):
     if name != 'datetime':
