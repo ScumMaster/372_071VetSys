@@ -31,6 +31,9 @@
             <br><br>
             {{ form.submit_button(class_="submit_button") }}
             <br/>
+
+        </form>
+         <div class="message">
             {%  with messages=get_flashed_messages() %}
                 {% if messages %}
                     {% for message in messages %}
@@ -38,7 +41,7 @@
                     {% endfor %}
                 {% endif %}
             {% endwith %}
-        </form>
+        </div>
         <div id="search-result">
 
         </div>

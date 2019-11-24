@@ -82,7 +82,7 @@ def register_new_pet():
                                treatment_creation_form=treatment_creation_form)
 
     if request.method == 'POST':
-        if pet_creation_form.validate_on_submit() and treatment_creation_form.validate_on_submit():
+        if treatment_creation_form.validate_on_submit():
             new_pet = Pet(
                 name=pet_creation_form.pet_name.data,
                 age=pet_creation_form.age.data,
@@ -92,6 +92,7 @@ def register_new_pet():
                 owner_ssn=pet_creation_form.owner_ssn.data
                 # disabilities=pet_creation_form.disabilities.data,
             )
+            print("selam"+treatment_creation_form.treatment_type.data)
             new_treatment = Treatment(
                 record_type=treatment_creation_form.treatment_type.data,
                 start_date=treatment_creation_form.start_date.data,

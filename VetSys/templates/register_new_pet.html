@@ -2,39 +2,64 @@
 {% block page_content %}
     <div class="new_pet_wrapper">
         <div>
-            <form method="POST" class="appointment_zone">
-                 {{ pet_creation_form.hidden_tag() }}
-                <p>Type the data about the pet and submit it to the database.</p>
-                 <div class="form">
-                     {{ pet_creation_form.pet_name.label }}<br>
-                     {{ pet_creation_form.pet_name(class_="form_textbox") }}
+            <form method="POST" class="wrap_form_zone">
+                <div class="form_zone">
+                     {{ pet_creation_form.hidden_tag() }}
+                    <p>Type the data about the pet and submit it to the database.</p>
+                     <div class="form">
+                         {{ pet_creation_form.pet_name.label }}<br>
+                         {{ pet_creation_form.pet_name(class_="form_textbox") }}
+                     </div>
+                     <div class="form">
+                         {{ pet_creation_form.species.label }}<br>
+                         {{ pet_creation_form.species(class_="form_textbox") }}
+                     </div>
+                     <div class="form">
+                         {{ pet_creation_form.race.label }}<br>
+                         {{ pet_creation_form.race(class_="form_textbox") }}
+                     </div>
+                     <div class="form">
+                         {{ pet_creation_form.owner_ssn.label }}<br>
+                         {{ pet_creation_form.owner_ssn(class_="form_textbox") }}
+                     </div>
+                     <div class="form">
+                         {{ pet_creation_form.age.label }}<br>
+                         {{ pet_creation_form.age(class_="form_textbox") }}
+                     </div>
+                     <div class="form">
+                         {{ pet_creation_form.weight.label }}<br>
+                         {{ pet_creation_form.weight(class_="form_textbox") }}
+                     </div>
                  </div>
-                 <div class="form">
-                     {{ pet_creation_form.species.label }}<br>
-                     {{ pet_creation_form.species(class_="form_textbox") }}
-                 </div>
-                 <div class="form">
-                     {{ pet_creation_form.race.label }}<br>
-                     {{ pet_creation_form.race(class_="form_textbox") }}
-                 </div>
-                 <div class="form">
-                     {{ pet_creation_form.owner_ssn.label }}<br>
-                     {{ pet_creation_form.owner_ssn(class_="form_textbox") }}
-                 </div>
-                 <div class="form">
-                     {{ pet_creation_form.age.label }}<br>
-                     {{ pet_creation_form.age(class_="form_textbox") }}
-                 </div>
-                 <div class="form">
-                     {{ pet_creation_form.weight.label }}<br>
-                     {{ pet_creation_form.weight(class_="form_textbox") }}
-                 </div>
-                 <br><br>
-                 {{ pet_creation_form.submit_button(class_="submit_button") }}
+
+                <div class="form_zone">
+                     <div class="form">
+                         {{ treatment_creation_form.treatment_type.label }}<br>
+                         {{ treatment_creation_form.treatment_type(class_="form_textbox") }}
+                     </div>
+                     <div class="form">
+                         {{ treatment_creation_form.pet_name.label }}<br>
+                         {{ treatment_creation_form.pet_name(class_="form_textbox") }}
+                     </div>
+                     <div class="form">
+                         {{ treatment_creation_form.start_date.label }}<br>
+                         {{ treatment_creation_form.start_date(class_="form_textbox") }}
+                     </div>
+                     <div class="form">
+                         {{ treatment_creation_form.end_date.label }}<br>
+                         {{ treatment_creation_form.end_date(class_="form_textbox") }}
+                     </div>
+                    {{ treatment_creation_form.submit_button(class_="submit_button") }}
+                </div>
+
+
+                <br><br>
+
+
              </form>
         </div>
 
-        {% include 'create_treatment_records.html' %}
+
 
     </div>
     <div class="message">

@@ -30,7 +30,7 @@ class AppointmentCreationForm(FlaskForm):
 class PetCreationForm(FlaskForm):
     pet_name = StringField('Name:', validators=[DataRequired()])
     age = IntegerField('Age:')
-    weight = IntegerField('Weight:')
+    weight = DecimalField('Weight:')
     race = StringField('Race: ')
     species = StringField('Species:')
     disabilities = StringField('Disabilities:')
