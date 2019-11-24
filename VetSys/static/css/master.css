@@ -54,7 +54,12 @@ button:hover,
     min-width: 250px;
 }
 
+.wrap_form_zone {
+    display: flex;
+    justify-content: flex-start;
+}
 
+.form_zone,
 form.appointment_zone {
     max-width: 500px;
     text-align: center;
@@ -116,4 +121,28 @@ form.appointment_zone {
 }
 .dropdown_box a::after {
     color: #fff;
+}
+
+.appos_data {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.owner-listing {
+    border: 3px solid #666;
+    border-radius: 12px;
+    padding: 25px;
+}
+
+.owner-listing:hover {
+    border-color: #00bb88;
+    background: #f0f0f0;
+}
+
+.owner-listing p {
+    color: #00bb88;
+}
+
+.search-result-exp {
+    font-size: 0.8em;
 }
