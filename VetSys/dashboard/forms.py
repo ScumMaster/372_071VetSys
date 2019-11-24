@@ -13,7 +13,7 @@ class OwnerCreationForm(FlaskForm):
     ssn = IntegerField('ID Number:', validators=[DataRequired()])
     email = StringField('Email', validators=[Email()])
     address = StringField('Address:')
-    phone = IntegerField('Phone:')
+    phone = IntegerField('Phone:',validators=[DataRequired()])
     submit_button = SubmitField('Register an Owner')
 
 
@@ -21,9 +21,9 @@ class AppointmentCreationForm(FlaskForm):
     on = DateField('Date:')
     hour = TimeField('Time:')
     appointment_type = RadioField(
-        'Type:', choices=[('r1', 'For once'), ('r2', 'Periodic')])
+        'Type:', choices=[('once', 'For once'), ('repeat', 'Periodic')])
     period = StringField('Period:')
-    owner_ssn = StringField('Owner SSN:')
+    owner_ssn = StringField('Owner:',validators=[DataRequired()])
     submit_button = SubmitField('Create')
 
 

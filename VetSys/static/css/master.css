@@ -13,7 +13,7 @@ body, p {
     font-family: ttf_source_sans;
     src: url(fonts/Open-Sans/OpenSans-Regular.ttf);
 }
-@@font-face {
+@font-face {
     font-family: ttf_source_code;
     src: url(fonts/Source_Code_Pro/SourceCodePro-Regular.ttf);
 }

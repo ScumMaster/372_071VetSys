@@ -4,6 +4,7 @@ from sqlalchemy import func
 
 from .forms import OwnerCreationForm, AppointmentCreationForm, PetCreationForm, TreatmentCreationForm, MedicineCreationForm
 from .models import Owner, Appointment, Pet, Treatment, Medicine
+from VetSys.users.forms import VetForm
 from VetSys.users.models import User
 from VetSys import db
 from datetime import datetime
@@ -47,39 +48,28 @@ def create_owner():
 @login_required
 def create_appointment():
     form = AppointmentCreationForm()
+    owner_form=OwnerCreationForm()
     if request.method == 'GET':
         return render_template('appointment.html', form=form)
 
     if request.method == 'POST':
-
-        owner = Owner.query.filter_by(ssn=form.owner_ssn.data).first()
-        new_appointment = Appointment(
-            appo_id=Appointment.query.filter_by().count() + 1,
-            on=datetime.combine(form.on.data, form.hour.data),
-            appo_type=form.appointment_type.data
-        )
-
-        owner.appointments.append(new_appointment)
-        db.session.add_all([owner, new_appointment])
-        db.session.commit()
-        flash('Appointment created succesffully')
-
         if form.validate_on_submit():
             owner = Owner.query.filter_by(ssn=form.owner_ssn.data).first()
             new_appointment = Appointment(
+                owner_ssn=owner.ssn,
                 appo_id=Appointment.query.filter_by().count() + 1,
                 on=datetime.combine(form.on.data, form.hour.data),
                 appo_type=form.appointment_type.data
             )
-            try:
-                owner.appointments.append(new_appointment)
-                db.session.add_all([owner, new_appointment])
-                db.session.commit()
-                flash('Appointment created succesffully')
-            except:
-                return "selam"
+            current_user.appos.append(new_appointment)
 
-    return render_template('appointment.html', form=form)
+            owner.appointments.append(new_appointment)
+
+            db.session.add(new_appointment)
+            db.session.commit()
+            flash('Appointment created succesffully')
+
+    return render_template('appointment.html', form=form,owner_form=owner_form)
 
 
 @dashboard.route('/register_new_pet', methods=['GET', 'POST'])
@@ -168,7 +158,7 @@ def create_treatment_record():
 @dashboard.route('/display_registers', methods=['GET', 'POST'])
 @login_required
 def display_registers():
-    appointments = Appointment.query.all()
+    appointments = current_user.appos
     if request.method == "POST":
         id = request.form['button-delete']
         Appointment.query.filter_by(appo_id=id).delete()
@@ -189,6 +179,16 @@ def search_pet():
     return jsonify({'query': results})
 
 
+@dashboard.route('/search_owner', methods=['POST'])
+@login_required
+def search_owner():
+    if request.form['text'] == "":
+        return jsonify({})
+    owners = Owner.query.filter(Owner.name.like("%" + request.form['text'] + "%")).all()
+    results = [o.to_dict() for o in owners]
+    return jsonify({'query': results})
+
+
 @dashboard.route('/delete_appointment', methods=['GET'])
 @login_required
 def delete_appointment():
@@ -202,9 +202,10 @@ def delete_appointment():
 @dashboard.route('/profile', methods=['GET', 'POST'])
 @login_required
 def profile2():
+    vet = VetForm()
     user = current_user.query.filter_by().first()
     # user.query.all()
-    return render_template('profile.html', user=user)
+    return render_template('profile.html', user=user, vet=vet)
 
 
 @dashboard.route('/add_medicine', methods=['GET', 'POST'])
