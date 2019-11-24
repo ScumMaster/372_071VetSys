@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+<script>
+    window.onload = function() { countMedicines() };
+    function countMedicines() {
+
+        document.getElementById("numberZone").innerHTML = "asdmk";
+    }
+
+</script>
+{% block page_content %}
+    <p style="font-size:1.2em">All appointments in your database and data about them: </p>
+    {% for med in medicines %}
+        <div class="pet_data">
+            <div style="display: flex;
+                        justify-content: flex-start;">
+                <img src="{{ url_for('static', filename='images/medicine.png') }}" class="data_appoicon">
+                <br><br>
+                <p class="page_data_text">
+
+                    {{ med.name }}
+
+                    {{ medicines|length }}
+                </p>
+            </div>
+
+            <div class="delete_zone">
+                <form class="" method="POST">
+                    <button type="submit"  class="delete_button" name="button-delete" value="{{ med.record_id }}">
+                        <img src="{{ url_for('static', filename='images/thrash.png') }}" class="thrash">
+                    </button>
+                </form>
+            </div>
+        </div>
+
+    {% endfor %}
+    <div id="numberZone"></div>
+{% endblock %}
+

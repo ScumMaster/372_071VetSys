@@ -1,1 +1,40 @@
 {% extends "layout.html" %}
+
+{% block page_content %}
+
+    <div class="new_pet_wrapper">
+        <div>
+        <form method="POST" class="appointment_zone">
+             {{ medicine_form.hidden_tag() }}
+            <p>Type the data about the pet and submit it to the database.</p>
+             <div class="form">
+                 {{ medicine_form.serial_number.label }}<br>
+                 {{ medicine_form.serial_number(class_="form_textbox") }}
+             </div>
+            <div class="form">
+                 {{ medicine_form.name.label }}<br>
+                 {{ medicine_form.name(class_="form_textbox") }}
+             </div>
+             <div class="form">
+                 {{ medicine_form.barcode_number.label }}<br>
+                 {{ medicine_form.barcode_number(class_="form_textbox") }}
+             </div>
+
+            <div class="form">
+                {{ medicine_form.expiration_date.label }}<br>
+                {{ medicine_form.expiration_date(class_="form_textbox") }}
+            </div>
+            <div class="form">
+                {{ medicine_form.distributor_name.label }}<br>
+                {{ medicine_form.distributor_name(class_="form_textbox") }}
+            </div>
+            <div class="form">
+                 {{ medicine_form.distributor_phone.label }}<br>
+                 {{ medicine_form.distributor_phone(class_="form_textbox") }}
+             </div>
+             <br><br>
+             {{ medicine_form.submit_button(class_="submit_button") }}
+         </form>
+     </div>
+
+{% endblock %}

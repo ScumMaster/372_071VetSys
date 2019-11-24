@@ -210,7 +210,7 @@ def profile2():
 @dashboard.route('/add_medicine', methods=['GET', 'POST'])
 @login_required
 def add_medicine():
-    medicine_form = MedicineCreationForm()
+    medicine_form = MedicineCreationForm
     if request.method == 'GET':
         return render_template('add_medicine.html', medicine_form=medicine_form)
 
@@ -224,9 +224,9 @@ def add_medicine():
             distributor_name = medicine_form.distributor_name.data,
             distributor_phone = medicine_form.distributor_phone.data,
             )
-            flash('Treatment record has been created successfully!')
             db.session.add(new_medicine)
             db.session.commit()
+            flash('Treatment record has been created successfully!')
 
     return render_template('add_medicine.html', medicine_form=medicine_form)
 
