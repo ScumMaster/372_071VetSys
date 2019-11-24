@@ -2,7 +2,8 @@ from flask import Blueprint, render_template, flash, request, jsonify
 from flask_login import login_required, current_user
 from sqlalchemy import func
 
-from .forms import OwnerCreationForm, AppointmentCreationForm, PetCreationForm, TreatmentCreationForm, MedicineCreationForm
+from .forms import OwnerCreationForm, AppointmentCreationForm, PetCreationForm, TreatmentCreationForm, \
+    MedicineCreationForm
 from .models import Owner, Appointment, Pet, Treatment, Medicine
 from VetSys.users.forms import VetForm
 from VetSys.users.models import User
@@ -48,7 +49,7 @@ def create_owner():
 @login_required
 def create_appointment():
     form = AppointmentCreationForm()
-    owner_form=OwnerCreationForm()
+    owner_form = OwnerCreationForm()
     if request.method == 'GET':
         return render_template('appointment.html', form=form)
 
@@ -69,7 +70,7 @@ def create_appointment():
             db.session.commit()
             flash('Appointment created succesffully')
 
-    return render_template('appointment.html', form=form,owner_form=owner_form)
+    return render_template('appointment.html', form=form, owner_form=owner_form)
 
 
 @dashboard.route('/register_new_pet', methods=['GET', 'POST'])
@@ -83,25 +84,34 @@ def register_new_pet():
 
     if request.method == 'POST':
         if treatment_creation_form.validate_on_submit():
-            new_pet = Pet(
-                name=pet_creation_form.pet_name.data,
-                age=pet_creation_form.age.data,
-                weight=pet_creation_form.weight.data,
-                race=pet_creation_form.race.data,
-                species=pet_creation_form.species.data,
-                owner_ssn=pet_creation_form.owner_ssn.data
-                # disabilities=pet_creation_form.disabilities.data,
-            )
-            print("selam"+treatment_creation_form.treatment_type.data)
+            add_list = []
+            pet_q = Pet.query.filter_by(name=pet_creation_form.pet_name.data).first()
+            if pet_q is None:
+                pet_q = Pet(
+                    name=pet_creation_form.pet_name.data,
+                    age=pet_creation_form.age.data,
+                    weight=pet_creation_form.weight.data,
+                    race=pet_creation_form.race.data,
+                    species=pet_creation_form.species.data,
+                    # disabilities=pet_creation_form.disabilities.data,
+                )
+                Owner.query.filter_by(ssn=pet_creation_form.owner_ssn)\
+                    .first()\
+                    .pets.append(pet_q)
+
+                add_list.append(pet_q)
+
+
             new_treatment = Treatment(
                 record_type=treatment_creation_form.treatment_type.data,
                 start_date=treatment_creation_form.start_date.data,
                 end_date=treatment_creation_form.start_date.data,
             )
-            # ownerla baglamak lazim burda henuz yapmadim -cagatay
 
-            new_pet.treatments.append(new_treatment)
-            db.session.add_all([new_pet, new_treatment])
+            add_list.append(new_treatment)
+
+            pet_q.treatments.append(new_treatment)
+            db.session.add_all(add_list)
             db.session.commit()
             flash('Pet entry has been created successfully!')
 
@@ -219,12 +229,12 @@ def add_medicine():
     if request.method == 'POST':
         if medicine_form.validate_on_submit():
             new_medicine = Medicine(
-            serial_number=medicine_form.serial_number.data,
-            name = medicine_form.name.data,
-            barcode_number = medicine_form.barcode_number.data,
-            expiration_date = medicine_form.expiration_date.data,
-            distributor_name = medicine_form.distributor_name.data,
-            distributor_phone = medicine_form.distributor_phone.data,
+                serial_number=medicine_form.serial_number.data,
+                name=medicine_form.name.data,
+                barcode_number=medicine_form.barcode_number.data,
+                expiration_date=medicine_form.expiration_date.data,
+                distributor_name=medicine_form.distributor_name.data,
+                distributor_phone=medicine_form.distributor_phone.data,
             )
             db.session.add(new_medicine)
             db.session.commit()
@@ -243,6 +253,3 @@ def display_medicine():
 
     if request.method == 'GET':
         return render_template('/display_medicine.html', medicines=medicines, quantity=quantity)
-
-
-

@@ -23,7 +23,7 @@ class AppointmentCreationForm(FlaskForm):
     appointment_type = RadioField(
         'Type:', choices=[('once', 'For once'), ('repeat', 'Periodic')])
     period = StringField('Period:')
-    owner_ssn = StringField('Owner:',validators=[DataRequired()])
+    owner_ssn= StringField('Owner:',validators=[DataRequired()])
     submit_button = SubmitField('Create')
 
 

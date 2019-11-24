@@ -1,9 +1,18 @@
 {% extends 'layout.html' %}
 {% block page_content %}
+    <div id="search_result">
+
+    </div>
     <div class="new_pet_wrapper">
         <div>
+<<<<<<< HEAD
             <form method="POST" class="wrap_form_zone">
                 <div class="form_zone">
+=======
+<<<<<<< HEAD
+            <form method="POST" class="wrap_form_zone" >
+                <div class="form_zone" id="pet-form-wrapper">
+>>>>>>> 8c08364c277eb3a21923ad2256fd8d8249c88688
                      {{ pet_creation_form.hidden_tag() }}
                     <p>Type the data about the pet and submit it to the database.</p>
                      <div class="form">
@@ -29,10 +38,13 @@
                      <div class="form">
                          {{ pet_creation_form.weight.label }}<br>
                          {{ pet_creation_form.weight(class_="form_textbox") }}
+
+
                      </div>
+                     <button type="button" class="submit_button next-button">Next ></button>
                  </div>
 
-                <div class="form_zone">
+                <div class="form_zone" id="treatment-form-wrapper">
                      <div class="form">
                          {{ treatment_creation_form.treatment_type.label }}<br>
                          {{ treatment_creation_form.treatment_type(class_="form_textbox") }}
@@ -55,11 +67,17 @@
 
                 <br><br>
 
+<<<<<<< HEAD
 
              </form>
         </div>
 
 
+=======
+             </form>
+        </div>
+
+>>>>>>> 8c08364c277eb3a21923ad2256fd8d8249c88688
 
     </div>
     <div class="message">
@@ -72,4 +90,64 @@
     {% endwith %}
     </div>
 
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        $(document).ready(function () {
+           $('#treatment-form-wrapper').css('display','none');
+           $('.next-button').on('click',function (e) {
+                $('#pet-form-wrapper').fadeOut('slow',function () {
+                    $('#treatment-form-wrapper').fadeIn('slow');
+                });
+
+           });
+
+            var pets;
+            $('#pet_name').keyup(function (key) {
+                var key_value=key.which;
+                if(key_value != ""){
+                    $.ajax({
+                            url: "/search_pet",
+                            data: {text:$('#pet_name').val()},
+                            type: 'POST',
+                           }
+                    ).done(function (data) {
+                                pets=data.query;
+                                $('#search_result').html("");
+                                var parsed="";
+                                $.each(pets, function(k, v) {
+                                    parsed+='<div class="pet-listing" id="'+v.Id+'">'+
+                                                'Id: '+v.Id+","+
+                                                'Name: '+v.Name+","+
+                                                'Owner-SSN: '+v.Owner+","+
+                                                'Age: '+v.Age+","+
+                                                'Weight: '+v.Weight+","+
+                                                'Species: '+v.Species+","+
+                                                'Race: '+v.Race+
+                                            '</div>'
+                                });
+                                $('#search_result').html(parsed);
+                            });
+                }
+            });
+
+            $('#search_result').on("click","div.pet-listing",function (e) {
+                $('#search_result').html("");
+                var pet_id=toString($(this).attr('id'));
+                $.each(pets,function (k,v) {
+                    if(toString(v.Id)===pet_id){
+                        $('#pet_name').val(v.Name);
+                        $('#species').val(v.Species);
+                        $('#race').val(v.Race);
+                        $('#owner_ssn').val(v.Owner);
+                        $('#age').val(v.Age);
+                        $('#weight').val(v.Weight);
+                    }
+                });
+
+            });
+
+        });
+    </script>
 {% endblock %}
