@@ -5,6 +5,7 @@ from sqlalchemy import func
 from .forms import OwnerCreationForm, AppointmentCreationForm, PetCreationForm, TreatmentCreationForm, \
     MedicineCreationForm
 from .models import Owner, Appointment, Pet, Treatment, Medicine
+from VetSys.users.forms import VetForm
 from VetSys.users.models import User
 from VetSys import db
 from datetime import datetime
@@ -113,7 +114,7 @@ def register_new_pet():
             db.session.commit()
             flash('Pet entry has been created successfully!')
 
-    return render_template('register_new_pet.html', pet_creation_form=pet_creation_form,
+    return render_template('register_new_pet.html',user=current_user,pet_creation_form=pet_creation_form,
                            treatment_creation_form=treatment_creation_form)
 
 
@@ -211,9 +212,10 @@ def delete_appointment():
 @dashboard.route('/profile', methods=['GET', 'POST'])
 @login_required
 def profile2():
+    vet = VetForm()
     user = current_user.query.filter_by().first()
     # user.query.all()
-    return render_template('profile.html', user=user)
+    return render_template('profile.html', user=user, vet=vet)
 
 
 @dashboard.route('/add_medicine', methods=['GET', 'POST'])
@@ -233,9 +235,9 @@ def add_medicine():
                 distributor_name=medicine_form.distributor_name.data,
                 distributor_phone=medicine_form.distributor_phone.data,
             )
-            flash('Treatment record has been created successfully!')
             db.session.add(new_medicine)
             db.session.commit()
+            flash('Treatment record has been created successfully!')
 
     return render_template('add_medicine.html', medicine_form=medicine_form)
 
