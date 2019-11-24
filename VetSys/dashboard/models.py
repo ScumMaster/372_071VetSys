@@ -170,7 +170,7 @@ class Clinic(db.Model):
 
 class Medicine(db.Model):
     __tablename__ = 'medicine'
-    serial_number = db.Column(db.String(60), primary_key=True)
+    serial_number = db.Column(db.Integer, primary_key=True, nullable=False, autoincrement=True)
     name = db.Column(db.String(60), nullable=False)
     barcode_number = db.Column(db.String(60), nullable=False)
     expiration_date = db.Column(db.DateTime, nullable=False)
