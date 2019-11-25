@@ -57,6 +57,7 @@
                 ).done(function (data) {
                             $('#search-result').html("");
                             var parsed="";
+
                             $.each(data.query, function(k, v) {
                                 parsed+='<div class="pet-data" id="'+v.Name+'">' +
                                             '<div  style="display: flex;justify-content: flex-start;">'+
@@ -64,6 +65,7 @@
                                                 '<br><br>'+
                                                 '<p class="page_data_text">'+
                                                     'Name: '+"<b>"+v.Name+"</b>"+",   "+
+
                                                     'Owner:'+"<b>"+v.Owner+"</b>"+",   "+
                                                     'Age: '+"<b>"+v.Age+"</b>"+",   "+
                                                     'Weight:'+"<b>"+ v.Weight+"</b>"+
@@ -75,6 +77,7 @@
                         });
             }
         });
+
         var div_id;
         $('.pet_data').on('click',function (e) {
             div_id=$(this).attr('id');
@@ -91,12 +94,14 @@
                 $(".history-"+div_id).slideToggle();
            });
         });
+
     });
+
 
 
 
 
     </script>
 
-{% endblock %}
 
+{% endblock %}
