@@ -95,9 +95,8 @@ def register_new_pet():
                     species=pet_creation_form.species.data,
                     # disabilities=pet_creation_form.disabilities.data,
                 )
-                Owner.query.filter_by(ssn=pet_creation_form.owner_ssn)\
-                    .first()\
-                    .pets.append(pet_q)
+                ow_t=Owner.query.filter_by(ssn=pet_creation_form.owner_ssn.data).first()
+                ow_t.pets.append(pet_q)
 
                 add_list.append(pet_q)
 

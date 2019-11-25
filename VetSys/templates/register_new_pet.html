@@ -1,85 +1,79 @@
 {% extends 'layout.html' %}
 {% block page_content %}
-    <div id="search_result">
 
-    </div>
-    <div class="new_pet_wrapper">
-        <div>
-<<<<<<< HEAD
-            <form method="POST" class="wrap_form_zone">
-                <div class="form_zone">
-=======
-<<<<<<< HEAD
-            <form method="POST" class="wrap_form_zone" >
-                <div class="form_zone" id="pet-form-wrapper">
->>>>>>> 8c08364c277eb3a21923ad2256fd8d8249c88688
-                     {{ pet_creation_form.hidden_tag() }}
-                    <p>Type the data about the pet and submit it to the database.</p>
-                     <div class="form">
-                         {{ pet_creation_form.pet_name.label }}<br>
-                         {{ pet_creation_form.pet_name(class_="form_textbox") }}
-                     </div>
-                     <div class="form">
-                         {{ pet_creation_form.species.label }}<br>
-                         {{ pet_creation_form.species(class_="form_textbox") }}
-                     </div>
-                     <div class="form">
-                         {{ pet_creation_form.race.label }}<br>
-                         {{ pet_creation_form.race(class_="form_textbox") }}
-                     </div>
-                     <div class="form">
-                         {{ pet_creation_form.owner_ssn.label }}<br>
-                         {{ pet_creation_form.owner_ssn(class_="form_textbox") }}
-                     </div>
-                     <div class="form">
-                         {{ pet_creation_form.age.label }}<br>
-                         {{ pet_creation_form.age(class_="form_textbox") }}
-                     </div>
-                     <div class="form">
-                         {{ pet_creation_form.weight.label }}<br>
-                         {{ pet_creation_form.weight(class_="form_textbox") }}
+    <div style="display: flex; justify-content: flex-start;">
+        <div class="new_pet_wrapper">
+            <div>
+
+                <form method="POST" class="wrap_form_zone" >
+                    <div class="form_zone" id="pet-form-wrapper">
+
+                         {{ pet_creation_form.hidden_tag() }}
+                        <p>Type the data about the pet and submit it to the database.</p>
+                         <div class="form">
+                             {{ pet_creation_form.pet_name.label }}<br>
+                             {{ pet_creation_form.pet_name(class_="form_textbox") }}
+                         </div>
+                         <div class="form">
+                             {{ pet_creation_form.species.label }}<br>
+                             {{ pet_creation_form.species(class_="form_textbox") }}
+                         </div>
+                         <div class="form">
+                             {{ pet_creation_form.race.label }}<br>
+                             {{ pet_creation_form.race(class_="form_textbox") }}
+                         </div>
+                         <div class="form">
+                             {{ pet_creation_form.owner_ssn.label }}<br>
+                             {{ pet_creation_form.owner_ssn(class_="form_textbox") }}
+                         </div>
+                         <div class="form">
+                             {{ pet_creation_form.age.label }}<br>
+                             {{ pet_creation_form.age(class_="form_textbox") }}
+                         </div>
+                         <div class="form">
+                             {{ pet_creation_form.weight.label }}<br>
+                             {{ pet_creation_form.weight(class_="form_textbox") }}
 
 
+                         </div>
+                         <button type="button" class="submit_button next-button">Next ></button>
                      </div>
-                     <button type="button" class="submit_button next-button">Next ></button>
-                 </div>
 
-                <div class="form_zone" id="treatment-form-wrapper">
-                     <div class="form">
-                         {{ treatment_creation_form.treatment_type.label }}<br>
-                         {{ treatment_creation_form.treatment_type(class_="form_textbox") }}
-                     </div>
-                     <div class="form">
-                         {{ treatment_creation_form.pet_name.label }}<br>
-                         {{ treatment_creation_form.pet_name(class_="form_textbox") }}
-                     </div>
-                     <div class="form">
-                         {{ treatment_creation_form.start_date.label }}<br>
-                         {{ treatment_creation_form.start_date(class_="form_textbox") }}
-                     </div>
-                     <div class="form">
-                         {{ treatment_creation_form.end_date.label }}<br>
-                         {{ treatment_creation_form.end_date(class_="form_textbox") }}
-                     </div>
-                    {{ treatment_creation_form.submit_button(class_="submit_button") }}
-                </div>
+                    <div class="form_zone" id="treatment-form-wrapper">
+                         <div class="form">
+                             {{ treatment_creation_form.treatment_type.label }}<br>
+                             {{ treatment_creation_form.treatment_type(class_="form_textbox") }}
+                         </div>
+                         <div class="form">
+                             {{ treatment_creation_form.pet_name.label }}<br>
+                             {{ treatment_creation_form.pet_name(class_="form_textbox") }}
+                         </div>
+                         <div class="form">
+                             {{ treatment_creation_form.start_date.label }}<br>
+                             {{ treatment_creation_form.start_date(class_="form_textbox") }}
+                         </div>
+                         <div class="form">
+                             {{ treatment_creation_form.end_date.label }}<br>
+                             {{ treatment_creation_form.end_date(class_="form_textbox") }}
+                         </div>
+                        {{ treatment_creation_form.submit_button(class_="submit_button") }}
+                    </div>
 
 
-                <br><br>
+                    <br><br>
 
-<<<<<<< HEAD
+                 </form>
+            </div>
 
-             </form>
+
+
         </div>
+        <div id="search_result">
 
-
-=======
-             </form>
         </div>
-
->>>>>>> 8c08364c277eb3a21923ad2256fd8d8249c88688
-
     </div>
+
+
     <div class="message">
     {%  with messages=get_flashed_messages() %}
              {% if messages %}
@@ -117,13 +111,16 @@
                                 $('#search_result').html("");
                                 var parsed="";
                                 $.each(pets, function(k, v) {
-                                    parsed+='<div class="pet-listing" id="'+v.Id+'">'+
-                                                'Id: '+v.Id+","+
-                                                'Name: '+v.Name+","+
-                                                'Owner-SSN: '+v.Owner+","+
-                                                'Age: '+v.Age+","+
-                                                'Weight: '+v.Weight+","+
-                                                'Species: '+v.Species+","+
+                                    parsed+= '<p class="search-result-exp">Search Results: <br> ' +
+                                        '(you can select any result in order for the form complete itself)</p>' +
+
+                                        '<div class="pet-listing" id="'+v.Id+'">'+
+                                                'Id: '+v.Id+","+ "<br>" +
+                                                'Name: '+v.Name+","+ "<br>" +
+                                                'Owner-SSN: '+v.Owner+","+ "<br>" +
+                                                'Age: '+v.Age+","+ "<br>" +
+                                                'Weight: '+v.Weight+","+ "<br>" +
+                                                'Species: '+v.Species+","+ "<br>" +
                                                 'Race: '+v.Race+
                                             '</div>'
                                 });
