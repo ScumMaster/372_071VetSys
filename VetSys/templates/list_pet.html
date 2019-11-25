@@ -12,7 +12,7 @@
 
     </div>
     {% for pet in pets %}
-        <div class="pet_data">
+        <div class="pet_data" id="{{ pet.pet_id }}">
             <div style="display: flex;
                         justify-content: flex-start;">
                 <img src="{{ url_for('static', filename='images/logoimg_paw.png') }}" class="data_pawicon">
@@ -35,11 +35,13 @@
             </div>
 
         </div>
+
     {% endfor %}
 {% endblock %}
 
 {% block scripts %}
     <script>
+
         $('#search_box').keyup(function (key) {
             var key_value=key.which;
             if(key_value != ""){
@@ -53,7 +55,7 @@
                             var parsed="";
 
                             $.each(data.query, function(k, v) {
-                                parsed+='<div class="pet-data">' +
+                                parsed+='<div class="pet-data" id="'+v.Name+'">' +
                                             '<div  style="display: flex;justify-content: flex-start;">'+
                                                 '<img src="{{ url_for('static', filename='images/logoimg_paw.png') }}" class="data_pawicon">'+
                                                 '<br><br>'+
@@ -72,14 +74,24 @@
             }
         });
 
+        var div_id;
+        $('.pet_data').on('click',function (e) {
+            div_id=$(this).attr('id');
+           $.ajax({
+               url: '/get_treatments',
+               type: 'POST',
+               data: {text:parseInt($(this).attr('id'))}
+           }).done(function (data) {
+                var parse="";
+                $.each(data.query,function (k,v) {
+                   parse+='<p>'+v.Record_type+", "+v.End_date+", "+v.Start_date+'</p>'
+                });
+                var ins='<div id="treatment">'+parse+'</div>';
+                $(ins).insertAfter('#'+div_id);
 
-        $('#search-result').on("click","div.pet-data",function (e) {
-
-
-
-
+           });
         });
     </script>
 
-{% endblock %}
 
+{% endblock %}

@@ -252,3 +252,14 @@ def display_medicine():
 
     if request.method == 'GET':
         return render_template('/display_medicine.html', medicines=medicines, quantity=quantity)
+
+
+@dashboard.route('/get_treatments', methods=['POST'])
+@login_required
+def get_treatments():
+    if request.form['text'] == "":
+        return jsonify({})
+    pet = Pet.query.filter_by(pet_id=int(request.form['text'])).first()
+    results = [treatment.to_dict() for treatment in pet.treatments]
+    print(results)
+    return jsonify({'query': results})

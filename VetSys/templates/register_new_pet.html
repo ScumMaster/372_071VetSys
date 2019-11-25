@@ -131,6 +131,13 @@
 
             $('#search_result').on("click","div.pet-listing",function (e) {
                 $('#search_result').html("");
+                $('#pet_name').val("");
+                $('#species').val("");
+                $('#race').val("");
+                $('#owner_ssn').val("");
+                $('#age').val("");
+                $('#weight').val("");
+
                 var pet_id=toString($(this).attr('id'));
                 $.each(pets,function (k,v) {
                     if(toString(v.Id)===pet_id){

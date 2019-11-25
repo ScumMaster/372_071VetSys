@@ -200,5 +200,13 @@ class Treatment(db.Model):
     pet_id = db.Column(db.Integer, db.ForeignKey('pet.pet_id'))
     medicines = db.relationship('Medicine', backref='medicines')
 
+    def to_dict(self):
+        return {
+            'Id':self.record_id,
+            'Record_type':self.record_type,
+            'Start_date':self.start_date.__str__(),
+            'End_date':self.end_date.__str__(),
+        }
+
 
 
