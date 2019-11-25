@@ -9,13 +9,7 @@
                 <br><br>
                 <p class="page_data_text">
                     You have an appointment on <b>{{ appo.on }}</b><br>
-                    Appointment type is
-                    {% if appo.appo_type == "r1" %}
-                        <b>for once</b>
-                    {% endif %}
-                    {% if appo.appo_type == "r2" %}
-                        <b>Periodic</b>
-                    {% endif %}
+                    Appointment type is <b>{{ appo.appo_type }}</b>
                     <br>
                     This appointment is with:<b>  {{ appo.customer.name }}
                                                   {{ appo.customer.last_name }} </b>
