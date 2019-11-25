@@ -44,8 +44,10 @@
             </div>
 
             <p><a href="/add_medicine" class="left_panel_link">Add Medicine</a></p>
-            {% if user_type == "secretary" %}
-                <p><a href="/display_medicine" class="left_panel_link">Display Medicine</a></p>
+            {% if user %}
+                {% if user.user_type == "secretary" %}
+                    <p><a href="/display_medicine" class="left_panel_link">Display Medicine</a></p>
+                {% endif %}
             {% endif %}
             <p><a href="/profile" class="left_panel_link">Profile</a></p>
             <p><a href="/logout" class="left_panel_link">Logout</a></p>

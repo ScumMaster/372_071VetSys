@@ -128,12 +128,14 @@ form.appointment_zone {
     justify-content: flex-start;
 }
 
+.pet-listing,
 .owner-listing {
     border: 3px solid #666;
     border-radius: 12px;
     padding: 25px;
 }
 
+.pet-listing:hover,
 .owner-listing:hover {
     border-color: #00bb88;
     background: #f0f0f0;

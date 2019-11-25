@@ -4,20 +4,22 @@
     <div>
         <label for="search_box">Search pets by name:</label>
         <input type="text" id="search_box">
-        <div id="search-result">
+        <div id="search-result" style="margin-bottom: 35px;">
 
         </div>
-        <p>Selam</p>
+        <hr style="margin: 35px 0; border: 2px solid grey;">
+
+
     </div>
     {% for pet in pets %}
-        <div class="pet_data">
+        <div class="pet_data" id="{{ pet.pet_id }}">
             <div style="display: flex;
                         justify-content: flex-start;">
                 <img src="{{ url_for('static', filename='images/logoimg_paw.png') }}" class="data_pawicon">
                 <br><br>
                 <p class="page_data_text">
                     Name: <b>{{ pet.name }}</b> <br>
-                    Owner: <b>{{ pet.owner_ssn }}</b> <br>
+                    Owner: <b>{{ pet.owner.name }}</b> <br>
                     Species is <b>{{ pet.species }}</b> and race is <b>{{ pet.race }}</b> <br>
                     Age: <b>{{ pet.age }}</b> <br>
                     Weight: <b>{{ pet.weight }}</b> <br>
@@ -33,11 +35,13 @@
             </div>
 
         </div>
+
     {% endfor %}
 {% endblock %}
 
 {% block scripts %}
     <script>
+
         $('#search_box').keyup(function (key) {
             var key_value=key.which;
             if(key_value != ""){
@@ -50,12 +54,42 @@
                             $('#search-result').html("");
                             var parsed="";
                             $.each(data.query, function(k, v) {
-                                parsed+="<p>"+v.id+", "+v.name+", "+v.weight+", "+v.race+"</p>"
+                                parsed+='<div class="pet-data" id="'+v.Name+'">' +
+                                            '<div  style="display: flex;justify-content: flex-start;">'+
+                                                '<img src="{{ url_for('static', filename='images/logoimg_paw.png') }}" class="data_pawicon">'+
+                                                '<br><br>'+
+                                                '<p class="page_data_text">'+
+                                                    'Name: '+"<b>"+v.Name+"</b>"+",   "+
+                                                    'Owner:'+"<b>"+v.Owner+"</b>"+",   "+
+                                                    'Age: '+"<b>"+v.Age+"</b>"+",   "+
+                                                    'Weight:'+"<b>"+ v.Weight+"</b>"+
+                                                '</p>'+
+                                            '</div>'+
+                                        '</div>'
                             });
                             $('#search-result').html(parsed);
                         });
             }
         });
+        var div_id;
+        $('.pet_data').on('click',function (e) {
+            div_id=$(this).attr('id');
+           $.ajax({
+               url: '/get_treatments',
+               type: 'POST',
+               data: {text:parseInt($(this).attr('id'))}
+           }).done(function (data) {
+                var parse="";
+                $.each(data.query,function (k,v) {
+                   parse+='<p>'+v.Record_type+", "+v.End_date+", "+v.Start_date+'</p>'
+                });
+                var ins='<div id="treatment">'+parse+'</div>';
+                $(ins).insertAfter('#'+div_id);
+
+           });
+        });
+
+
 
 
     </script>
