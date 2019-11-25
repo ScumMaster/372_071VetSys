@@ -4,7 +4,7 @@ from .models import User
 from flask_login import login_required, login_user, current_user, logout_user
 from .forms import LoginForm
 from VetSys import bc, db
-from flask_user import roles_required
+from flask_sqlalchemy import get_debug_queries
 
 users = Blueprint('users', __name__)
 

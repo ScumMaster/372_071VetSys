@@ -35,13 +35,17 @@
             </div>
 
         </div>
+        <div class="treatment history-{{ pet.pet_id }}">
 
+        </div>
     {% endfor %}
 {% endblock %}
 
 {% block scripts %}
     <script>
 
+    $(document).ready(function () {
+        $(".treatment").css('display','none');
         $('#search_box').keyup(function (key) {
             var key_value=key.which;
             if(key_value != ""){
@@ -81,13 +85,13 @@
            }).done(function (data) {
                 var parse="";
                 $.each(data.query,function (k,v) {
-                   parse+='<p>'+v.Record_type+", "+v.End_date+", "+v.Start_date+'</p>'
+                   parse+='<p>'+"<b>Treatment Type: </b>"+v.Record_type+"<br>"+"<b>End date: </b>"+v.End_date+"<br>"+"<b>Start date:</b>"+v.Start_date+'</p>'
                 });
-                var ins='<div id="treatment">'+parse+'</div>';
-                $(ins).insertAfter('#'+div_id);
-
+                $(".history-"+div_id).html(parse);
+                $(".history-"+div_id).slideToggle();
            });
         });
+    });
 
 
 

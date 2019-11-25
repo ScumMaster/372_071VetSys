@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, flash, request, jsonify
 from flask_login import login_required, current_user
 from sqlalchemy import func
+from flask_sqlalchemy import get_debug_queries
 
 from .forms import OwnerCreationForm, AppointmentCreationForm, PetCreationForm, TreatmentCreationForm, \
     MedicineCreationForm
@@ -104,7 +105,7 @@ def register_new_pet():
             new_treatment = Treatment(
                 record_type=treatment_creation_form.treatment_type.data,
                 start_date=treatment_creation_form.start_date.data,
-                end_date=treatment_creation_form.start_date.data,
+                end_date=treatment_creation_form.end_date.data,
             )
 
             add_list.append(new_treatment)
@@ -122,6 +123,7 @@ def register_new_pet():
 @login_required
 def list_pet():
     pets = Pet.query.all()
+    print(get_debug_queries())
     if request.method == "POST":
         id = request.form['button-delete']
         Pet.query.filter_by(pet_id=id).delete()
