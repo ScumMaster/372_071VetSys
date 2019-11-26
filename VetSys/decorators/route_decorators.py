@@ -1,6 +1,5 @@
 from functools import wraps
 from flask_login import current_user
-from VetSys import login_manager
 
 
 def access_granted(role):

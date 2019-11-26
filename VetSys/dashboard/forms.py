@@ -1,8 +1,9 @@
 from flask_wtf import FlaskForm
-#from VetSys.users.models import Staff
-from wtforms import StringField, PasswordField, SubmitField, IntegerField, RadioField, DecimalField
+# from VetSys.users.models import Staff
+from wtforms import StringField, SubmitField, IntegerField,\
+     RadioField, DecimalField
 from wtforms.fields.html5 import DateField, TimeField
-from wtforms.validators import DataRequired, Email, Optional
+from wtforms.validators import DataRequired, Email
 
 
 class OwnerCreationForm(FlaskForm):
@@ -13,7 +14,7 @@ class OwnerCreationForm(FlaskForm):
     ssn = IntegerField('ID Number:', validators=[DataRequired()])
     email = StringField('Email', validators=[Email()])
     address = StringField('Address:')
-    phone = IntegerField('Phone:',validators=[DataRequired()])
+    phone = IntegerField('Phone:', validators=[DataRequired()])
     submit_button = SubmitField('Register an Owner')
 
 
@@ -23,7 +24,7 @@ class AppointmentCreationForm(FlaskForm):
     appointment_type = RadioField(
         'Type:', choices=[('once', 'For once'), ('repeat', 'Periodic')])
     period = StringField('Period:')
-    owner_ssn= StringField('Owner:',validators=[DataRequired()])
+    owner_ssn = StringField('Owner:', validators=[DataRequired()])
     submit_button = SubmitField('Create')
 
 
@@ -45,19 +46,23 @@ class TreatmentCreationForm(FlaskForm):
     pet_name = StringField('Pet Name:')
     submit_button = SubmitField('Create')
 
+
 class InvoiceCreationForm(FlaskForm):
     quantity = IntegerField('Quantity:')
     transaction_date = DateField('Invoice Date:')
-    service_name = StringField('Service name:') #burasi dropdown box gibi bisi olacak aslinda ama duzelticem onu -cagatay
+    # burasi dropdown box gibi bisi olacak aslinda ama duzelticem onu -cagatay
+    service_name = StringField('Service name:')
     # bi de nasil yapacaksam multiple selection olacak
     service_quantity = IntegerField('Service quantity:')
     owner_ssn = IntegerField('Owner SSN:')
     submit_button = SubmitField('Create')
 
+
 class ServiceCreationForm(FlaskForm):
     name = StringField('Service name:')
     cost = DecimalField('Cost: ')
     submit_button = SubmitField('Create')
+
 
 class MedicineCreationForm(FlaskForm):
     serial_number = IntegerField('Serial number:')
@@ -67,5 +72,3 @@ class MedicineCreationForm(FlaskForm):
     distributor_name = StringField('Distributor name:')
     distributor_phone = IntegerField('Distributor phone:')
     submit_button = SubmitField('Create')
-
-

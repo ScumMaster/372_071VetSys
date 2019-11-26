@@ -3,7 +3,6 @@ from flask import url_for, redirect, flash, render_template
 from flask_login import UserMixin, current_user
 from flask_admin import Admin as Administrator, AdminIndexView
 from flask_admin.contrib.sqla import ModelView
-import datetime
 import inspect
 from VetSys.dashboard import models as dmodels
 
@@ -29,10 +28,13 @@ class User(db.Model, UserMixin):
         return self.user_id
 
     def __repr__(self):
-        return "USER_ID: {} , USERNAME: {} , TYPE: {} ".format(self.user_id, self.username, self.user_type)
+        return "USER_ID: {} , USERNAME: {} , TYPE: {} ".format(
+            self.user_id, self.username, self.user_type)
 
     def to_dict(self):
-        return dict({'id': self.user_id, 'username': self.username, 'type': self.user_type})
+        return dict({'id': self.user_id,
+                     'username': self.username,
+                     'type': self.user_type})
 
     def change_password(self, password):
         self.password = bc.generate_password_hash(password).decode('utf-8')
@@ -51,7 +53,10 @@ class User(db.Model, UserMixin):
 
 class Admin(User):
     __tablename__ = 'admin'
-    user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), primary_key=True)
+    user_id = db.Column(
+        db.Integer,
+        db.ForeignKey('user.user_id'),
+        primary_key=True)
 
     __mapper_args__ = {
         "polymorphic_identity": "admin",
@@ -70,7 +75,10 @@ class Admin(User):
 
 class Staff(db.Model):
     __tablename__ = 'staff'
-    staff_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), primary_key=True)
+    staff_id = db.Column(
+        db.Integer,
+        db.ForeignKey('user.user_id'),
+        primary_key=True)
     name = db.Column(db.String(60), nullable=False)
     last_name = db.Column(db.String(60), nullable=False)
     salary = db.Column(db.Float, default=db.Float(2200.5))
@@ -79,22 +87,22 @@ class Staff(db.Model):
     start_at = db.Column(db.DateTime)
     finish_at = db.Column(db.DateTime)
 
-    assistant_t = db.relationship('Assistant', back_populates='staff_t', foreign_keys='Assistant.staff_id')
-    vet_t = db.relationship('Vet', back_populates='staff_t', foreign_keys='Vet.staff_id')
-    secretary_t = db.relationship('Secretary', back_populates='staff_t', foreign_keys='Secretary.staff_id')
-    cleaner_t = db.relationship('Cleaner', back_populates='staff_t', foreign_keys='Cleaner.staff_id')
-
-    # assistant_id = db.Column(db.Integer, foreign_keys=['assistant.id'])
-    # assistant = db.relationship('Assistant', backref=db.backref('staff'), uselist=False)
-    #
-    # vet_id = db.Column(db.Integer, foreign_keys=['vet.id'])
-    # vet = db.relationship('Vet', backref=db.backref('staff'), uselist=False)
-    #
-    # secretary_id = db.Column(db.Integer, foreign_keys=['secretary.id'])
-    # secretary = db.relationship('Secretary', backref=db.backref('staff'), uselist=False)
-    #
-    # cleaner_id = db.Column(db.Integer, foreign_keys=['cleaner.id'])
-    # cleaner = db.relationship('Cleaner', backref=db.backref('staff'), uselist=False)
+    assistant_t = db.relationship(
+        'Assistant',
+        back_populates='staff_t',
+        foreign_keys='Assistant.staff_id')
+    vet_t = db.relationship(
+        'Vet',
+        back_populates='staff_t',
+        foreign_keys='Vet.staff_id')
+    secretary_t = db.relationship(
+        'Secretary',
+        back_populates='staff_t',
+        foreign_keys='Secretary.staff_id')
+    cleaner_t = db.relationship(
+        'Cleaner',
+        back_populates='staff_t',
+        foreign_keys='Cleaner.staff_id')
 
     __mapper_args__ = {
         "polymorphic_identity": "staff"
@@ -103,23 +111,24 @@ class Staff(db.Model):
 
 class Assistant(User):
     __tablename__ = 'assistant'
-    user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), primary_key=True)
+    user_id = db.Column(
+        db.Integer,
+        db.ForeignKey('user.user_id'),
+        primary_key=True)
     field = db.Column(db.String(60), nullable=False)
     end_date = db.Column(db.DateTime)
     staff_id = db.Column(db.Integer, db.ForeignKey('staff.staff_id'))
-    staff_t = db.relationship('Staff', back_populates='assistant_t', foreign_keys=[staff_id])
+    staff_t = db.relationship(
+        'Staff',
+        back_populates='assistant_t',
+        foreign_keys=[staff_id])
 
     # end_date = db.Column(db.DateTime)
     supervisor_id = db.Column(db.Integer, db.ForeignKey('vet.id'))
-    supervisor = db.relationship('Vet', back_populates='supervisee', foreign_keys=[supervisor_id])
-
-    # def __repr__(self):
-    #     return super().__repr__() + " FIELD: {} , END-DATE: {} ".format(self.field, self.end_date)
-    #
-    # def to_dict(self):
-    #     return super().to_dict().update({'field': self.field,
-    #                                      'end_date': self.end_date.__str__(),
-    #                                      'supervisor': self.supervisor})
+    supervisor = db.relationship(
+        'Vet',
+        back_populates='supervisee',
+        foreign_keys=[supervisor_id])
 
     def user_dashboard(self):
         return render_template("assistant_dashboard.html", user=self)
@@ -141,10 +150,19 @@ class Vet(User):
     id = db.Column(db.Integer, db.ForeignKey('user.user_id'), primary_key=True)
     field = db.Column(db.String, default='Genel uzman', nullable=False)
     staff_id = db.Column(db.Integer, db.ForeignKey('staff.staff_id'))
-    staff_t = db.relationship('Staff', back_populates='vet_t', foreign_keys=[staff_id])
-    supervisee = db.relationship('Assistant', foreign_keys='Assistant.supervisor_id', back_populates='supervisor')
+    staff_t = db.relationship(
+        'Staff',
+        back_populates='vet_t',
+        foreign_keys=[staff_id])
+    supervisee = db.relationship(
+        'Assistant',
+        foreign_keys='Assistant.supervisor_id',
+        back_populates='supervisor')
 
-    appos = db.relationship('Appointment', back_populates='assigned',foreign_keys='Appointment.vet_id')
+    appos = db.relationship(
+        'Appointment',
+        back_populates='assigned',
+        foreign_keys='Appointment.vet_id')
 
     def __repr__(self):
         return "{} FIELD: {}".format(super().__repr__(), self.field)
@@ -174,7 +192,10 @@ class Secretary(User):
     __tablename__ = 'secretary'
     id = db.Column(db.Integer, db.ForeignKey('user.user_id'), primary_key=True)
     staff_id = db.Column(db.Integer, db.ForeignKey('staff.staff_id'))
-    staff_t = db.relationship('Staff', back_populates='secretary_t', foreign_keys=[staff_id])
+    staff_t = db.relationship(
+        'Staff',
+        back_populates='secretary_t',
+        foreign_keys=[staff_id])
 
     # languages = db.relationship('Languages', backref='languages')
 
@@ -193,9 +214,15 @@ class Secretary(User):
 class Cleaner(User):
     __tablename__ = 'cleaner'
     id = db.Column(db.Integer, db.ForeignKey('user.user_id'), primary_key=True)
-    cleaning_company = db.Column(db.String, default='Caglayan pislik temizleyiciler', nullable=False)
+    cleaning_company = db.Column(
+        db.String,
+        default='Caglayan pislik temizleyiciler',
+        nullable=False)
     staff_id = db.Column(db.Integer, db.ForeignKey('staff.staff_id'))
-    staff_t = db.relationship('Staff', back_populates='cleaner_t', foreign_keys=[staff_id])
+    staff_t = db.relationship(
+        'Staff',
+        back_populates='cleaner_t',
+        foreign_keys=[staff_id])
 
     def __repr__(self):
         return 'email: {} admin: {}'.format(self.email, self.is_admin)
@@ -212,11 +239,7 @@ class Cleaner(User):
         "polymorphic_identity": "cleaner",
     }
 
-
-# class Languages(db.Model):
-#     language = db.Column(db.String, primary_key=True)
-
-
+    
 class AdminView(AdminIndexView):
     def is_accessible(self):
         if current_user.is_authenticated and current_user.user_type == 'admin':

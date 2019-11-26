@@ -18,27 +18,42 @@ class Owner(db.Model):
     # Owner owns Pet
     pets = db.relationship('Pet', backref='owner')
 
-
     def __repr__(self):
-        return "id:{} name:{} sex:{} email:{} phone:{}".format(self.ssn, self.name, self.sex, self.email,
-                                                               self.phone)
+        return "id:{} name:{} sex:{} email:{} phone:{}".format(
+            self.ssn, self.name, self.sex, self.email, self.phone)
 
     @classmethod
-    def create_owner(cls, ssn,owner_name, last_name, owner_sex, owner_email, owner_address, owner_phone):
-        new_owner = cls(ssn=ssn,name=owner_name, last_name=last_name, sex=owner_sex,
-                        email=owner_email, address=owner_address, phone=owner_phone)
+    def create_owner(
+            cls,
+            ssn,
+            owner_name,
+            last_name,
+            owner_sex,
+            owner_email,
+            owner_address,
+            owner_phone):
+        new_owner = cls(
+            ssn=ssn,
+            name=owner_name,
+            last_name=last_name,
+            sex=owner_sex,
+            email=owner_email,
+            address=owner_address,
+            phone=owner_phone)
         db.session.add(new_owner)
         db.session.commit()
         return new_owner
 
     def to_dict(self):
         return {
-            "id":self.ssn,
-            "tc":self.ssn,
-            "name":self.name,
-            "last_name":self.last_name,
-            "phone":self.phone
+            "id": self.ssn,
+            "tc": self.ssn,
+            "name": self.name,
+            "last_name": self.last_name,
+            "phone": self.phone
         }
+
+
 ''' Weak Entity in relation with Owner'''
 
 
@@ -48,19 +63,25 @@ class Appointment(db.Model):
     on = db.Column(db.DateTime, nullable=False)
     appo_type = db.Column(db.String, nullable=False)
 
-    owner_ssn = db.Column(db.Integer, db.ForeignKey('owner.ssn'), primary_key=True,
-                          autoincrement=False)
+    owner_ssn = db.Column(
+        db.Integer,
+        db.ForeignKey('owner.ssn'),
+        primary_key=True,
+        autoincrement=False)
 
-    vet_id=db.Column(db.Integer,db.ForeignKey('vet.id'))
-    assigned=db.relationship('Vet',back_populates='appos',foreign_keys=[vet_id])
-
-
-
+    vet_id = db.Column(db.Integer, db.ForeignKey('vet.id'))
+    assigned = db.relationship(
+        'Vet',
+        back_populates='appos',
+        foreign_keys=[vet_id])
 
 
 class Invoices(db.Model):
     __tablename__ = 'invoices'
-    serial_number = db.Column(db.Integer, primary_key=True, autoincrement=False)
+    serial_number = db.Column(
+        db.Integer,
+        primary_key=True,
+        autoincrement=False)
     quantity = db.Column(db.Integer, nullable=False)
     transaction_date = db.Column(db.DateTime, nullable=False)
     cost = db.Column(db.Float, nullable=False)
@@ -72,9 +93,14 @@ class Invoices(db.Model):
 
 class Service(db.Model):
     __tablename__ = 'service'
-    name = db.Column(db.String, primary_key=True, nullable=False, autoincrement=False)
+    name = db.Column(
+        db.String,
+        primary_key=True,
+        nullable=False,
+        autoincrement=False)
     cost = db.Column(db.Float, nullable=False)
-    serial_number = db.Column(db.Integer, db.ForeignKey('invoices.serial_number'))
+    serial_number = db.Column(db.Integer,
+                              db.ForeignKey('invoices.serial_number'))
     invoices = db.relationship('Invoices', secondary='invoices_service_link')
 
 
@@ -95,6 +121,7 @@ class InvoicesServiceLink(db.Model):
     invoices = db.relationship(Invoices, backref=db.backref('invoices_assoc'))
     service = db.relationship(Service, backref=db.backref('service_assoc'))
 
+
 class Suitability(db.Model):
     cage_id = db.Column(db.Integer, db.ForeignKey(
         'cages.cage_id'), primary_key=True)
@@ -109,9 +136,16 @@ class CageNotes(db.Model):
 
 Stay = db.Table(
     'stay',
-    db.Column('pet_id', db.Integer, db.ForeignKey('pet.pet_id'), primary_key=True),
-    db.Column('cage_id', db.Integer, db.ForeignKey('cages.cage_id'), primary_key=True)
-)
+    db.Column(
+        'pet_id',
+        db.Integer,
+        db.ForeignKey('pet.pet_id'),
+        primary_key=True),
+    db.Column(
+        'cage_id',
+        db.Integer,
+        db.ForeignKey('cages.cage_id'),
+        primary_key=True))
 
 
 class Pet(db.Model):
@@ -137,15 +171,16 @@ class Pet(db.Model):
 
     def to_dict(self):
         return {
-                "Id":self.pet_id,
-                "Age":self.age,
-                "Name":self.name,
-                "Owner":[self.owner_ssn if self.owner is not None else "Bizim Yurdumuz Sokaklar"],
-                "Weight":self.weight,
-                "Species":self.species,
-                "Race":self.race,
-            }
-
+            "Id": self.pet_id,
+            "Age": self.age,
+            "Name": self.name,
+            "Owner": [
+                self.owner_ssn if self.owner is not None else "Bizim Yurdumuz\
+                     Sokaklar"],
+            "Weight": self.weight,
+            "Species": self.species,
+            "Race": self.race,
+        }
 
 
 class Cage(db.Model):
@@ -182,7 +217,11 @@ class Clinic(db.Model):
 
 class Medicine(db.Model):
     __tablename__ = 'medicine'
-    serial_number = db.Column(db.Integer, primary_key=True, nullable=False, autoincrement=True)
+    serial_number = db.Column(
+        db.Integer,
+        primary_key=True,
+        nullable=False,
+        autoincrement=True)
     name = db.Column(db.String(60), nullable=False)
     barcode_number = db.Column(db.String(60), nullable=False)
     expiration_date = db.Column(db.DateTime, nullable=False)
@@ -202,11 +241,8 @@ class Treatment(db.Model):
 
     def to_dict(self):
         return {
-            'Id':self.record_id,
-            'Record_type':self.record_type,
-            'Start_date':self.start_date.__str__(),
-            'End_date':self.end_date.__str__(),
+            'Id': self.record_id,
+            'Record_type': self.record_type,
+            'Start_date': self.start_date.__str__(),
+            'End_date': self.end_date.__str__(),
         }
-
-
-
