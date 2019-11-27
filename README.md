@@ -8,7 +8,7 @@ Our web application runs on a Python Flask backend. To be able to build your own
 Install flask and ensure the framework is up-to-date with Python3.
 
 ```
-~$ pip install flask
+~$ pip3 install flask
 ~$ sudo apt install python3-flask
 ```
 
@@ -39,13 +39,16 @@ Run it.
 
 If everything is ok, website should be appear on your http://localhost:5000/
 
+There are some unactive accounts please take consider these accounts
 
-Dependencies:
--flask
--flask_admin
--flask_login
--flask_sqlalchemy
--flask_bcrypt
+Umur Togay Yazar->togayyazar
+Caglayan Demirci -> caglayandemirci
+Cagatay Aydin --> cydiann
+Yigit Karaduman --> yigitkaraduman
 
+Database tables are in these files
+
+~/372_071VetSys/VetSys/dashboard/models.py
+~/372_071VetSys/VetSys/users/models.py
 
 
