@@ -42,8 +42,11 @@ If everything is ok, website should be appear on your http://localhost:5000/
 There are some unactive accounts please take consider these accounts
 
 Umur Togay Yazar->togayyazar
-Caglayan Demirci -> caglayandemirci
+
+Caglayan Demirci -> cademirci
+
 Cagatay Aydin --> cydiann
+
 Yigit Karaduman --> yigitkaraduman
 
 Database tables are in these files
